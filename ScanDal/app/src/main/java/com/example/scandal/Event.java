@@ -8,6 +8,9 @@ public class Event {
     private AttendeeDict registrants;
     private Alert alerts;
     private Integer maxAttendees;
+    private String description;
+    private MediaStore.Images poster;
+
 
     // Constructor
     public Event(EventList eventList) {
@@ -78,6 +81,22 @@ public class Event {
     public void setMaxAttendees(Integer maxAttendees) {
         this.maxAttendees = maxAttendees;
     }
+
+    public void setDesc(String description) {
+        this.description = description;
+    }
+
+    public void setPoster(MediaStore.Images poster) {
+        this.poster = poster;
+    }
+    public String getDesc() {
+        return description;
+    }
+
+    public MediaStore.Images getPoster() {
+        return poster;
+    }
+    
     //Additional features
     public void displayOnMap(Usermap usermap) {
         // TODO: Implement the display on map when feature is ready
