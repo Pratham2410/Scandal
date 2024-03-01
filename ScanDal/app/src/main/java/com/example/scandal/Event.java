@@ -1,4 +1,5 @@
 package com.example.scandal;
+import android.provider.MediaStore;
 
 public class Event {
     private String signInQRCode;
