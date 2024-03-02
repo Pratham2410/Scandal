@@ -4,7 +4,6 @@ import android.provider.MediaStore;
 public class Event {
     private String signInQRCode;
     private String promoQRCode;
-    private EventDetails eventDetail;
     private AttendeeDict currentAttendees;
     private AttendeeDict registrants;
     private Alert alerts;
@@ -41,14 +40,6 @@ public class Event {
 
     public void setPromoQRCode(String promoQRCode) {
         this.promoQRCode = promoQRCode;
-    }
-
-    public EventDetails getEventDetail() {
-        return eventDetail;
-    }
-
-    public void setEventDetail(EventDetails eventDetail) {
-        this.eventDetail = eventDetail;
     }
 
     public AttendeeDict getCurrentAttendees() {
