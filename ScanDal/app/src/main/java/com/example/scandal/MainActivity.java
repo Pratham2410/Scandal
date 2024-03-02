@@ -2,6 +2,7 @@ package com.example.scandal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
             button.setText(code);
 
         });
-
+        Intent intent = new Intent(MainActivity.this, Profile.class);
+        startActivity(intent);
     }
 }
