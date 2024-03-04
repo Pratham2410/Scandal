@@ -9,25 +9,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Profile extends AppCompatActivity {
     private String name;
     private String phoneNumber;
     private String homePage;
+    private Uri imageUri;
     ImageView imageView;
     FloatingActionButton editButton;
     FloatingActionButton deleteButton;
     private EditText editTextName;
     private EditText editTextPhoneNumber;
     private TextView textView;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
 
     // Getter and setter
@@ -37,6 +47,7 @@ public class Profile extends AppCompatActivity {
 
     public void setName(String name) {
         this.name = name;
+        storageReference.child("profile").child(userId).setValue(name);
     }
 
     public String getPhoneNumber() {
@@ -65,6 +76,8 @@ public class Profile extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         Button buttonSave = findViewById(R.id.buttonSave);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         // Image Edit Button
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -97,10 +110,29 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
-        imageView.setImageURI(uri);
+        imageUri = data.getData();
+        imageView.setImageURI(imageUri);
+        uploadPicture();
     }
-    public void contactInfo(String name, String phoneNumber) {
-        // Update to firebase later
+    // Upload picture to firebase
+    private void uploadPicture() {
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference riversRef = storageReference.child("profile/" + randomKey);
+
+        riversRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Tell the user image is uploaded successfully
+                        Snackbar.make(findViewById(android.R.id.content), "Image Uploaded", Snackbar.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Tell the user image is uploaded unsuccessfully
+                        Toast.makeText(getApplicationContext(), "Failed To Upload", Toast.LENGTH_LONG).show();
+                    }
+                });
+        }
     }
-}
