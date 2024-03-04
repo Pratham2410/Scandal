@@ -51,7 +51,6 @@ public class Profile extends AppCompatActivity {
 
     public void setName(String name) {
         this.name = name;
-        //storageReference.child("profile").child(userId).setValue(name);
     }
 
     public String getPhoneNumber() {
