@@ -18,8 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.Objects;
@@ -47,7 +51,7 @@ public class Profile extends AppCompatActivity {
 
     public void setName(String name) {
         this.name = name;
-        storageReference.child("profile").child(userId).setValue(name);
+        //storageReference.child("profile").child(userId).setValue(name);
     }
 
     public String getPhoneNumber() {
@@ -102,7 +106,7 @@ public class Profile extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contactInfo(editTextName.getText().toString(), editTextPhoneNumber.getText().toString());
+                //contactInfo(editTextName.getText().toString(), editTextPhoneNumber.getText().toString());
             }
         });
     }
