@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1093208863012",
+    "project_id": "scandal-9b65e",
+    "storage_bucket": "scandal-9b65e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093208863012:android:b0825e1a1d2a3feb2ec3b1",
+        "android_client_info": {
+          "package_name": "com.example.scandal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-BF_Oh1sm2WeHrJd2S1FHpHNNsG6Rk1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
