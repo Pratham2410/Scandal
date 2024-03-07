@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.starting_page);
-        toQrScan = findViewById(R.id.btnGetStarted);
+        toQrScan = findViewById(R.id.buttonGetStarted);
         toQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -22,7 +22,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Intent intent = new Intent(MainActivity.this, Profile.class);
-        startActivity(intent);
     }
 }

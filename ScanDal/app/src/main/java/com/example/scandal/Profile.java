@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,8 +36,8 @@ public class Profile extends AppCompatActivity {
     private String homePage;
     private Uri imageUri;
     ImageView imageView;
-    FloatingActionButton editButton;
-    FloatingActionButton deleteButton;
+    AppCompatButton editButton;
+    AppCompatButton deleteButton;
     private EditText editTextName;
     private EditText editTextPhoneNumber;
     private EditText editTextHomePage;

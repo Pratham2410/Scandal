@@ -91,7 +91,7 @@
         </FrameLayout>
 
         <ImageView
-            android:id="@+id/imageEllipseOne"
+            android:id="@+id/profilePicture"
             android:layout_width="@dimen/_153pxh"
             android:layout_height="@dimen/_112pxh"
             android:layout_gravity="top|end"
