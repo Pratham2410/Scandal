@@ -5,6 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/buttonBrowseEvents1"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="272dp"
+        android:layout_weight="0.61"
+        android:background="@drawable/rectangle_bg_pink_400_radius_25_08"
+        android:drawableStart="@drawable/img_contrast"
+        android:drawablePadding="@dimen/_4pxh"
+        android:ellipsize="end"
+        android:fontFamily="@font/archivo_black"
+        android:hint="@string/lbl_browse_events"
+        android:inputType="text"
+        android:paddingStart="@dimen/_4pxh"
+        android:paddingTop="@dimen/_16pxv"
+        android:paddingEnd="@dimen/_27pxh"
+        android:paddingBottom="@dimen/_17pxv"
+        android:singleLine="true"
+        android:text="ADMIN LOGIN"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@color/white_A700"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
+        tools:ignore="Autofill" />
+
     <LinearLayout
         android:id="@+id/buttonScanQRCode"
         style="@style/groupStyleteal_1"
@@ -272,4 +300,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
         tools:ignore="Autofill" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         toQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_profile = new Intent(MainActivity.this, QRActivity.class);
+                Intent intent_profile = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent_profile);
             }
         });
