@@ -32,26 +32,22 @@ public class HomeActivity extends AppCompatActivity {
                 Intent myintent = new Intent(HomeActivity.this, SettingsAndOrganiserActivity.class);
                 myintent.putExtra("userProfile", userID );
                 startActivity(myintent);
-
-
             }
         });
-//        eventBrowser.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myintent = new Intent(HomeActivity.this, PlaceHolder.class);
-//                startActivity(myintent);
-//
-//
-//            }
-//        });
-//        attendeeEvents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myintent = new Intent(HomeActivity.this, PlaceHolder.class); // replace placeholder class with the activity for attendee
-//                startActivity(myintent);
-//            }
-//        });
+        eventBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(HomeActivity.this, BrowseEventActivity.class);
+                startActivity(myintent);
+            }
+        });
+        attendeeEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(HomeActivity.this, AttendeeEventActivity.class); // replace placeholder class with the activity for attendee
+                startActivity(myintent);
+            }
+        });
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

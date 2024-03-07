@@ -208,7 +208,8 @@
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/white_A700"
                 android:textSize="15sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"
+                android:clickable="true"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -274,5 +275,6 @@
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill"
+        android:clickable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
