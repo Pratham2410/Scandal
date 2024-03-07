@@ -18,7 +18,7 @@ import java.util.List;
 
 public class OrganisorEventActivity extends AppCompatActivity {
     FrameLayout backToOrganiser;
-    FrameLayout backToHome;
+    FrameLayout buttonBackToHomepage;
     ListView eventsList;
     FirebaseFirestore db;
 
@@ -30,11 +30,11 @@ public class OrganisorEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsList = findViewById(R.id.eventsList_OrganisorEventsPage);
         backToOrganiser = findViewById(R.id.buttonBack_OrganisorEventsPage);
-        backToHome = findViewById(R.id.buttonBackToHomepage);
+        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
         backToOrganiser.setOnClickListener(v -> finish());
         // Navigate back to home page
-        backToHome.setOnClickListener(new View.OnClickListener() {
+        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent_home = new Intent(OrganisorEventActivity.this, QRActivity.class);

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class OrganisorActivity extends AppCompatActivity {
     LinearLayout buttonCreateNewEvents;
     LinearLayout buttonViewMyEvents;
-    FrameLayout backToHome;
+    FrameLayout buttonBackToHomepage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class OrganisorActivity extends AppCompatActivity {
         setContentView(R.layout.organisor_homepage);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
         buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents);
-        backToHome = findViewById(R.id.buttonBackToHomepage);
+        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
 
@@ -47,7 +47,7 @@ public class OrganisorActivity extends AppCompatActivity {
             }
         });
         // Navigate back to home page
-        backToHome.setOnClickListener(new View.OnClickListener() {
+        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent_home = new Intent(OrganisorActivity.this, QRActivity.class);
