@@ -10,12 +10,14 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,8 +37,9 @@ public class Profile extends AppCompatActivity {
     private String homePage;
     private Uri imageUri;
     ImageView imageView;
-    FloatingActionButton editButton;
-    FloatingActionButton deleteButton;
+    AppCompatButton editButton;
+    AppCompatButton deleteButton;
+    FrameLayout goBackButton;
     private EditText editTextName;
     private EditText editTextPhoneNumber;
     private EditText editTextHomePage;
@@ -50,7 +53,6 @@ public class Profile extends AppCompatActivity {
 
     public void setName(String name) {
         this.name = name;
-        //storageReference.child("profile").child(userId).setValue(name);
     }
 
     public String getPhoneNumber() {
@@ -72,7 +74,7 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.edit_profile_page);
 
         imageView = findViewById(R.id.profilePicture);
         editButton = findViewById(R.id.editImageButton);
@@ -80,11 +82,15 @@ public class Profile extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         editTextHomePage = findViewById(R.id.editHomePage);
+        goBackButton = findViewById(R.id.buttonBack_EditProfilePage);
         Button buttonSave = findViewById(R.id.buttonSave);
         db = FirebaseFirestore.getInstance();
 
         // Image Edit Button
         editButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The api is from https://github.com/Dhaval2404/ImagePicker
+             */
             @Override
             public void onClick(View view) {
                 ImagePicker.with(Profile.this)
@@ -107,6 +113,14 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveProfileData();
+            }
+        });
+        // Navigation button
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
