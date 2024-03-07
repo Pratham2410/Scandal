@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearRowstart"
+        android:id="@+id/buttonScanQRCode"
         style="@style/groupStyleteal_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,11 +14,11 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawcomplete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPresstoCheck"
+        app:layout_constraintTop_toBottomOf="@+id/textPressBelow1"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/txtStart"
+            android:id="@+id/textScanQRCode"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txtPresstoCheck"
+        android:id="@+id/textPressToCheckIn"
         style="@style/txtPoppinsbold16"
         android:layout_width="407dp"
         android:layout_height="32dp"
@@ -54,9 +54,9 @@
         android:gravity="center_horizontal"
         android:singleLine="true"
         android:text="Press to Check in as attendee"
-        app:layout_constraintBottom_toTopOf="@+id/linearRowstart"
+        app:layout_constraintBottom_toTopOf="@+id/buttonScanQRCode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etGroupFour"
+        app:layout_constraintTop_toBottomOf="@id/buttonBrowseEvents"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Press to Check in as attendee" />
 
@@ -118,7 +118,7 @@
 
 
         <ImageView
-            android:id="@+id/imageResultOne"
+            android:id="@+id/imageLogo"
             app:srcCompat="@drawable/img_result1"
             android:layout_width="90dp"
             android:layout_height="90dp"
@@ -162,7 +162,7 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/frameStackarrowleft"
+                android:id="@+id/buttonBack_QRScanningPage"
                 style="@style/groupStyleteal_A200cornerRadius"
                 android:layout_width="@dimen/_82pxh"
                 android:layout_height="@dimen/_51pxv"
@@ -184,7 +184,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/etGroupNine"
+                android:id="@+id/buttonViewMyAttendeeEvents"
                 android:layout_width="194dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_34pxv"
@@ -218,7 +218,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/profilePicture"
+                android:id="@+id/imageEllipseOne"
 
                 android:layout_width="169dp"
                 android:layout_height="178dp"
@@ -240,7 +240,7 @@
                 android:text="Edit Profile"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/profilePicture"
+                app:layout_constraintEnd_toEndOf="@+id/imageEllipseOne"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Edit Profile" />
 
@@ -248,7 +248,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/etGroupFour"
+        android:id="@+id/buttonBrowseEvents"
         android:layout_width="194dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -270,7 +270,7 @@
         android:textColor="#FFFFFF"
         android:textColorHint="@color/white_A700"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtPresstoCheck"
+        app:layout_constraintBottom_toTopOf="@+id/textScanQRCode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
         tools:ignore="Autofill" />

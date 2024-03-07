@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/profilePicture"
+            android:id="@+id/imageEllipseOne"
             app:srcCompat="@drawable/img_ellipse1"
             android:layout_width="@dimen/_153pxh"
             android:layout_height="@dimen/_112pxh"
@@ -102,7 +102,7 @@
             tools:src="@drawable/img_undrawdoneche" />
 
         <ImageView
-            android:id="@+id/imageResultOne"
+            android:id="@+id/imageLogo"
             app:srcCompat="@drawable/img_result1"
             android:layout_width="@dimen/_138pxh"
             android:layout_height="@dimen/_144pxh"
@@ -116,7 +116,7 @@
             tools:src="@drawable/img_result1" />
 
         <TextView
-            android:id="@+id/txtLanguage"
+            android:id="@+id/txtWelcome"
             style="@style/txtPoppinsbold20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnGetStarted"
+        android:id="@+id/buttonGetStarted"
         style="@style/btnSolidRounded"
         android:layout_width="@dimen/_157pxh"
         android:layout_height="@dimen/_47pxv"
@@ -150,11 +150,11 @@
         app:layout_constraintBottom_toTopOf="@+id/linearRowellipsethree"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPressthebutto"
+        app:layout_constraintTop_toBottomOf="@+id/txtPressthebutton"
         tools:text="Get Started" />
 
     <TextView
-        android:id="@+id/txtPressthebutto"
+        android:id="@+id/txtPressthebutton"
         style="@style/txtPoppinsbold16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

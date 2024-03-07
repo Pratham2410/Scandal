@@ -19,7 +19,7 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:text="Your Phone Number"
+        android:text="Your Contact Info"
         android:textColorHint="@color/black_900_99"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawwallpos"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearRowgearone"
+        app:layout_constraintTop_toBottomOf="@+id/editImageButton"
         tools:ignore="Autofill" />
 
     <LinearLayout
@@ -92,7 +92,7 @@
             android:orientation="horizontal">
 
             <FrameLayout
-                android:id="@+id/frameStackarrowleft"
+                android:id="@+id/buttonBack_EditProfilePage"
                 style="@style/groupStyleteal_A200cornerRadius"
                 android:layout_width="@dimen/_82pxh"
                 android:layout_height="@dimen/_51pxv"
@@ -114,13 +114,13 @@
             </FrameLayout>
 
             <ImageView
-                android:id="@+id/profilePicture"
-                app:srcCompat="@drawable/img_ellipse1_124x124"
+                android:id="@+id/imageEllipseOne"
                 android:layout_width="@dimen/_124pxh"
                 android:layout_height="@dimen/_124pxh"
                 android:layout_marginStart="@dimen/_36pxh"
                 android:layout_marginTop="@dimen/_35pxv"
                 android:scaleType="centerCrop"
+                app:srcCompat="@drawable/img_ellipse1_124x124"
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/img_ellipse1_124x124" />
         </LinearLayout>
@@ -156,7 +156,7 @@
             android:layout_marginEnd="@dimen/_10pxh">
 
             <ImageView
-                android:id="@+id/imageResultOne"
+                android:id="@+id/imageLogo"
                 android:layout_width="@dimen/_89pxh"
                 android:layout_height="@dimen/_90pxh"
                 android:layout_gravity="start"
@@ -217,5 +217,50 @@
             android:text="Save"
             android:textAllCaps="false"
             tools:text="Save" />
+
     </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deleteImageButton"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="198dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Delete Image"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@+id/editImageButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearRowgearone"
+        tools:text="Delete Image" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editImageButton"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="196dp"
+        android:layout_height="50dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Edit Image"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearRowgearone"
+        tools:text="Edit Image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
