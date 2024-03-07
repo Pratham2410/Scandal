@@ -31,46 +31,111 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages the profile information of a use
+ */
 public class Profile extends AppCompatActivity {
+    /**
+     * The name of the user
+     */
     private String name;
+    /**
+     * The phone number of the user
+     */
     private String phoneNumber;
+    /**
+     * A string representing the homepage
+     */
     private String homePage;
+    /**
+     * A URL link leading to the profile image
+     */
     private Uri imageUri;
+    /**
+     * A view to display an image to the user
+     */
     ImageView imageView;
+    /**
+     * A button used for editing the profile info
+     */
     AppCompatButton editButton;
+    /**
+     * A button used for deleting the profile info
+     */
     AppCompatButton deleteButton;
+    /**
+     * A button that exits out of the profile fragment
+     */
     FrameLayout goBackButton;
+    /**
+     * Text that represents the user's name
+     */
     private EditText editTextName;
+    /**
+     * Text that represents the user's phone number
+     */
     private EditText editTextPhoneNumber;
+    /**
+     * Text that represents the user's Home Page
+     */
     private EditText editTextHomePage;
+    /**
+     * Contains reference to database
+     */
     private FirebaseFirestore db;
 
 
     // Getter and setter
+
+    /**
+     * @return the User's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name Sets the name of the user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return the user's phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * @param phoneNumber Sets the user's phone number
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * @return the homepage of the user
+     */
     public String getHomePage() {
         return homePage;
     }
 
+    /**
+     * @param homePage The homepage of the user
+     */
     public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
 
+    /**
+     * Locates views associated with attributes
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +152,9 @@ public class Profile extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Image Edit Button
+        /**
+         * Provides functionality for edit button
+         */
         editButton.setOnClickListener(new View.OnClickListener() {
             /**
              * The api is from https://github.com/Dhaval2404/ImagePicker
@@ -99,8 +167,10 @@ public class Profile extends AppCompatActivity {
                         .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 10800
                         .start();
             }
-
         });
+        /**
+         * Provides functionality for delete button
+         */
         // Image Delete Button
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +179,9 @@ public class Profile extends AppCompatActivity {
             }
         });
         // Save information button
+        /**
+         * Implements the functionality for the save button
+         */
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +189,9 @@ public class Profile extends AppCompatActivity {
             }
         });
         // Navigation button
+        /**
+         * Provides functionality for the back button
+         */
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +202,18 @@ public class Profile extends AppCompatActivity {
     }
 
     // Method to update the image view
+
+    /**
+     * Displays profile image to the user
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -156,6 +244,12 @@ public class Profile extends AppCompatActivity {
 
 
     // Method to convert image string to bitmap
+
+    /**
+     * Converts an image string to a bitmap
+     * @param imageString A string representing the image
+     * @return Returns the image bitmap if the conversion is successful, otherwise it return null object
+     */
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
@@ -169,6 +263,12 @@ public class Profile extends AppCompatActivity {
 
 
     // Method to convert image URI to string
+
+    /**
+     * Convaerts an image URI to a string
+     * @param imageUri An image URI
+     * @return A string representing the URI
+     */
     private String convertImageUriToString(Uri imageUri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(imageUri);
@@ -183,6 +283,9 @@ public class Profile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves profile to online database
+     */
     // Method to save profile data to Firestore
     private void saveProfileData() {
         String name = editTextName.getText().toString().trim();
