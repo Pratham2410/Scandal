@@ -122,7 +122,7 @@ public class EventActivity extends AppCompatActivity {
      * Initializes UI components and configures the Firebase Firestore instance.
      */
     private void initializeUIComponents() {
-        poster = findViewById(R.id.imageView3);
+        poster = findViewById(R.id.imageView_CreateEventPage);
         editEventName = findViewById(R.id.editTextEventName);
         editEventDescription = findViewById(R.id.editTextEventDescription);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
