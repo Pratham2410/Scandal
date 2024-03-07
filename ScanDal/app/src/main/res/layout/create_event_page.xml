@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSave_CreateEventPage"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="230dp"
+        android:layout_height="63dp"
+        android:layout_gravity="top|center"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Post"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEventDescription"
+        tools:text="Post" />
+
+    <EditText
+        android:id="@+id/editTextEventName"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="390dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:hint="@string/lbl_your_name"
+        android:inputType="text"
+        android:paddingStart="@dimen/_26pxh"
+        android:paddingTop="@dimen/_11pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/black_900_99"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editPosterButton"
+        tools:ignore="Autofill" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editPosterButton"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="196dp"
+        android:layout_height="50dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="22dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Edit Poster"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEventName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/deletePosterButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.054"
+        tools:text="Edit Image" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deletePosterButton"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="198dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="17dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Delete Poster"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEventName"
+        app:layout_constraintEnd_toStartOf="@+id/editPosterButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.06"
+        tools:text="Delete Poster" />
+
+    <EditText
+        android:id="@+id/editTextEventDescription"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="377dp"
+        android:layout_height="209dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
+        android:ellipsize="end"
+        android:hint="Event Description"
+        android:inputType="text"
+        android:paddingStart="@dimen/_26pxh"
+        android:paddingTop="@dimen/_11pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/black_900_99"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave_CreateEventPage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEventName"
+        tools:ignore="Autofill" />
+
+    <FrameLayout
+        android:id="@+id/buttonBack_CreateEventPage"
+        style="@style/groupStyleteal_A200cornerRadius"
+        android:layout_width="@dimen/_82pxh"
+        android:layout_height="@dimen/_51pxv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageArrowleft"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25pxh"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_26pxh"
+            android:layout_marginTop="@dimen/_9pxv"
+            android:layout_marginEnd="@dimen/_26pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_arrowleft"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_arrowleft" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="@dimen/_153pxh"
+        android:layout_height="@dimen/_112pxh"
+        android:layout_gravity="top|end"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_ellipse1"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_ellipse1" />
+
+    <ImageView
+        android:id="@+id/imageEllipseTwo"
+        android:layout_width="@dimen/_97pxh"
+        android:layout_height="@dimen/_153pxh"
+        android:layout_gravity="top|end"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_ellipse2"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_ellipse2" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="351dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBack_CreateEventPage"
+        app:srcCompat="@drawable/sample_poster" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
