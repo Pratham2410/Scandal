@@ -105,7 +105,7 @@ public class Profile extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView.setImageResource(R.drawable.baseline_person_24); // Show the default profile picture after deletion
+                imageView.setImageResource(R.drawable.img_ellipse1_124x124); // Show the default profile picture after deletion
             }
         });
         // Save information button

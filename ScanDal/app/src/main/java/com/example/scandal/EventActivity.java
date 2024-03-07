@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -33,9 +35,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 /**
- * This is the fragment involving
- * Storing event's information
- * Adding new events to the database
+ * This is an activity involving
+ * Adding new events' information to the database
  */
 
 public class EventActivity extends AppCompatActivity {
@@ -44,10 +45,12 @@ public class EventActivity extends AppCompatActivity {
     private String name;
     private String description;
     private Uri imageUri;
+    ImageView imageView;
     private EditText editEventName;
     private EditText editEventDescription;
     private Button generateEventButton;
-    private Button uploadPosterButton;
+    AppCompatButton uploadPosterButton;
+    AppCompatButton deletePosterButton;
     private FirebaseFirestore db;
 
     @Override
@@ -55,6 +58,7 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_page);
 
+        imageView = findViewById(R.id.profilePicture);
         editEventName = findViewById(R.id.eventNameEditText);
         editEventDescription = findViewById(R.id.eventDescriptionEditText);
         generateEventButton = findViewById(R.id.genEventButton);
@@ -65,6 +69,28 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveEventData();
+            }
+        });
+        // Image Edit Button
+        uploadPosterButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The api is from https://github.com/Dhaval2404/ImagePicker
+             */
+            @Override
+            public void onClick(View view) {
+                ImagePicker.with(EventActivity.this)
+                        .crop() // Crop image(Optional)
+                        .compress(1024) // Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 10800
+                        .start();
+            }
+
+        });
+        // Image Delete Button
+        deletePosterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView.setImageResource(R.drawable.img_ellipse1_124x124); // Show the default profile picture after deletion
             }
         });
     }
