@@ -19,7 +19,6 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:text="Your Contact Info"
         android:textColorHint="@color/black_900_99"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawwallpos"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,15 +41,13 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:text="Your Homepage"
         android:textColorHint="@color/black_900_99"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPhoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPhoneNumber"
         app:layout_constraintTop_toBottomOf="@+id/editTextName"
-        tools:ignore="Autofill"
-        tools:layout_editor_absoluteY="337dp" />
+        tools:ignore="Autofill" />
 
     <EditText
         android:id="@+id/editTextName"
@@ -66,7 +63,6 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:text="Your Name"
         android:textColorHint="@color/black_900_99"
         app:layout_constraintBottom_toTopOf="@+id/editHomePage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +110,7 @@
             </FrameLayout>
 
             <ImageView
-                android:id="@+id/imageEllipseOne"
+                android:id="@+id/profilePicture"
                 android:layout_width="@dimen/_124pxh"
                 android:layout_height="@dimen/_124pxh"
                 android:layout_marginStart="@dimen/_36pxh"
@@ -148,7 +144,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <FrameLayout
-            android:id="@+id/frameStackresultone"
+            android:id="@+id/buttonBackToHomepage"
             android:layout_width="@dimen/_89pxh"
             android:layout_height="@dimen/_90pxv"
             android:layout_gravity="bottom|start"

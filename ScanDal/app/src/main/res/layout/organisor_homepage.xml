@@ -93,7 +93,7 @@
 
             <ImageView
                 android:id="@+id/imageArrowleft"
-                android:layout_width="@dimen/_23pxh"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25pxh"
                 android:layout_gravity="top|start"
                 android:layout_marginStart="@dimen/_26pxh"
@@ -107,21 +107,7 @@
         </FrameLayout>
 
         <ImageView
-            android:id="@+id/imageArrowleft_OrganisorHomepage"
-            android:layout_width="@dimen/_23pxh"
-            android:layout_height="@dimen/_25pxh"
-            android:layout_gravity="top|start"
-            android:layout_marginStart="@dimen/_26pxh"
-            android:layout_marginTop="@dimen/_9pxv"
-            android:layout_marginEnd="@dimen/_26pxh"
-            android:layout_marginBottom="@dimen/_10pxv"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_arrowleft"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/img_arrowleft" />
-
-        <ImageView
-            android:id="@+id/imageEllipseOne"
+            android:id="@+id/profilePicture"
             android:layout_width="@dimen/_153pxh"
             android:layout_height="@dimen/_112pxh"
             android:layout_gravity="top|end"
@@ -181,14 +167,14 @@
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/frameStackresultone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"
         tools:src="@drawable/img_ellipse3" />
 
     <FrameLayout
-        android:id="@+id/frameStackresultone"
+        android:id="@+id/buttonBackToHomepage"
         android:layout_width="@dimen/_89pxh"
         android:layout_height="@dimen/_90pxv"
         android:layout_gravity="bottom|start"
