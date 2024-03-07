@@ -9,7 +9,7 @@
         android:id="@+id/listView2"
         android:layout_width="410dp"
         android:layout_height="495dp"
-        app:layout_constraintBottom_toTopOf="@+id/frameStackresultone" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage" />
 
     <ImageView
         android:id="@+id/imageUndrawcomplete"
@@ -23,7 +23,7 @@
         tools:src="@drawable/img_undrawdoneche" />
 
     <FrameLayout
-        android:id="@+id/frameStackresultone"
+        android:id="@+id/buttonBackToHomepage"
         android:layout_width="@dimen/_89pxh"
         android:layout_height="@dimen/_90pxv"
         android:layout_gravity="bottom|start"

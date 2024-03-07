@@ -14,7 +14,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawcomplete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPressBelow1"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -270,7 +269,6 @@
         android:textColor="#FFFFFF"
         android:textColorHint="@color/white_A700"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/textScanQRCode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
         tools:ignore="Autofill" />

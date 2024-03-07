@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/listView2"
+        android:id="@+id/eventsList_OrganisorEventsPage"
         android:layout_width="410dp"
         android:layout_height="495dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage" />
@@ -70,14 +70,14 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:text="My Events"
-        app:layout_constraintBottom_toTopOf="@+id/listView2"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList_OrganisorEventsPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
+        app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft_OrganisorEventsPage"
         tools:text="My Events" />
 
     <LinearLayout
-        android:id="@+id/linearRowarrowleft"
+        android:id="@+id/linearRowarrowleft_OrganisorEventsPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/buttonBack_MyEventsPage"
+            android:id="@+id/buttonBack_OrganisorEventsPage"
             style="@style/groupStyleteal_A200cornerRadius"
             android:layout_width="@dimen/_82pxh"
             android:layout_height="@dimen/_51pxv">

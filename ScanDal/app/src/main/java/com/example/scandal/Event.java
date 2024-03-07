@@ -88,7 +88,7 @@ public class Event {
     public MediaStore.Images getPoster() {
         return poster;
     }
-    
+
     //Additional features
     public void displayOnMap(Usermap usermap) {
         // TODO: Implement the display on map when feature is ready
