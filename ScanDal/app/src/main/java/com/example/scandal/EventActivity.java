@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,15 +39,13 @@ import java.util.Map;
  */
 
 public class EventActivity extends AppCompatActivity {
-    private String signInQRCode;
-    private String promoQRCode;
     private String name;
     private String description;
     private Uri imageUri;
-    ImageView imageView;
+    ImageView poster;
     private EditText editEventName;
     private EditText editEventDescription;
-    private Button generateEventButton;
+    AppCompatButton generateEventButton;
     AppCompatButton uploadPosterButton;
     AppCompatButton deletePosterButton;
     private FirebaseFirestore db;
@@ -56,12 +53,14 @@ public class EventActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_page);
+        setContentView(R.layout.create_event_page);
 
-        imageView = findViewById(R.id.profilePicture);
-        editEventName = findViewById(R.id.eventNameEditText);
-        editEventDescription = findViewById(R.id.eventDescriptionEditText);
-        generateEventButton = findViewById(R.id.genEventButton);
+        poster = findViewById(R.id.imageView3);
+        editEventName = findViewById(R.id.editTextEventName);
+        editEventDescription = findViewById(R.id.editTextEventDescription);
+        generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
+        uploadPosterButton = findViewById(R.id.editPosterButton);
+        deletePosterButton = findViewById(R.id.deletePosterButton);
 
         db = FirebaseFirestore.getInstance();
         // Generate Event Button
@@ -90,7 +89,7 @@ public class EventActivity extends AppCompatActivity {
         deletePosterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView.setImageResource(R.drawable.img_ellipse1_124x124); // Show the default profile picture after deletion
+                poster.setImageResource(R.drawable.sample_poster); // Show the default profile picture after deletion
             }
         });
     }
@@ -108,7 +107,7 @@ public class EventActivity extends AppCompatActivity {
                     Bitmap bitmap = convertImageStringToBitmap(imageString);
                     if (bitmap != null) {
                         // Set image view to display the bitmap
-                        imageView.setImageBitmap(bitmap);
+                        poster.setImageBitmap(bitmap);
                     } else {
                         Toast.makeText(this, "Failed to convert image string to bitmap", Toast.LENGTH_SHORT).show();
                     }

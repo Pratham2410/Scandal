@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         toQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Profile.class);
+                Intent intent = new Intent(MainActivity.this, EventActivity.class);
                 startActivity(intent);
             }
         });
