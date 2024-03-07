@@ -1,5 +1,6 @@
 package com.example.scandal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,12 +9,13 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class OrganisorActivity extends AppCompatActivity {
     LinearLayout buttonCreateNewEvents;
     LinearLayout buttonViewMyEvents;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
@@ -21,14 +23,9 @@ public class OrganisorActivity extends AppCompatActivity {
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
 
-        // Modified to navigate to SettingsAndOrganiserActivity
-        backToOrganiser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(OrganisorActivity.this, SettingsAndOrganiserActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        // Navigate back to OrganisorActivity
+        backToOrganiser.setOnClickListener(v -> finish());
 
         buttonCreateNewEvents.setOnClickListener(new View.OnClickListener() {
             @Override
