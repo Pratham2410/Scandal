@@ -1,14 +1,16 @@
 package com.example.scandal;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,18 +18,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
-import java.util.Objects;
-import java.util.UUID;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Profile extends AppCompatActivity {
     private String name;
@@ -39,9 +39,8 @@ public class Profile extends AppCompatActivity {
     FloatingActionButton deleteButton;
     private EditText editTextName;
     private EditText editTextPhoneNumber;
-    private TextView textView;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    private EditText editTextHomePage;
+    private FirebaseFirestore db;
 
 
     // Getter and setter
@@ -60,6 +59,7 @@ public class Profile extends AppCompatActivity {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public String getHomePage() {
         return homePage;
     }
@@ -71,19 +71,22 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.edit_profile_page);
 
         imageView = findViewById(R.id.profilePicture);
         editButton = findViewById(R.id.editImageButton);
         deleteButton = findViewById(R.id.deleteImageButton);
         editTextName = findViewById(R.id.editTextName);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
+        editTextHomePage = findViewById(R.id.editHomePage);
         Button buttonSave = findViewById(R.id.buttonSave);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        db = FirebaseFirestore.getInstance();
 
         // Image Edit Button
         editButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The api is from https://github.com/Dhaval2404/ImagePicker
+             */
             @Override
             public void onClick(View view) {
                 ImagePicker.with(Profile.this)
@@ -105,37 +108,108 @@ public class Profile extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //contactInfo(editTextName.getText().toString(), editTextPhoneNumber.getText().toString());
+                saveProfileData();
             }
         });
     }
+
     // Method to update the image view
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imageUri = data.getData();
-        imageView.setImageURI(imageUri);
-        uploadPicture();
-    }
-    // Upload picture to firebase
-    private void uploadPicture() {
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference riversRef = storageReference.child("profile/" + randomKey);
-
-        riversRef.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Tell the user image is uploaded successfully
-                        Snackbar.make(findViewById(android.R.id.content), "Image Uploaded", Snackbar.LENGTH_LONG).show();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ImagePicker.REQUEST_CODE) {
+                // Convert image URI to string
+                imageUri = data.getData();
+                String imageString = convertImageUriToString(imageUri);
+                if (imageString != null) {
+                    // Convert image string to bitmap
+                    Bitmap bitmap = convertImageStringToBitmap(imageString);
+                    if (bitmap != null) {
+                        // Set image view to display the bitmap
+                        imageView.setImageBitmap(bitmap);
+                    } else {
+                        Toast.makeText(this, "Failed to convert image string to bitmap", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Tell the user image is uploaded unsuccessfully
-                        Toast.makeText(getApplicationContext(), "Failed To Upload", Toast.LENGTH_LONG).show();
-                    }
-                });
+                } else {
+                    Toast.makeText(this, "Failed to convert image to string", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.Companion.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    // Method to convert image string to bitmap
+    private Bitmap convertImageStringToBitmap(String imageString) {
+        try {
+            byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    // Method to convert image URI to string
+    private String convertImageUriToString(Uri imageUri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Method to save profile data to Firestore
+    private void saveProfileData() {
+        String name = editTextName.getText().toString().trim();
+        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+        String homePage = editTextHomePage.getText().toString().trim(); // You need to retrieve the homePage text from your layout or wherever it is set.
+
+        // Check if name and phone number are not empty
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(phoneNumber)) {
+            // Convert image URI to string
+            String imageString = convertImageUriToString(imageUri);
+
+            if (imageString != null) {
+                // Create a new profile document with a unique ID
+                Map<String, Object> profileData = new HashMap<>();
+                profileData.put("name", name);
+                profileData.put("phoneNumber", phoneNumber);
+                profileData.put("homePage", homePage); // Add the homePage field
+                profileData.put("imageString", imageString); // Add the imageString field
+
+                db.collection("profiles")
+                        .add(profileData)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getApplicationContext(), "Failed to save profile", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Please enter name and phone number", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
