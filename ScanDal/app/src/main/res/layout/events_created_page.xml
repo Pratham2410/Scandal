@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSaveProject"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="241dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Save Project"
+        android:textAllCaps="false"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Save Project" />
+
+    <TextView
+        android:id="@+id/textSavePromo"
+        style="@style/txtPoppinsbold16"
+        android:layout_width="207dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="Promo QR Code"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textSaveCheckin"
+        app:layout_constraintTop_toBottomOf="@+id/checkinQRCode"
+        tools:text="Promo QR Code" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSavePromoCode"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="180dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="101dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_5pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_5pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Customize Code"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveProject"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonSaveCheckinCode"
+        app:layout_constraintTop_toBottomOf="@+id/textSaveCheckin"
+        tools:text="Customize Code" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSaveCheckinCode"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="180dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_5pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_5pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Customize Code"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveProject"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSavePromo"
+        app:layout_constraintVertical_bias="0.146"
+        tools:text="Customize Code" />
+
+    <ImageView
+        android:id="@+id/promoQRCode"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkinQRCode"
+        app:layout_constraintTop_toBottomOf="@+id/textNewEventsCreated"
+        app:layout_constraintVertical_bias="0.516"
+        app:srcCompat="@drawable/img_result1"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_result1" />
+
+    <ImageView
+        android:id="@+id/checkinQRCode"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toStartOf="@+id/promoQRCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNewEventsCreated"
+        app:srcCompat="@drawable/img_result1"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_result1" />
+
+    <TextView
+        android:id="@+id/textNewEventsCreated"
+        style="@style/txtPoppinsbold20"
+        android:layout_width="408dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="You have made a new event!"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/checkinQRCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone_EventsCreatedPage"
+        tools:text="You have made a new event!" />
+
+    <FrameLayout
+        android:id="@+id/frameStackellipseone_EventsCreatedPage"
+        android:layout_width="463dp"
+        android:layout_height="340dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textNewEventsCreated"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="142dp"
+            android:layout_height="244dp"
+            app:srcCompat="@drawable/winners" />
+
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="145dp"
+            android:layout_height="142dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginStart="@dimen/_110pxh"
+            android:layout_marginTop="@dimen/_19pxv"
+            android:layout_marginEnd="@dimen/_110pxh"
+            android:layout_marginBottom="@dimen/_19pxv"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/img_result1"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_result1" />
+
+        <FrameLayout
+            android:id="@+id/buttonBack_EventsCreatedPage"
+            style="@style/groupStyleteal_A200cornerRadius"
+            android:layout_width="@dimen/_82pxh"
+            android:layout_height="@dimen/_51pxv"
+            android:layout_marginEnd="@dimen/_10pxh">
+
+            <ImageView
+                android:id="@+id/imageArrowleft"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25pxh"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="@dimen/_26pxh"
+                android:layout_marginTop="@dimen/_9pxv"
+                android:layout_marginEnd="@dimen/_26pxh"
+                android:layout_marginBottom="@dimen/_10pxv"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_arrowleft"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/img_arrowleft" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="167dp"
+            android:layout_height="113dp"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:layout_marginEnd="@dimen/_8pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/img_ellipse1"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_ellipse1" />
+
+        <ImageView
+            android:id="@+id/imageEllipseTwo"
+            android:layout_width="@dimen/_97pxh"
+            android:layout_height="@dimen/_153pxh"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:layout_marginTop="@dimen/_13pxv"
+            android:layout_marginBottom="@dimen/_13pxv"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/img_ellipse2"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_ellipse2" />
+
+        <TextView
+            android:id="@+id/textCongratEventsCreated"
+            style="@style/txtPoppinsbold20"
+            android:layout_width="408dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginStart="@dimen/_67pxh"
+            android:layout_marginTop="@dimen/_10pxv"
+            android:layout_marginEnd="@dimen/_67pxh"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Congratulations!"
+            android:textSize="24sp"
+            tools:text="Congratulations!" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="123dp"
+        android:layout_height="214dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/img_ellipse3" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="184dp"
+        android:layout_height="148dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/rectangle_bg_teal_a200_77_radius_76_5" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="164dp"
+        android:layout_height="210dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/img_undrawdoneche" />
+
+    <TextView
+        android:id="@+id/textSaveCheckin"
+        style="@style/txtPoppinsbold16"
+        android:layout_width="217dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="Checkin QR Code"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintEnd_toStartOf="@+id/textSavePromo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkinQRCode"
+        tools:text="Checkin QR Code" />
+</androidx.constraintlayout.widget.ConstraintLayout>
