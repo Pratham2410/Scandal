@@ -230,7 +230,7 @@ public class Profile extends AppCompatActivity {
 
         findViewById(R.id.buttonSave).setOnClickListener(view -> saveProfileData());
 
-        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, MainActivity.class)));
+        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, QRActivity.class)));
     }
 
     /**
