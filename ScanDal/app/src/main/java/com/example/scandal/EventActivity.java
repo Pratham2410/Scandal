@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class EventActivity extends AppCompatActivity {
     AppCompatButton uploadPosterButton;
     // Button to delete the selected poster image
     AppCompatButton deletePosterButton;
+
     // Firebase Firestore instance for database operations
     private FirebaseFirestore db;
 
@@ -126,7 +128,12 @@ public class EventActivity extends AppCompatActivity {
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
         uploadPosterButton = findViewById(R.id.editPosterButton);
         deletePosterButton = findViewById(R.id.deletePosterButton);
+        FrameLayout backToOrganiser = findViewById(R.id.buttonBack_CreateEventPage);
+
         db = FirebaseFirestore.getInstance();
+
+        // Navigate back to OrganisorActivity
+        backToOrganiser.setOnClickListener(v -> finish());
     }
 
     /**
