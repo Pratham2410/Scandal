@@ -25,10 +25,12 @@
         style="@style/groupStyleteal_1"
         android:layout_width="190dp"
         android:layout_height="54dp"
+        android:layout_marginBottom="72dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPressBelow1">
 
@@ -151,14 +153,14 @@
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/frameStackresultone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"
         tools:src="@drawable/img_ellipse3" />
 
     <FrameLayout
-        android:id="@+id/frameStackresultone"
+        android:id="@+id/buttonBackToHomepage"
         android:layout_width="@dimen/_89pxh"
         android:layout_height="@dimen/_90pxv"
         android:layout_gravity="bottom|start"
