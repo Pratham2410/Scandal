@@ -7,9 +7,11 @@
 
     <ListView
         android:id="@+id/eventsList_OrganisorEventsPage"
-        android:layout_width="410dp"
+        android:layout_width="match_parent"
         android:layout_height="495dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageUndrawcomplete"

@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/textPressBelow1"
         style="@style/txtPoppinsbold16"
-        android:layout_width="407dp"
+        android:layout_width="match_parent"
         android:layout_height="32dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
@@ -52,7 +52,7 @@
     <TextView
         android:id="@+id/textPressBelow2"
         style="@style/txtPoppinsbold16"
-        android:layout_width="407dp"
+        android:layout_width="match_parent"
         android:layout_height="32dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
@@ -66,11 +66,12 @@
 
     <FrameLayout
         android:id="@+id/frameStackellipseone"
-        android:layout_width="408dp"
-        android:layout_height="214dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="411dp"
+        android:layout_height="290dp"
         app:layout_constraintBottom_toTopOf="@+id/textPressBelow1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
