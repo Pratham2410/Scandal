@@ -8,10 +8,19 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private Button toQrScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.events_created_page);
+        setContentView(R.layout.starting_page);
+        toQrScan = findViewById(R.id.buttonGetStarted);
+        toQrScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -18,13 +18,13 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Save"
+        android:text="Post"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEventDescription"
-        tools:text="Save" />
+        tools:text="Post" />
 
     <EditText
         android:id="@+id/editTextEventName"
@@ -64,13 +64,13 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Edit Image"
+        android:text="Edit Poster"
         android:textAllCaps="false"
         android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextEventName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/deletePosterButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.054"
         tools:text="Edit Image" />
 
@@ -98,7 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.06"
-        tools:text="Delete Image" />
+        tools:text="Delete Poster" />
 
     <EditText
         android:id="@+id/editTextEventDescription"
