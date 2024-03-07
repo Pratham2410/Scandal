@@ -11,6 +11,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_page);
+        setContentView(R.layout.activity_main);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(v -> {
+            QRCodeScanner QR = new QRCodeScanner();
+            String code;
+            QR.ScanQR(this);
+            code = QR.getQR();
+            button.setText(code);
+
+        });
+        Intent intent = new Intent(MainActivity.this, Profile.class);
+        startActivity(intent);
     }
 }
