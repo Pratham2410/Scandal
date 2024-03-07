@@ -155,22 +155,6 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
-        <TextView
-            android:id="@+id/txtHomePage"
-            style="@style/txtPoppinsbold15"
-            android:layout_width="90dp"
-            android:layout_height="77dp"
-            android:gravity="top|center"
-            android:shadowColor="#65FEEB"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2.5"
-            android:text="Home Page"
-            android:textAllCaps="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Home Page" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
