@@ -48,7 +48,7 @@ public class QRCodeScanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_testing);
+        setContentView(R.layout.scanning_qr);
         Log.e("hpeebles", "QRCodeScanner Inside");
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
@@ -59,9 +59,21 @@ public class QRCodeScanner extends AppCompatActivity {
                     @Override
                     public void run() {
                         String decoded = result.getText();
-                        Intent nextIntent = new Intent(QRCodeScanner.this, NextActivity.class); // Put the next activity here to go there after a QR is scanned
-                        nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
-                        QRCodeScanner.this.startActivity(nextIntent);
+                        String userID = getIntent().getStringExtra("userID");
+                        int act = getIntent().getIntExtra("Activity", 0);
+//                        if (act == 1) {
+//                            Intent nextIntent = new Intent(QRCodeScanner.this, NextActivity.class); // Put the next activity here to go there after a QR is scanned
+//                            nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
+//                            nextIntent.putExtra("userID", userID);
+//                            QRCodeScanner.this.startActivity(nextIntent);
+//                        } else if (act == 2) {
+//                            Intent nextIntent = new Intent(QRCodeScanner.this, OtherNextActivity.class); // Put the next activity here to go there after a QR is scanned
+//                            nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
+//                            nextIntent.putExtra("userID", userID);
+//                            QRCodeScanner.this.startActivity(nextIntent);
+//                        } else{
+//                            Log.e("hpeebles", "QRCodeScanner needs a integer to be passed through an intent to function properly");
+//                        }
                         //Toast.makeText(CameraTesting.this, decoded, Toast.LENGTH_SHORT).show();
 
                     }
