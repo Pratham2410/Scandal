@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearRowellipsethree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/frameStackellipsethree"
+            android:layout_width="@dimen/_165pxh"
+            android:layout_height="@dimen/_207pxv"
+            android:layout_marginTop="@dimen/_15pxv">
+
+            <ImageView
+                android:id="@+id/imageEllipseThree"
+                android:layout_width="@dimen/_101pxh"
+                android:layout_height="@dimen/_153pxh"
+                android:layout_gravity="top|start"
+                android:layout_marginEnd="@dimen/_10pxh"
+                android:layout_marginBottom="@dimen/_10pxv"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/img_ellipse3"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/img_ellipse3" />
+
+            <View
+                android:id="@+id/viewEllipseFour"
+                android:layout_width="@dimen/_153pxh"
+                android:layout_height="@dimen/_153pxh"
+                android:layout_gravity="bottom|end"
+                android:layout_marginStart="@dimen/_10pxh"
+                android:layout_marginTop="@dimen/_10pxv"
+                android:background="@drawable/rectangle_bg_teal_a200_77_radius_76_5" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imageUndrawmobiles"
+            android:layout_width="@dimen/_114pxh"
+            android:layout_height="@dimen/_154pxh"
+            android:layout_marginStart="@dimen/_81pxh"
+            android:layout_marginBottom="@dimen/_68pxv"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_undrawmobiles"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_undrawmobiles" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameStackellipseone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_265pxv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageEllipseOne"
+            app:srcCompat="@drawable/img_ellipse1"
+            android:layout_width="@dimen/_153pxh"
+            android:layout_height="@dimen/_112pxh"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:layout_marginEnd="@dimen/_8pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_ellipse1" />
+
+        <ImageView
+            android:id="@+id/imageEllipseTwo"
+            app:srcCompat="@drawable/img_ellipse2"
+            android:layout_width="@dimen/_97pxh"
+            android:layout_height="@dimen/_153pxh"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:layout_marginTop="@dimen/_13pxv"
+            android:layout_marginBottom="@dimen/_13pxv"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_ellipse2" />
+
+        <ImageView
+            android:id="@+id/imageUndrawdoneche"
+            app:srcCompat="@drawable/img_undrawdoneche"
+            android:layout_width="146dp"
+            android:layout_height="@dimen/_152pxh"
+            android:layout_gravity="top|start"
+            android:layout_marginEnd="@dimen/_10pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_undrawdoneche" />
+
+        <ImageView
+            android:id="@+id/imageLogo"
+            app:srcCompat="@drawable/img_result1"
+            android:layout_width="@dimen/_138pxh"
+            android:layout_height="@dimen/_144pxh"
+            android:layout_gravity="bottom|center"
+            android:layout_marginStart="@dimen/_110pxh"
+            android:layout_marginTop="@dimen/_19pxv"
+            android:layout_marginEnd="@dimen/_110pxh"
+            android:layout_marginBottom="@dimen/_19pxv"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_result1" />
+
+        <TextView
+            android:id="@+id/txtWelcome"
+            style="@style/txtPoppinsbold20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginStart="@dimen/_67pxh"
+            android:layout_marginTop="@dimen/_10pxv"
+            android:layout_marginEnd="@dimen/_67pxh"
+            android:ellipsize="end"
+            android:gravity="top|start"
+            android:singleLine="true"
+            android:text="Welcome to ScanDal!"
+            tools:text="@string/msg_welcome_to_sca" />
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonGetStarted"
+        style="@style/btnSolidRounded"
+        android:layout_width="@dimen/_157pxh"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_29pxh"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingEnd="@dimen/_28pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:text="Get Started"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/linearRowellipsethree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPressthebutton"
+        tools:text="Get Started" />
+
+    <TextView
+        android:id="@+id/txtPressthebutton"
+        style="@style/txtPoppinsbold16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="Press the button below to start!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
+        tools:text="@string/msg_press_the_butto" />
+</androidx.constraintlayout.widget.ConstraintLayout>
