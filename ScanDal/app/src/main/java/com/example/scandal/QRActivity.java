@@ -12,7 +12,7 @@ public class QRActivity extends AppCompatActivity {
 
     LinearLayout buttonScanQRCode;
     TextView txtSettingsOrgan;
-    // Other UI components declarations if needed
+    TextView txtEditProfilePi; // Reference for the Edit Profile button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,12 @@ public class QRActivity extends AppCompatActivity {
     }
 
     private void initializeUIComponents() {
-        // Initialize your components here
         buttonScanQRCode = findViewById(R.id.buttonScanQRCode);
         txtSettingsOrgan = findViewById(R.id.txtSettingsOrgan);
-        // Other UI components initialization
+        txtEditProfilePi = findViewById(R.id.txtEditProfilePi); // Initialize the Edit Profile TextView
     }
 
     private void setupListeners() {
-        // Setting up listeners for components
         txtSettingsOrgan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,8 +39,13 @@ public class QRActivity extends AppCompatActivity {
             }
         });
 
-        // You can add listeners for other interactions, such as scanning QR codes, here
+        txtEditProfilePi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent to open ProfileActivity
+                Intent intent = new Intent(QRActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
     }
-
-    // Additional methods for handling other interactions can be implemented here
 }
