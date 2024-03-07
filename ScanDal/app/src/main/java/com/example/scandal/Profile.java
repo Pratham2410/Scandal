@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class Profile extends AppCompatActivity {
     ImageView imageView;
     AppCompatButton editButton;
     AppCompatButton deleteButton;
+    FrameLayout goBackButton;
     private EditText editTextName;
     private EditText editTextPhoneNumber;
     private EditText editTextHomePage;
@@ -80,6 +82,7 @@ public class Profile extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         editTextHomePage = findViewById(R.id.editHomePage);
+        goBackButton = findViewById(R.id.buttonBack_EditProfilePage);
         Button buttonSave = findViewById(R.id.buttonSave);
         db = FirebaseFirestore.getInstance();
 
@@ -110,6 +113,14 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveProfileData();
+            }
+        });
+        // Navigation button
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
