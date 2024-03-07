@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation("com.budiyev.android:code-scanner:2.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.mlkit:barcode-scanning:17.0.0")
     implementation("com.google.android.material:material:1.6.1") // Corrected version to 1.6.1 to match appcompat

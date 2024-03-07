@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -185,37 +186,44 @@ public class Profile extends AppCompatActivity {
 
     // Method to save profile data to Firestore
     private void saveProfileData() {
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         String name = editTextName.getText().toString().trim();
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();
-        String homePage = editTextHomePage.getText().toString().trim(); // You need to retrieve the homePage text from your layout or wherever it is set.
+        String homePage = editTextHomePage.getText().toString().trim();
 
-        // Check if name and phone number are not empty
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(phoneNumber)) {
-            // Convert image URI to string
-            String imageString = convertImageUriToString(imageUri);
+            final String imageString = convertImageUriToString(imageUri);
 
             if (imageString != null) {
-                // Create a new profile document with a unique ID
-                Map<String, Object> profileData = new HashMap<>();
+                final Map<String, Object> profileData = new HashMap<>();
+                profileData.put("deviceId", deviceId);
                 profileData.put("name", name);
                 profileData.put("phoneNumber", phoneNumber);
-                profileData.put("homePage", homePage); // Add the homePage field
-                profileData.put("imageString", imageString); // Add the imageString field
+                profileData.put("homePage", homePage);
+                profileData.put("imageString", imageString);
 
-                db.collection("profiles")
-                        .add(profileData)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show();
+                // Check if a document with the same deviceId already exists
+                db.collection("profiles").whereEqualTo("deviceId", deviceId)
+                        .limit(1) // Assuming deviceId is unique, limit to 1
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Document exists, so update it
+                                String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                db.collection("profiles").document(documentId)
+                                        .set(profileData)
+                                        .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show())
+                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
+                            } else {
+                                // No such document, create a new one
+                                db.collection("profiles")
+                                        .add(profileData)
+                                        .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())
+                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to save profile", Toast.LENGTH_SHORT).show());
                             }
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), "Failed to save profile", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check existing profile", Toast.LENGTH_SHORT).show());
             } else {
                 Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
             }
@@ -223,5 +231,6 @@ public class Profile extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter name and phone number", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }
