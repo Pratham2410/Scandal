@@ -1,6 +1,8 @@
 package com.example.scandal;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class OrganisorEventActivity extends AppCompatActivity {
     FrameLayout backToOrganiser;
+    FrameLayout backToHome;
     ListView eventsList;
     FirebaseFirestore db;
 
@@ -27,8 +30,17 @@ public class OrganisorEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsList = findViewById(R.id.eventsList_OrganisorEventsPage);
         backToOrganiser = findViewById(R.id.buttonBack_OrganisorEventsPage);
+        backToHome = findViewById(R.id.buttonBackToHomepage);
 
         backToOrganiser.setOnClickListener(v -> finish());
+        // Navigate back to home page
+        backToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent_home = new Intent(OrganisorEventActivity.this, QRActivity.class);
+                startActivity(intent_home);
+            }
+        });
 
         loadEvents();
     }
