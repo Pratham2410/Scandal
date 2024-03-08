@@ -33,7 +33,9 @@ public class BrowseEventActivity extends AppCompatActivity {
         eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String eventName = (String) parent.getItemAtPosition(position);
                 Intent intent = new Intent(BrowseEventActivity.this, EventDetailsActivity.class);
+                intent.putExtra("eventName", eventName);
                 startActivity(intent);
             }
         });
