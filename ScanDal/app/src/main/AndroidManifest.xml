@@ -51,8 +51,7 @@
         </activity>
         <activity android:name=".Profile">
         </activity>
-        <activity android:name=".QRActivity">
-        </activity>
+
         <activity android:name=".AdminProfileActivity" />
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>

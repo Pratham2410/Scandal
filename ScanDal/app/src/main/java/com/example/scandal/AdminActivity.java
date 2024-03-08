@@ -8,8 +8,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for the admin home page
+ */
+public class AdminActivity  extends AppCompatActivity {
 
-public class AdminActivity extends AppCompatActivity {
     FrameLayout goBackButton;
 
     LinearLayout buttonManageProfile,buttonManageEvents,buttonManageImages;

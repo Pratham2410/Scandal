@@ -1,5 +1,6 @@
 package com.example.scandal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -258,7 +259,7 @@ public class Profile extends AppCompatActivity {
 
         findViewById(R.id.buttonSave).setOnClickListener(view -> saveProfileData());
 
-        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, QRActivity.class)));
+        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, HomeActivity.class)));
     }
 
     /**
