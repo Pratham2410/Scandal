@@ -35,15 +35,18 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        View.OnClickListener listener = v -> {
-            Intent intent = new Intent(AdminActivity.this, AdminEventActivity.class);
-            startActivity(intent);
-        };
+        // Listener for managing events
+        buttonManageEvents.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminEventActivity.class)));
+
+        // Listener for managing images
+        // Assuming you have a corresponding activity for managing images, replace `AdminEventActivity.class` with the correct class
+        buttonManageImages.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, HomeActivity.class))); // Example placeholder
+
+        // Listener for managing profiles
+        buttonManageProfile.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminProfileActivity.class)));
+
+        // Listener for going back
         goBackButton.setOnClickListener(view -> startActivity(new Intent(AdminActivity.this, HomeActivity.class)));
-
-
-        buttonManageEvents .setOnClickListener(listener);
-        buttonManageImages.setOnClickListener(listener);
-        buttonManageProfile.setOnClickListener(listener);
     }
+
 }
