@@ -1,6 +1,8 @@
 package com.example.scandal;
 
+
 import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -8,15 +10,18 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class AdminProfileActivity extends AppCompatActivity {
     FrameLayout backToAdmin;
@@ -27,14 +32,18 @@ public class AdminProfileActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter; // Declare the adapter at the class level to access it easily
     List<String> profileNames; // Store the profile names here
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_list);
+
+        setContentView(R.layout.profile_list); // Use profile_list.xml
+
 
         db = FirebaseFirestore.getInstance();
         profilesList = findViewById(R.id.profilesList_AdminProfilePage);
         backToAdmin = findViewById(R.id.buttonBack_AdminProfilePage);
+
 
         // Initialize your adapter and profileNames list here
         profileNames = new ArrayList<>();
