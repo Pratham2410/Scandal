@@ -25,12 +25,10 @@ public class HomeActivity extends AppCompatActivity {
         attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         eventBrowser = findViewById(R.id.buttonBrowseEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
-        String userID = getIntent().getStringExtra("userID");
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myintent = new Intent(HomeActivity.this, SettingsAndOrganiserActivity.class);
-                myintent.putExtra("userProfile", userID );
                 startActivity(myintent);
             }
         });

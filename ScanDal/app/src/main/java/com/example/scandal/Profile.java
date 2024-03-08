@@ -37,29 +37,53 @@ import java.util.Map;
  * the image to a Base64 encoded string for storage in Firebase Firestore.
  */
 public class Profile extends AppCompatActivity {
-    // User's name
+    /**
+     * The name of the user
+     */
     private String name;
-    // User's phone number
+    /**
+     * The phone number of the user
+     */
     private String phoneNumber;
-    // User's home page URL
+    /**
+     * A string representing the homepage
+     */
     private String homePage;
-    // URI for the selected profile image
+    /**
+     * A URL link leading to the profile image
+     */
     private Uri imageUri;
-    // ImageView for displaying the profile image
+    /**
+     * A view to display an image to the user
+     */
     ImageView imageView;
-    // Button for initiating profile image edit
+    /**
+     * A button used for editing the profile info
+     */
     AppCompatButton editButton;
-    // Button for deleting the profile image
+    /**
+     * A button used for deleting the profile info
+     */
     AppCompatButton deleteButton;
-    // FrameLayout for navigating back
+    /**
+     * A button that exits out of the profile fragment
+     */
     FrameLayout goBackButton;
-    // EditText for inputting the user's name
+    /**
+     * Text that represents the user's name
+     */
     private EditText editTextName;
-    // EditText for inputting the user's phone number
+    /**
+     * Text that represents the user's phone number
+     */
     private EditText editTextPhoneNumber;
-    // EditText for inputting the user's home page URL
+    /**
+     * Text that represents the user's Home Page
+     */
     private EditText editTextHomePage;
-    // Instance of FirebaseFirestore
+    /**
+     * Contains reference to database
+     */
     private FirebaseFirestore db;
 
     /**
@@ -115,10 +139,14 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_page);
 
-        // Initialize UI components
+        /**
+         *  Initialize UI components
+          */
         initializeUI();
 
-        // Setup interaction listeners
+        /**
+         * Setup interaction listeners
+         */
         setupListeners();
     }
 

@@ -5,36 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textPressBelow1"
-        style="@style/txtPoppinsbold16"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:ellipsize="end"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="Press below to make a new event!"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCreateNewEvents"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone"
-        tools:text="Press below to make a new event!" />
-
     <LinearLayout
-        android:id="@+id/buttonCreateNewEvents"
+        android:id="@+id/buttonBrowseImages"
         style="@style/groupStyleteal_1"
-        android:layout_width="259dp"
-        android:layout_height="48dp"
+        android:layout_width="189dp"
+        android:layout_height="51dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPressBelow1"
-        app:layout_constraintBottom_toTopOf="@+id/textPressBelow2"
-        tools:layout_editor_absoluteY="246dp">
+        tools:layout_editor_absoluteY="228dp">
 
         <TextView
-            android:id="@+id/textOrganisorPage"
+            android:id="@+id/textBrowseImages"
+            style="@style/txtPoppinsbold17"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16pxh"
+            android:layout_marginTop="@dimen/_11pxv"
+            android:layout_marginBottom="@dimen/_9pxv"
+            android:layout_weight="0.83"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Browse Images"
+            tools:text="Browse Images" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonBrowseProfiles"
+        style="@style/groupStyleteal_1"
+        android:layout_width="194dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.995"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textBrowseProfiles"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,33 +57,113 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Create New Event"
-            tools:text="Create New Event" />
+            android:text="Browse Profiles"
+            tools:text="Browse Profiles" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonBrowseEvents"
+        style="@style/groupStyleteal_1"
+        android:layout_width="198dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textBrowseEvents"
+            style="@style/txtPoppinsbold17"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16pxh"
+            android:layout_marginTop="@dimen/_11pxv"
+            android:layout_marginBottom="@dimen/_9pxv"
+            android:layout_weight="0.83"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Browse Events"
+            tools:text="Browse Events" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonRemoveImages"
+        style="@style/groupStyleteal_1"
+        android:layout_width="196dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="108dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textRemoveImages"
+            style="@style/txtPoppinsbold17"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16pxh"
+            android:layout_marginTop="@dimen/_11pxv"
+            android:layout_marginBottom="@dimen/_9pxv"
+            android:layout_weight="0.83"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Remove Images"
+            tools:text="Remove Images" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textPressBelow2"
-        style="@style/txtPoppinsbold16"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:id="@+id/textRemoveProfile"
+        style="@style/txtPoppinsbold17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.83"
         android:ellipsize="end"
-        android:gravity="center_horizontal"
         android:singleLine="true"
-        android:text="Press below to make a new event!"
-        app:layout_constraintBottom_toTopOf="@+id/buttonViewMyEvents"
+        android:text="Remove Profile"
+        tools:text="Remove Profile" />
+
+    <LinearLayout
+        android:id="@+id/buttonRemoveEvent"
+        style="@style/groupStyleteal_1"
+        android:layout_width="201dp"
+        android:layout_height="51dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreateNewEvents"
-        tools:text="Press below to make a new event!" />
+        tools:layout_editor_absoluteY="228dp">
+
+        <TextView
+            android:id="@+id/textRemoveEvent"
+            style="@style/txtPoppinsbold17"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16pxh"
+            android:layout_marginTop="@dimen/_11pxv"
+            android:layout_marginBottom="@dimen/_9pxv"
+            android:layout_weight="0.83"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Remove Event"
+            tools:text="Remove Event" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameStackellipseone"
-        android:layout_width="411dp"
-        android:layout_height="290dp"
-        app:layout_constraintBottom_toTopOf="@+id/textPressBelow1"
+        android:layout_width="408dp"
+        android:layout_height="214dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -146,9 +239,9 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="Welcome to Organisor's Page!"
+            android:text="ADMIN ACCESS"
             android:textSize="24sp"
-            tools:text="Welcome to Organisor's Page!" />
+            tools:text="ADMIN ACCESS" />
 
     </FrameLayout>
 
@@ -193,6 +286,24 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
+        <TextView
+            android:id="@+id/txtHomePage"
+            style="@style/txtPoppinsbold15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_18pxh"
+            android:layout_marginTop="@dimen/_16pxv"
+            android:layout_marginEnd="@dimen/_18pxh"
+            android:layout_marginBottom="@dimen/_16pxv"
+            android:gravity="top|center"
+            android:shadowColor="#65FEEB"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="2.5"
+            android:text="Home Page"
+            android:textAllCaps="true"
+            tools:text="HOME PAGE" />
     </FrameLayout>
 
     <ImageView
@@ -206,13 +317,14 @@
     <LinearLayout
         android:id="@+id/buttonViewMyEvents"
         style="@style/groupStyleteal_1"
-        android:layout_width="228dp"
-        android:layout_height="51dp"
+        android:layout_width="196dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="108dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPressBelow2"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -226,8 +338,8 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="View My Events"
-            tools:text="View My Events" />
+            android:text="Remove Profile"
+            tools:text="Remove Profile" />
 
     </LinearLayout>
 
