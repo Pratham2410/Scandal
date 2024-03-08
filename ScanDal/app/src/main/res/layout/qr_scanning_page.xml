@@ -42,6 +42,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawcomplete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPressToCheckIn"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -75,7 +76,7 @@
     <TextView
         android:id="@+id/textPressToCheckIn"
         style="@style/txtPoppinsbold16"
-        android:layout_width="407dp"
+        android:layout_width="match_parent"
         android:layout_height="32dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
@@ -83,8 +84,8 @@
         android:text="Press to Check in as attendee"
         app:layout_constraintBottom_toTopOf="@+id/buttonScanQRCode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonBrowseEvents"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonBrowseEvents"
         tools:text="Press to Check in as attendee" />
 
     <ImageView
@@ -161,7 +162,10 @@
         android:id="@+id/linearRowarrowleft"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linearColumnarrowleft"
@@ -217,13 +221,14 @@
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/white_A700"
                 android:textSize="15sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"
+                android:clickable="true"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearColumnellipseone"
-            android:layout_width="157dp"
-            android:layout_height="219dp"
+            android:layout_width="98dp"
+            android:layout_height="199dp"
             android:layout_weight="0.39"
             android:gravity="end"
             android:orientation="vertical">
@@ -283,6 +288,6 @@
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
-        tools:ignore="Autofill" />
-
+        tools:ignore="Autofill"
+        android:clickable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
