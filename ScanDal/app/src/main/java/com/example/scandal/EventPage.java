@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class EventPage extends AppCompatActivity {
         String description;
         Bitmap posterMap;
         String token = getIntent().getStringExtra("QRToken");
+        Log.e("hpeebles", token);
         // added DB stuff here
 
 //        eventDescription.setText(description);
