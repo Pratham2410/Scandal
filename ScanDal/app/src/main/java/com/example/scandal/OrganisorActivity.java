@@ -39,7 +39,6 @@ public class OrganisorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
-        buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents);
         buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
@@ -55,13 +54,7 @@ public class OrganisorActivity extends AppCompatActivity {
                 startActivity(intent_create);
             }
         });
-        buttonViewMyEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_view = new Intent(OrganisorActivity.this, OrganisorEventActivity.class);
-                startActivity(intent_view);
-            }
-        });
+
         // Navigate back to home page
         buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
