@@ -39,7 +39,7 @@ public class OrganisorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
-        buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents);
+       // buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents);
         buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
