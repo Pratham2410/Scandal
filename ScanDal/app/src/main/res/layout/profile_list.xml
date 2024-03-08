@@ -7,34 +7,13 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonView_AdminEventsPage"
-        style="@style/btnSolidRoundedOutline"
-        android:layout_width="180dp"
-        android:layout_height="52dp"
-        android:layout_gravity="top|center"
-        android:layout_marginStart="8dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingStart="@dimen/_30pxh"
-        android:paddingTop="@dimen/_8pxv"
-        android:paddingEnd="@dimen/_30pxh"
-        android:paddingBottom="@dimen/_8pxv"
-        android:singleLine="true"
-        android:text="View"
-        android:textAllCaps="false"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventsList_AdminEventsPage"
-        tools:text="View" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonDelete_AdminEventPage"
+        android:id="@+id/buttonDelete_AdminProfileListPage"
         style="@style/btnSolidRoundedOutline"
         android:layout_width="180dp"
         android:layout_height="52dp"
         android:layout_gravity="top|center"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:ellipsize="end"
         android:gravity="center"
         android:paddingStart="@dimen/_30pxh"
@@ -47,15 +26,39 @@
         android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventsList_AdminEventsPage"
         tools:text="Delete" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonView_AdminProfileListPage"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="180dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="View"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="View" />
+
     <ListView
-        android:id="@+id/eventsList_AdminEventsPage"
-        android:layout_width="407dp"
-        android:layout_height="398dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonView_AdminEventsPage"
-        app:layout_constraintTop_toBottomOf="@+id/txtMyEvents_AdminEventsPage" />
+        android:id="@+id/profilesList_AdminProfilePage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/linearRowarrowleft_AdminEventsPage"
+        app:layout_constraintBottom_toTopOf="@id/buttonBackToHomepage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageUndrawcomplete"
@@ -107,8 +110,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/txtMyEvents_AdminEventsPage"
-
+        android:id="@+id/Profiles"
         style="@style/txtPoetsenOneregular26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -116,12 +118,12 @@
         android:layout_marginTop="25dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="My Events"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList_AdminEventsPage"
+        android:text="Profiles"
+        app:layout_constraintBottom_toTopOf="@+id/profilesList_AdminProfilePage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft_AdminEventsPage"
-        tools:text="My Events" />
+        tools:text="Profiles" />
 
     <LinearLayout
         android:id="@+id/linearRowarrowleft_AdminEventsPage"
@@ -133,7 +135,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/buttonBack_AdminEventsPage"
+            android:id="@+id/buttonBack_AdminProfilePage"
             style="@style/groupStyleteal_A200cornerRadius"
             android:layout_width="@dimen/_82pxh"
             android:layout_height="@dimen/_51pxv">
