@@ -68,7 +68,6 @@
         android:id="@+id/frameStackellipseone"
         android:layout_width="411dp"
         android:layout_height="290dp"
-        app:layout_constraintBottom_toTopOf="@+id/textPressBelow1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
