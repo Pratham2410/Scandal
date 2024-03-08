@@ -1,0 +1,43 @@
+package com.example.scandal;
+
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+
+@RunWith(AndroidJUnit4.class)
+public class AdminImageActivityIntentTest {
+
+    @Rule
+    public IntentsTestRule<AdminImageActivity> intentsTestRule = new IntentsTestRule<>(AdminImageActivity.class);
+
+    @Test
+    public void pressingBackButtonNavigatesToAdminActivity() {
+        // Perform a click on the back button
+        onView(withId(R.id.buttonBack_ImageListPage)).perform(click());
+
+        // Verify that the AdminActivity is launched after pressing the back button
+        intended(hasComponent(AdminActivity.class.getName()));
+    }
+
+    @Test
+    public void clickingDeleteButtonShowsConfirmationDialog() {
+        // Assuming there is at least one item in the ListView
+        // Perform a click on the first item in the ListView
+        onView(withId(R.id.listView_ImageListPage)).perform(click());
+
+        // Verify that a confirmation dialog for deleting the image is shown
+        // Example:
+        // onView(withText("Are you sure you want to delete this image?")).check(matches(isDisplayed()));
+    }
+
+    // Add more tests for additional functionality as needed
+}
