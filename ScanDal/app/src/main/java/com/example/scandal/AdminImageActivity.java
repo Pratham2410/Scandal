@@ -27,7 +27,9 @@ public class AdminImageActivity extends AppCompatActivity {
     CustomImageAdapter adapter; // Custom adapter to handle Bitmaps
     List<Bitmap> imagesList = new ArrayList<>();
     List<String> imageIds = new ArrayList<>(); // Store image document IDs for deletion
-
+    /**
+     * Activity for managing images in the admin panel.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,10 @@ public class AdminImageActivity extends AppCompatActivity {
             alertDialog.show();
         });
     }
-
+    /**
+     * Load images from Firestore.
+     * Fetches images and their document IDs from Firestore, and updates the adapter.
+     */
     private void loadImages() {
         db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -87,14 +92,26 @@ public class AdminImageActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Delete an image from Firestore.
+     * Deletes the image with the given document ID from Firestore,
+     * and removes it from the list and adapter upon success.
+     *
+     * @param imageId  The document ID of the image to delete.
+     * @param position The position of the image in the list.
+     */
     private void deleteImage(String imageId) {
         db.collection("events").document(imageId)
                 .update("posterImage", "")
                 .addOnSuccessListener(aVoid -> Log.d("AdminImageActivity", "Image deleted successfully"))
                 .addOnFailureListener(e -> Log.e("AdminImageActivity", "Error deleting image: " + e.getMessage()));
     }
-
+    /**
+     * Convert a Base64-encoded image string to a Bitmap.
+     *
+     * @param imageString The Base64-encoded image string.
+     * @return The decoded Bitmap, or null if decoding fails.
+     */
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
