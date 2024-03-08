@@ -13,13 +13,41 @@ import androidx.appcompat.widget.AppCompatButton;
 import java.util.Random;
 
 public class NewEventActivity extends AppCompatActivity {
-    ImageView checkinQRCode;
-    ImageView promoQRCode;
-    AppCompatButton saveCheckinCode;
-    AppCompatButton savePromoCode;
-    // Assume QRCode is a class you have for generating and handling QR codes.
-    QRCode QR;
 
+    /**
+     * ImageView for displaying the check-in QR code.
+     */
+    ImageView checkinQRCode;
+
+    /**
+     * ImageView for displaying the promo QR code.
+     */
+    ImageView promoQRCode;
+
+    /**
+     * Button for saving the check-in code.
+     */
+    AppCompatButton saveCheckinCode;
+
+    /**
+     * Button for saving the promo code.
+     */
+    AppCompatButton savePromoCode;
+
+    // QRCode object for generating and handling QR codes
+
+    /**
+     * QRCode object for generating and handling QR codes.
+     */
+    QRCode QR;
+    /**
+     * Called when the activity is starting. This is where most initialization should go:
+     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Note: Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
