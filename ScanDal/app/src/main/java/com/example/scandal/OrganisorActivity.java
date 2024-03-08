@@ -52,7 +52,6 @@ public class OrganisorActivity extends AppCompatActivity {
                 startActivity(intent_create);
             }
         });
-
         // Navigate back to home page
         buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
