@@ -36,9 +36,6 @@ public class NewEventActivity extends AppCompatActivity {
     AppCompatButton savePromoCode;
     FrameLayout backButton;
     // Assume QRCode is a class you have for generating and handling QR codes.
-    QRCode QR;
-
-    // QRCode object for generating and handling QR codes
 
     /**
      * QRCode object for generating and handling QR codes.
@@ -83,7 +80,7 @@ public class NewEventActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
+                Intent homeIntent = new Intent(NewEventActivity.this, OrganisorActivity.class);
                 startActivity(homeIntent);
             }
         });
