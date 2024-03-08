@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AdminProfileActivity extends AppCompatActivity {
     FrameLayout backToAdmin;
-    ListView profilesList; // Renamed variable to reflect profiles
+    ListView profilesList;
     FirebaseFirestore db;
 
     @Override
@@ -24,8 +24,8 @@ public class AdminProfileActivity extends AppCompatActivity {
         setContentView(R.layout.profile_list); // Use profile_list.xml
 
         db = FirebaseFirestore.getInstance();
-        profilesList = findViewById(R.id.profilesList_AdminProfilePage); // Updated ID
-        backToAdmin = findViewById(R.id.buttonBack_AdminProfilePage); // Ensure this ID exists in your XML
+        profilesList = findViewById(R.id.profilesList_AdminProfilePage);
+        backToAdmin = findViewById(R.id.buttonBack_AdminProfilePage);
 
         backToAdmin.setOnClickListener(v -> finish());
 
@@ -40,7 +40,7 @@ public class AdminProfileActivity extends AppCompatActivity {
         db.collection("profiles").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String profileName = document.getString("name"); // Assuming a 'name' field exists
+                    String profileName = document.getString("name");
                     if (profileName != null) {
                         profileNames.add(profileName);
                     }
