@@ -13,19 +13,35 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AdminActivity  extends AppCompatActivity {
 
+    /**
+     * FrameLayout for navigating back to the admin interface.
+     */
     FrameLayout goBackButton;
 
-    LinearLayout buttonManageProfile,buttonManageEvents,buttonManageImages;
+    /**
+     * LinearLayout for managing profile, events, and images.
+     */
+    LinearLayout buttonManageProfile, buttonManageEvents, buttonManageImages;
 
+    /**
+     * Called when the activity is starting. This is where most initialization should go:
+     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Note: Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_home_page); // Make sure the layout name matches your XML file name
+        setContentView(R.layout.admin_home_page);
 
         initializeButtons();
         setupListeners();
     }
-
+    /**
+     * Initializes buttons by finding their views from the layout.
+     */
     private void initializeButtons() {
         //buttonBrowseImages = findViewById(R.id.buttonBrowseImages);
         //buttonBrowseProfiles = findViewById(R.id.buttonBrowseProfiles);
@@ -36,7 +52,9 @@ public class AdminActivity  extends AppCompatActivity {
 
         goBackButton = findViewById(R.id.buttonBack_Admin);
     }
-
+    /**
+     * Sets up listeners for button clicks.
+     */
     private void setupListeners() {
         // Listener for managing events
         buttonManageEvents.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminEventActivity.class)));
