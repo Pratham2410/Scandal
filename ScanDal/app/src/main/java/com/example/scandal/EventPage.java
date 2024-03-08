@@ -34,6 +34,7 @@ public class EventPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.view_event_page);
         back = findViewById(R.id.buttonBack_ViewEventPage);
         poster = findViewById(R.id.imageView_ViewEventPage);
         eventName = findViewById(R.id.textEventName_ViewEventPage);
@@ -50,8 +51,8 @@ public class EventPage extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeIntent = new Intent(EventPage.this, HomeActivity.class);
-                startActivity(homeIntent);
+               Intent homeIntent = new Intent(EventPage.this, HomeActivity.class);
+               startActivity(homeIntent);
             }
         });
 

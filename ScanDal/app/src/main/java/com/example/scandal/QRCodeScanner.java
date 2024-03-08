@@ -49,7 +49,6 @@ public class QRCodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanning_qr);
-        Log.e("hpeebles", "QRCodeScanner Inside");
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -62,9 +61,10 @@ public class QRCodeScanner extends AppCompatActivity {
                         String userID = getIntent().getStringExtra("userID");
                         int act = getIntent().getIntExtra("Activity", 0);
                         if (act == 1) {
+                            Log.e("hpeebles", "In activity starter");
                             Intent nextIntent = new Intent(QRCodeScanner.this, EventPage.class); // Put the next activity here to go there after a QR is scanned
                             nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
-                            QRCodeScanner.this.startActivity(nextIntent);
+                            startActivity(nextIntent);
                         } //else if (act == 2) {
 //                            Intent nextIntent = new Intent(QRCodeScanner.this, OtherNextActivity.class); // Put the next activity here to go there after a QR is scanned
 //                            nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
