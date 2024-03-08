@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -29,7 +30,13 @@ public class BrowseEventActivity extends AppCompatActivity {
         eventsList = findViewById(R.id.listView_BrowseEventPage);
 
         buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
-
+        eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(BrowseEventActivity.this, EventDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
         loadEvents();
     }
     private void loadEvents() {
