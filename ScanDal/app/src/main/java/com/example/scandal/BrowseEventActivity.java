@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,35 +15,23 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrganisorEventActivity extends AppCompatActivity {
-    FrameLayout backToOrganiser;
-    FrameLayout buttonBackToHomepage;
+public class BrowseEventActivity extends AppCompatActivity {
+    FrameLayout buttonBack_BrowseEventsPage;
     ListView eventsList;
     FirebaseFirestore db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organisor_events_page);
+        setContentView(R.layout.browse_events_page);
 
+        buttonBack_BrowseEventsPage = findViewById(R.id.buttonBack_BrowseEventsPage);
         db = FirebaseFirestore.getInstance();
-        eventsList = findViewById(R.id.eventsList_OrganisorEventsPage);
-        backToOrganiser = findViewById(R.id.buttonBack_OrganisorEventsPage);
-        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
+        eventsList = findViewById(R.id.listView_BrowseEventPage);
 
-        backToOrganiser.setOnClickListener(v -> finish());
-        // Navigate back to home page
-        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_home = new Intent(OrganisorEventActivity.this, QRActivity.class);
-                startActivity(intent_home);
-            }
-        });
+        buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
 
         loadEvents();
     }
-
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);

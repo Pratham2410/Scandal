@@ -165,6 +165,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone"
-        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
         tools:text="@string/msg_press_the_butto" />
 </androidx.constraintlayout.widget.ConstraintLayout>

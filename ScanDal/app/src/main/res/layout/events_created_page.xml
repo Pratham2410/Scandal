@@ -30,8 +30,8 @@
     <TextView
         android:id="@+id/textSavePromo"
         style="@style/txtPoppinsbold16"
-        android:layout_width="207dp"
-        android:layout_height="49dp"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
@@ -144,11 +144,11 @@
 
     <FrameLayout
         android:id="@+id/frameStackellipseone_EventsCreatedPage"
-        android:layout_width="463dp"
-        android:layout_height="340dp"
+        android:layout_width="match_parent"
+        android:layout_height="281dp"
+        app:layout_constraintBottom_toTopOf="@+id/textNewEventsCreated"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textNewEventsCreated"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -264,8 +264,8 @@
     <TextView
         android:id="@+id/textSaveCheckin"
         style="@style/txtPoppinsbold16"
-        android:layout_width="217dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"

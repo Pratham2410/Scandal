@@ -5,11 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonView_AdminEventsPage"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="180dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="View"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventsList_AdminEventsPage"
+        tools:text="View" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDelete_AdminEventPage"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="180dp"
+        android:layout_height="52dp"
+        android:layout_gravity="top|center"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_8pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_8pxv"
+        android:singleLine="true"
+        android:text="Delete"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventsList_AdminEventsPage"
+        tools:text="Delete" />
+
     <ListView
         android:id="@+id/eventsList_AdminEventsPage"
-        android:layout_width="410dp"
-        android:layout_height="495dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage" />
+        android:layout_width="407dp"
+        android:layout_height="398dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonView_AdminEventsPage"
+        app:layout_constraintTop_toBottomOf="@+id/txtMyEvents_AdminEventsPage" />
 
     <ImageView
         android:id="@+id/imageUndrawcomplete"
@@ -61,7 +107,8 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/txtMyEvents"
+        android:id="@+id/txtMyEvents_AdminEventsPage"
+
         style="@style/txtPoetsenOneregular26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
