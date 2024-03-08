@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity  extends AppCompatActivity {
     FrameLayout goBackButton;
 
     LinearLayout buttonManageProfile,buttonManageEvents,buttonManageImages;
@@ -35,7 +35,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private void setupListeners() {
         View.OnClickListener listener = v -> {
-            Intent intent = new Intent(AdminActivity.this, OrganisorEventActivity.class);
+            Intent intent = new Intent(AdminActivity.this, AdminEventActivity.class);
             startActivity(intent);
         };
         goBackButton.setOnClickListener(view -> startActivity(new Intent(AdminActivity.this, HomeActivity.class)));
