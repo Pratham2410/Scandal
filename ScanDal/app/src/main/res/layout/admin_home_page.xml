@@ -10,13 +10,13 @@
         style="@style/groupStyleteal_1"
         android:layout_width="198dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="120dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonManageImages"
+        app:layout_constraintTop_toBottomOf="@+id/buttonManageProfile">
 
         <TextView
             android:id="@+id/textManageEvents"
@@ -34,18 +34,19 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/buttonManageImages"
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="48dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonManageEvents">
 
         <TextView
             android:id="@+id/textManageImages"
@@ -63,12 +64,12 @@
 
     </LinearLayout>
 
-
     <FrameLayout
         android:id="@+id/frameStackellipseone"
         android:layout_width="408dp"
         android:layout_height="214dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -162,12 +163,12 @@
 
     <ImageView
         android:id="@+id/imageEllipseThree"
-        android:layout_width="119dp"
-        android:layout_height="163dp"
+        android:layout_width="122dp"
+        android:layout_height="220dp"
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"
@@ -224,13 +225,13 @@
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="188dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonManageEvents"
+        app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone">
 
         <TextView
             android:id="@+id/textManageProfile"
