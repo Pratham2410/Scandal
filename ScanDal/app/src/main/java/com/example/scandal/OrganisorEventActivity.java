@@ -13,12 +13,30 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for creating a new event from the organizer's perspective
+ */
 public class OrganisorEventActivity extends AppCompatActivity {
+    /**
+     * Button that leads to organizer's homepage
+     */
     FrameLayout backToOrganiser;
+    /**
+     * A View to display all of an organizer's events
+     */
     ListView eventsList;
+    /**
+     * An instance of firestore database
+     */
     FirebaseFirestore db;
 
+    /**
+     * Provides functionality for layout buttons
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

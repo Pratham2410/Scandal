@@ -14,10 +14,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminEventActivity extends AppCompatActivity {
+    /**
+     * FrameLayout for navigating back to the admin interface.
+     */
     FrameLayout backToAdmin;
+
+    /**
+     * ListView for displaying the list of events.
+     */
     ListView eventsList;
+
+    /**
+     * FirebaseFirestore instance for interacting with Firestore database.
+     */
     FirebaseFirestore db;
 
+    /**
+     * Called when the activity is starting. This is where most initialization should go:
+     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Note: Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +50,9 @@ public class AdminEventActivity extends AppCompatActivity {
 
         loadEvents();
     }
-
+    /**
+     * Loads the events from Firestore database and populates the eventsList ListView.
+     */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);

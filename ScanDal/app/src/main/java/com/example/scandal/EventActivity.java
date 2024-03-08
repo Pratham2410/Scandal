@@ -34,22 +34,38 @@ import java.util.Random;
  * description, and an associated poster image, into Firebase Firestore.
  */
 public class EventActivity extends AppCompatActivity {
-    // URI of the selected poster image
+    /**
+     * URI of the selected poster image
+     */
     private Uri imageUri;
-    // ImageView to display the selected poster
+    /**
+     * ImageView to display the selected poster
+     */
     ImageView poster;
-    // EditText for event name input
+    /**
+     * EditText for event name input
+     */
     private EditText editEventName;
-    // EditText for event description input
+    /**
+     * EditText for event description input
+     */
     private EditText editEventDescription;
-    // Button to trigger event data saving
+    /**
+     * Button to trigger event data saving
+     */
     AppCompatButton generateEventButton;
-    // Button to upload a poster image
+    /**
+     * Button to upload a poster image
+     */
     AppCompatButton uploadPosterButton;
-    // Button to delete the selected poster image
+    /**
+     * Button to upload a poster image
+     */
     AppCompatButton deletePosterButton;
 
-    // Firebase Firestore instance for database operations
+    /**
+     * Firebase Firestore instance for database operationsgit statu
+     */
     private FirebaseFirestore db;
 
     @Override

@@ -8,6 +8,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ *
+ */
 public class AdminActivity  extends AppCompatActivity {
     FrameLayout goBackButton;
 
