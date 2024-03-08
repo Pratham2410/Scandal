@@ -8,8 +8,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for the admin home page
+ */
+public class AdminActivity  extends AppCompatActivity {
 
-public class AdminActivity extends AppCompatActivity {
     FrameLayout goBackButton;
 
     LinearLayout buttonManageProfile,buttonManageEvents,buttonManageImages;
@@ -40,7 +43,7 @@ public class AdminActivity extends AppCompatActivity {
 
         // Listener for managing images
         // Assuming you have a corresponding activity for managing images, replace `AdminEventActivity.class` with the correct class
-        buttonManageImages.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, HomeActivity.class))); // Example placeholder
+        buttonManageImages.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminImageActivity.class))); // Example placeholder
 
         // Listener for managing profiles
         buttonManageProfile.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminProfileActivity.class)));

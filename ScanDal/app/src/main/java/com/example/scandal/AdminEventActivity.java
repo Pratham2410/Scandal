@@ -19,14 +19,33 @@ import java.util.List;
 import java.util.Map;
 
 public class AdminEventActivity extends AppCompatActivity {
+    /**
+     * FrameLayout for navigating back to the admin interface.
+     */
     FrameLayout backToAdmin;
+
+    /**
+     * ListView for displaying the list of events.
+     */
     ListView eventsList;
+
+    /**
+     * FirebaseFirestore instance for interacting with Firestore database.
+     */
     FirebaseFirestore db;
     // Store event names and their Firestore document IDs
     Map<String, String> eventNameToId = new HashMap<>();
     ArrayAdapter<String> adapter; // Declare the adapter at the class level to access it easily
     List<String> eventNames; // Store the event names here
 
+    /**
+     * Called when the activity is starting. This is where most initialization should go:
+     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Note: Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
