@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/buttonBrowseEvents1"
+        android:id="@+id/buttonAdminLogin"
         android:layout_width="194dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="212dp"
