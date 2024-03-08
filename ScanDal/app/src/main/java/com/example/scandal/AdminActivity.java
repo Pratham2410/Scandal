@@ -27,7 +27,6 @@ public class AdminActivity  extends AppCompatActivity {
     }
 
     private void initializeButtons() {
-        //buttonBrowseImages = findViewById(R.id.buttonBrowseImages);
         //buttonBrowseProfiles = findViewById(R.id.buttonBrowseProfiles);
         buttonManageEvents = findViewById(R.id.buttonManageEvents);
         buttonManageImages = findViewById(R.id.buttonManageImages);
@@ -42,8 +41,7 @@ public class AdminActivity  extends AppCompatActivity {
         buttonManageEvents.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminEventActivity.class)));
 
         // Listener for managing images
-        // Assuming you have a corresponding activity for managing images, replace `AdminEventActivity.class` with the correct class
-        buttonManageImages.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminImageActivity.class))); // Example placeholder
+        buttonManageImages.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminImageActivity.class)));
 
         // Listener for managing profiles
         buttonManageProfile.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminProfileActivity.class)));

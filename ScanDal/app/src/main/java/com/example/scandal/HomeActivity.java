@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_scanning_page); // Make sure this layout has the ADMIN LOGIN button with ID @+id/buttonAdminLogin
+        setContentView(R.layout.qr_scanning_page);
         profile = findViewById(R.id.profilePicture);
         scan = findViewById(R.id.buttonScanQRCode);
         //attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
         attendeeEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myintent = new Intent(HomeActivity.this, AttendeeEventActivity.class); // replace placeholder class with the activity for attendee
+                Intent myintent = new Intent(HomeActivity.this, AttendeeEventActivity.class);
                 startActivity(myintent);
             }
         });

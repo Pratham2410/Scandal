@@ -81,7 +81,7 @@ public class AdminProfileActivity extends AppCompatActivity {
         db.collection("profiles").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String profileName = document.getString("name"); // Assuming a 'name' field exists
+                    String profileName = document.getString("name");
                     if (profileName != null) {
                         profileNames.add(profileName);
                         profileNameToId.put(profileName, document.getId());

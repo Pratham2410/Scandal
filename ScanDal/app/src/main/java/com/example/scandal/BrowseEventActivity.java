@@ -49,7 +49,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String eventName = document.getString("name"); // Assuming you have a 'name' field for event names
+                    String eventName = document.getString("name");
                     if (eventName != null) {
                         eventNames.add(eventName);
                     }
