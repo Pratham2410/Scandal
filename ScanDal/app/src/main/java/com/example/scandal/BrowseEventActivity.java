@@ -15,23 +15,29 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity for browsing events.
+ */
 public class BrowseEventActivity extends AppCompatActivity {
+
+    /**
+     * FrameLayout for navigating back to the previous page.
+     */
     FrameLayout buttonBack_BrowseEventsPage;
+
+    /**
+     * ListView for displaying events.
+     */
     ListView eventsList;
+
+    /**
+     * Firebase Firestore instance for database operations.
+     */
     FirebaseFirestore db;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.browse_events_page);
 
-        buttonBack_BrowseEventsPage = findViewById(R.id.buttonBack_BrowseEventsPage);
-        db = FirebaseFirestore.getInstance();
-        eventsList = findViewById(R.id.listView_BrowseEventPage);
-
-        buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
-
-        loadEvents();
-    }
+    /**
+     * Retrieves and displays profiles pulled from firebase
+     */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
