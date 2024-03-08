@@ -45,7 +45,8 @@
         <activity android:name=".QRActivity">
         </activity>
 
-        <activity android:name=".SettingsAndOrganiserActivity">
+        <activity android:name=".SettingsAndOrganiserActivity"></activity>
+        <activity android:name=".AdminActivity">
         </activity>
         <activity android:name=".OrganisorEventActivity"></activity>
         <activity android:name=".EventActivity">

@@ -6,77 +6,20 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/buttonBrowseImages"
-        style="@style/groupStyleteal_1"
-        android:layout_width="189dp"
-        android:layout_height="51dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="228dp">
-
-        <TextView
-            android:id="@+id/textBrowseImages"
-            style="@style/txtPoppinsbold17"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16pxh"
-            android:layout_marginTop="@dimen/_11pxv"
-            android:layout_marginBottom="@dimen/_9pxv"
-            android:layout_weight="0.83"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="Browse Images"
-            tools:text="Browse Images" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonBrowseProfiles"
-        style="@style/groupStyleteal_1"
-        android:layout_width="194dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="24dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.995"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/textBrowseProfiles"
-            style="@style/txtPoppinsbold17"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16pxh"
-            android:layout_marginTop="@dimen/_11pxv"
-            android:layout_marginBottom="@dimen/_9pxv"
-            android:layout_weight="0.83"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="Browse Profiles"
-            tools:text="Browse Profiles" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonBrowseEvents"
+        android:id="@+id/buttonManageEvents"
         style="@style/groupStyleteal_1"
         android:layout_width="198dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="120dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textBrowseEvents"
+            android:id="@+id/textManageEvents"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -86,26 +29,26 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Browse Events"
-            tools:text="Browse Events" />
+            android:text="Manage Events"
+            tools:text="Manage Events" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonRemoveImages"
+        android:id="@+id/buttonManageImages"
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="48dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textRemoveImages"
+            android:id="@+id/textManageImages"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -115,49 +58,11 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Remove Images"
-            tools:text="Remove Images" />
+            android:text="Manage Images"
+            tools:text="Manage Images" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textRemoveProfile"
-        style="@style/txtPoppinsbold17"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.83"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="Remove Profile"
-        tools:text="Remove Profile" />
-
-    <LinearLayout
-        android:id="@+id/buttonRemoveEvent"
-        style="@style/groupStyleteal_1"
-        android:layout_width="201dp"
-        android:layout_height="51dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="228dp">
-
-        <TextView
-            android:id="@+id/textRemoveEvent"
-            style="@style/txtPoppinsbold17"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16pxh"
-            android:layout_marginTop="@dimen/_11pxv"
-            android:layout_marginBottom="@dimen/_9pxv"
-            android:layout_weight="0.83"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="Remove Event"
-            tools:text="Remove Event" />
-
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameStackellipseone"
@@ -180,7 +85,7 @@
             tools:src="@drawable/img_undrawdoneche" />
 
         <FrameLayout
-            android:id="@+id/buttonBack_OrganisorHomepage"
+            android:id="@+id/buttonBack_Admin"
             style="@style/groupStyleteal_A200cornerRadius"
             android:layout_width="@dimen/_82pxh"
             android:layout_height="@dimen/_51pxv"
@@ -315,20 +220,20 @@
         app:srcCompat="@drawable/img_completed_m9ci" />
 
     <LinearLayout
-        android:id="@+id/buttonViewMyEvents"
+        android:id="@+id/buttonManageProfile"
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="188dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textViewMyEvents"
+            android:id="@+id/textManageProfile"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -338,8 +243,8 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Remove Profile"
-            tools:text="Remove Profile" />
+            android:text="Manage Profile"
+            tools:text="Manage Profile" />
 
     </LinearLayout>
 
