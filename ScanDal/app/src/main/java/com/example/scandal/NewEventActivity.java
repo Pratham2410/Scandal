@@ -36,9 +36,6 @@ public class NewEventActivity extends AppCompatActivity {
     AppCompatButton savePromoCode;
     FrameLayout backButton;
     // Assume QRCode is a class you have for generating and handling QR codes.
-    QRCode QR;
-
-    // QRCode object for generating and handling QR codes
 
     /**
      * QRCode object for generating and handling QR codes.
