@@ -23,17 +23,24 @@ public class OrganisorActivity extends AppCompatActivity {
      */
     LinearLayout buttonViewMyEvents;
     /**
+     * Button leading back to homepage
+     */
+    FrameLayout buttonBackToHomepage;
+    /**
      * Provides functionality for buttons in the organizer homepage
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
         buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents);
+        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
 
@@ -53,6 +60,14 @@ public class OrganisorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent_view = new Intent(OrganisorActivity.this, OrganisorEventActivity.class);
                 startActivity(intent_view);
+            }
+        });
+        // Navigate back to home page
+        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent_home = new Intent(OrganisorActivity.this, HomeActivity.class);
+                startActivity(intent_home);
             }
         });
     }

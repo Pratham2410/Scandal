@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,58 +14,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- * Activity for creating a new event from the organizer's perspective
- */
-public class OrganisorEventActivity extends AppCompatActivity {
-    /**
-     * Button that leads to organizer's homepage
-     */
-    FrameLayout backToOrganiser;
-    /**
-     * Button leading back to homepage
-     */
-    FrameLayout buttonBackToHomepage;
-    /**
-     * A View to display all of an organizer's events
-     */
 
+public class BrowseEventActivity extends AppCompatActivity {
+    FrameLayout buttonBack_BrowseEventsPage;
     ListView eventsList;
-    /**
-     * An instance of firestore database
-     */
     FirebaseFirestore db;
-
-    /**
-     * Provides functionality for layout buttons
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     *
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organisor_events_page);
+        setContentView(R.layout.browse_events_page);
 
+        buttonBack_BrowseEventsPage = findViewById(R.id.buttonBack_BrowseEventsPage);
         db = FirebaseFirestore.getInstance();
-        eventsList = findViewById(R.id.eventsList_OrganisorEventsPage);
-        backToOrganiser = findViewById(R.id.buttonBack_OrganisorEventsPage);
-        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
+        eventsList = findViewById(R.id.listView_BrowseEventPage);
 
-        backToOrganiser.setOnClickListener(v -> finish());
-        // Navigate back to home page
-        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_home = new Intent(OrganisorEventActivity.this, HomeActivity.class);
-                startActivity(intent_home);
-            }
-        });
+        buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
 
         loadEvents();
     }
-
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);

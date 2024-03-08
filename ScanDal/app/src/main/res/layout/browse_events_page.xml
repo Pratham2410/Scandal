@@ -6,10 +6,11 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/listView2"
-        android:layout_width="410dp"
+        android:id="@+id/listView_BrowseEventPage"
+        android:layout_width="match_parent"
         android:layout_height="495dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageUndrawcomplete"
@@ -52,7 +53,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:text="Browse Events"
-        app:layout_constraintBottom_toTopOf="@+id/listView2"
+        app:layout_constraintBottom_toTopOf="@+id/listView_BrowseEventPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
