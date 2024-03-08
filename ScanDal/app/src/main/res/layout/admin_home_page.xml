@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/buttonBrowseEvents"
+        android:id="@+id/buttonManageEvents"
         style="@style/groupStyleteal_1"
         android:layout_width="198dp"
         android:layout_height="53dp"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textBrowseEvents"
+            android:id="@+id/textManageEvents"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -29,13 +29,13 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Browse Events"
-            tools:text="Browse Events" />
+            android:text="Manage Events"
+            tools:text="Manage Events" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonRemoveImages"
+        android:id="@+id/buttonManageImages"
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textRemoveImages"
+            android:id="@+id/textManageImages"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,8 +58,8 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Remove Images"
-            tools:text="Remove Images" />
+            android:text="Manage Images"
+            tools:text="Manage Images" />
 
     </LinearLayout>
 
@@ -220,7 +220,7 @@
         app:srcCompat="@drawable/img_completed_m9ci" />
 
     <LinearLayout
-        android:id="@+id/buttonRemoveProfile"
+        android:id="@+id/buttonManageProfile"
         style="@style/groupStyleteal_1"
         android:layout_width="196dp"
         android:layout_height="53dp"
@@ -233,7 +233,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textRemoveProfile"
+            android:id="@+id/textManageProfile"
             style="@style/txtPoppinsbold17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -243,8 +243,8 @@
             android:layout_weight="0.83"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Remove Profile"
-            tools:text="Remove Profile" />
+            android:text="Manage Profile"
+            tools:text="Manage Profile" />
 
     </LinearLayout>
 

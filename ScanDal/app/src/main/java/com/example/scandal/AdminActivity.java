@@ -8,10 +8,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity  extends AppCompatActivity {
     FrameLayout goBackButton;
 
-    LinearLayout buttonBrowseImages, buttonBrowseProfiles, buttonBrowseEvents, buttonRemoveImages, buttonRemoveEvent, buttonRemoveProfile;
+    LinearLayout buttonManageProfile,buttonManageEvents,buttonManageImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,24 +25,24 @@ public class AdminActivity extends AppCompatActivity {
     private void initializeButtons() {
         //buttonBrowseImages = findViewById(R.id.buttonBrowseImages);
         //buttonBrowseProfiles = findViewById(R.id.buttonBrowseProfiles);
-        buttonBrowseEvents = findViewById(R.id.buttonBrowseEvents);
-        buttonRemoveImages = findViewById(R.id.buttonRemoveImages);
+        buttonManageEvents = findViewById(R.id.buttonManageEvents);
+        buttonManageImages = findViewById(R.id.buttonManageImages);
         //buttonRemoveEvent = findViewById(R.id.buttonRemoveEvent);
-        buttonRemoveProfile = findViewById(R.id.buttonRemoveProfile);
+        buttonManageProfile = findViewById(R.id.buttonManageProfile);
 
         goBackButton = findViewById(R.id.buttonBack_Admin);
     }
 
     private void setupListeners() {
         View.OnClickListener listener = v -> {
-            Intent intent = new Intent(AdminActivity.this, HomeActivity.class);
+            Intent intent = new Intent(AdminActivity.this, AdminEventActivity.class);
             startActivity(intent);
         };
         goBackButton.setOnClickListener(view -> startActivity(new Intent(AdminActivity.this, HomeActivity.class)));
 
 
-        buttonBrowseEvents.setOnClickListener(listener);
-        buttonRemoveImages.setOnClickListener(listener);
-        buttonRemoveProfile.setOnClickListener(listener);
+        buttonManageEvents .setOnClickListener(listener);
+        buttonManageImages.setOnClickListener(listener);
+        buttonManageProfile.setOnClickListener(listener);
     }
 }
