@@ -2,6 +2,7 @@ package com.example.scandal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,13 +42,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_scanning_page); // Make sure this layout has the ADMIN LOGIN button with ID @+id/buttonAdminLogin
-
         profile = findViewById(R.id.profilePicture);
         scan = findViewById(R.id.buttonScanQRCode);
         //attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         eventBrowser = findViewById(R.id.buttonBrowseEvents);
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
-
+        attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(myintent);
             }
         });
+        Log.e("hpeebles", "Inside HomeAct Before Attendee events");
+
         attendeeEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(myintent);
             }
         });
+        Log.e("hpeebles", "Inside HomeAct After Attendee events");
+
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,12 +83,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        scan.setOnClickListener(view -> {
-            Intent myintent = new Intent(HomeActivity.this, QRCodeScanner.class);
-            myintent.putExtra("Activity", 1);
-            startActivity(myintent);
-        });
-
+//        scan.setOnClickListener(view -> {
+//            Intent myintent = new Intent(HomeActivity.this, QRCodeScanner.class);
+//            myintent.putExtra("Activity", 1);
+//            startActivity(myintent);
+//        });
+        Log.e("hpeebles", "Inside HomeAct");
         profile.setOnClickListener(view -> {
             Intent myintent = new Intent(HomeActivity.this, Profile.class);
             startActivity(myintent);
@@ -95,5 +99,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent myintent = new Intent(HomeActivity.this, AdminActivity.class);
             startActivity(myintent);
         });
+
     }
 }
