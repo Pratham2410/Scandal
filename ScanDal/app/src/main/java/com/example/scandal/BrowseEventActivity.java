@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -35,7 +36,22 @@ public class BrowseEventActivity extends AppCompatActivity {
      */
     FirebaseFirestore db;
 
-    /**
+       /**
+       * Provides functionality for event list
+       */
+        buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
+        eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String eventName = (String) parent.getItemAtPosition(position);
+                Intent intent = new Intent(BrowseEventActivity.this, EventDetailsActivity.class);
+                intent.putExtra("eventName", eventName);
+                startActivity(intent);
+            }
+        });
+        loadEvents();
+    }
+   /**
      * Retrieves and displays profiles pulled from firebase
      */
     private void loadEvents() {

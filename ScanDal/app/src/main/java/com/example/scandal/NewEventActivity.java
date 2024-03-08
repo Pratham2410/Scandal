@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,8 +34,8 @@ public class NewEventActivity extends AppCompatActivity {
      * Button for saving the promo code.
      */
     AppCompatButton savePromoCode;
-
-    // QRCode object for generating and handling QR codes
+    FrameLayout backButton;
+    // Assume QRCode is a class you have for generating and handling QR codes.
 
     /**
      * QRCode object for generating and handling QR codes.
@@ -53,10 +54,12 @@ public class NewEventActivity extends AppCompatActivity {
         setContentView(R.layout.events_created_page); // Ensure this matches your layout file name
 
         // Initialize your components here
+        backButton = findViewById(R.id.buttonBack_EventsCreatedPage);
         checkinQRCode = findViewById(R.id.checkinQRCode);
         promoQRCode = findViewById(R.id.promoQRCode);
         saveCheckinCode = findViewById(R.id.buttonSaveCheckinCode);
         savePromoCode = findViewById(R.id.buttonSavePromoCode);
+
         QR = new QRCode(); // Assuming you have a default constructor
 
         String token = getIntent().getStringExtra("CheckinToken");
@@ -73,6 +76,13 @@ public class NewEventActivity extends AppCompatActivity {
         } else {
             Log.e("NewEventActivity", "Promo QR generation failed");
         }
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent homeIntent = new Intent(NewEventActivity.this, OrganisorActivity.class);
+                startActivity(homeIntent);
+            }
+        });
 
         // Set up listeners for button interactions
         saveCheckinCode.setOnClickListener(v -> {
