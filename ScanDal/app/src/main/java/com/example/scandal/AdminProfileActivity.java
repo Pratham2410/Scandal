@@ -3,8 +3,11 @@ package com.example.scandal;
 
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,25 +28,28 @@ import java.util.Map;
 
 public class AdminProfileActivity extends AppCompatActivity {
     FrameLayout backToAdmin;
+    Button buttonDelete;
     ListView profilesList;
     FirebaseFirestore db;
     // Store profile names and their Firestore document IDs
     Map<String, String> profileNameToId = new HashMap<>();
     ArrayAdapter<String> adapter; // Declare the adapter at the class level to access it easily
     List<String> profileNames; // Store the profile names here
+    String profileName;
+    String profileId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.profile_list); // Use profile_list.xml
+        setContentView(R.layout.admin_profile_list); // Use profile_list.xml
 
 
         db = FirebaseFirestore.getInstance();
         profilesList = findViewById(R.id.profilesList_AdminProfilePage);
         backToAdmin = findViewById(R.id.buttonBack_AdminProfilePage);
-
+        buttonDelete = findViewById(R.id.buttonDelete_AdminProfileListPage);
 
         // Initialize your adapter and profileNames list here
         profileNames = new ArrayList<>();
@@ -55,10 +61,16 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         // Set an item click listener to delete the profile on click
         profilesList.setOnItemClickListener((parent, view, position, id) -> {
-            String profileName = (String) parent.getItemAtPosition(position);
-            String profileId = profileNameToId.get(profileName);
-            if (profileId != null) {
-                showDeleteConfirmationDialog(profileId, profileName);
+            profileName = (String) parent.getItemAtPosition(position);
+            profileId = profileNameToId.get(profileName);
+            Toast.makeText(AdminProfileActivity.this, profileName+" is selected", Toast.LENGTH_SHORT).show();
+        });
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (profileId != null) {
+                    showDeleteConfirmationDialog(profileId, profileName);
+                }
             }
         });
     }

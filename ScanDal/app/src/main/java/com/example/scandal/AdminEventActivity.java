@@ -2,7 +2,9 @@ package com.example.scandal;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,6 +30,9 @@ public class AdminEventActivity extends AppCompatActivity {
      * ListView for displaying the list of events.
      */
     ListView eventsList;
+    Button buttonDelete;
+    String eventName;
+    String eventId;
 
     /**
      * FirebaseFirestore instance for interacting with Firestore database.
@@ -54,6 +59,7 @@ public class AdminEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsList = findViewById(R.id.eventsList_AdminEventsPage);
         backToAdmin = findViewById(R.id.buttonBack_AdminEventsPage);
+        buttonDelete = findViewById(R.id.buttonDelete_AdminEventPage);
 
         // Initialize your adapter and eventNames list here
         eventNames = new ArrayList<>();
@@ -65,10 +71,17 @@ public class AdminEventActivity extends AppCompatActivity {
 
         // Set an item click listener to delete the event on click
         eventsList.setOnItemClickListener((parent, view, position, id) -> {
-            String eventName = (String) parent.getItemAtPosition(position);
-            String eventId = eventNameToId.get(eventName);
-            if (eventId != null) {
-                showDeleteConfirmationDialog(eventId, eventName);
+            eventName = (String) parent.getItemAtPosition(position);
+            eventId = eventNameToId.get(eventName);
+            Toast.makeText(AdminEventActivity.this, eventName+" is selected", Toast.LENGTH_SHORT).show();
+
+        });
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (eventId != null) {
+                    showDeleteConfirmationDialog(eventId, eventName);
+                }
             }
         });
     }
