@@ -1,5 +1,6 @@
 package com.example.scandal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +10,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsAndOrganiserActivity extends AppCompatActivity {
 
+    /**
+     * Button leading to organizer page
+     */
     LinearLayout buttonGotoOrganisorPage;
+    /**
+     * Button leading back to settings page from organizer page
+     */
     FrameLayout buttonBack_SettingsAndOrganisorPage; // Corrected variable name
+    /**
+     * Button leading back to homepage
+     */
     FrameLayout buttonBackToHomepage;
-
-
+    /**
+     * Provides functionality for buttons on settings page
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +42,7 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
         buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_home = new Intent(SettingsAndOrganiserActivity.this, QRActivity.class);
+                Intent intent_home = new Intent(SettingsAndOrganiserActivity.this, HomeActivity.class);
                 startActivity(intent_home);
             }
         });
@@ -44,8 +59,8 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
         buttonBack_SettingsAndOrganisorPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent to open QRActivity
-                Intent intent = new Intent(SettingsAndOrganiserActivity.this, QRActivity.class);
+                // Intent to open HomeActivity
+                Intent intent = new Intent(SettingsAndOrganiserActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
