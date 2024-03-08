@@ -18,13 +18,19 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.util.List;
+/**
+ * QRCode Class is used to stored a QR code in various forms
+ * manages QR generation and a various QR related objects, uses Bitmap to store QR
+ * images and a String for the Token stored in the QR token.
+ */
 public class QRCode {
     /**
-     * QRCode Class is used to stored a QR code in various forms
-     * manages QR generation and a various QR related objects, uses Bitmap to store QR
-     * images and a String for the Token stored in the QR token.
+     * Bitmap image of the QR code in
      */
     private Bitmap QRPic;
+    /**
+     * Token representing QR code
+     */
     private String QRToken;
     /**
      * Takes the ImageView that the QR should be generated in and
