@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         profile = findViewById(R.id.profilePicture);
         scan = findViewById(R.id.buttonScanQRCode);
-        attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
+        //attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         eventBrowser = findViewById(R.id.buttonBrowseEvents);
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
 
