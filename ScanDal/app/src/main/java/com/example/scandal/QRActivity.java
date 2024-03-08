@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ public class QRActivity extends AppCompatActivity {
     LinearLayout buttonScanQRCode;
     TextView txtSettingsOrgan;
     TextView txtEditProfilePi; // Reference for the Edit Profile button
+    FrameLayout buttonBackStartPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class QRActivity extends AppCompatActivity {
         buttonScanQRCode = findViewById(R.id.buttonScanQRCode);
         txtSettingsOrgan = findViewById(R.id.txtSettingsOrgan);
         txtEditProfilePi = findViewById(R.id.txtEditProfilePi); // Initialize the Edit Profile TextView
+        buttonBackStartPage = findViewById(R.id.buttonBack_QRScanningPage);
     }
 
     private void setupListeners() {
@@ -47,5 +50,14 @@ public class QRActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        buttonBackStartPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent to open ProfileActivity
+                Intent intent_start = new Intent(QRActivity.this, MainActivity.class);
+                startActivity(intent_start);
+            }
+        });
+
     }
 }

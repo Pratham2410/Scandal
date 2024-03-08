@@ -28,9 +28,34 @@ public class HomeActivity extends AppCompatActivity {
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
 
         ImageView settings = findViewById(R.id.imageGearOne);
-        settings.setOnClickListener(v -> {
-            Intent myintent = new Intent(HomeActivity.this, SettingsAndOrganiserActivity.class);
-            startActivity(myintent);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(HomeActivity.this, SettingsAndOrganiserActivity.class);
+                startActivity(myintent);
+            }
+        });
+        eventBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(HomeActivity.this, BrowseEventActivity.class);
+                startActivity(myintent);
+            }
+        });
+        attendeeEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(HomeActivity.this, AttendeeEventActivity.class); // replace placeholder class with the activity for attendee
+                startActivity(myintent);
+            }
+        });
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myintent = new Intent(HomeActivity.this, QRCodeScanner.class);
+                myintent.putExtra("Activity", 1);
+                startActivity(myintent);
+            }
         });
 
         scan.setOnClickListener(view -> {
