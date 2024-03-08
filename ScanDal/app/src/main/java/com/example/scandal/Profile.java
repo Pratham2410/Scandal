@@ -25,6 +25,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -142,14 +143,45 @@ public class Profile extends AppCompatActivity {
 
         /**
          *  Initialize UI components
-          */
+         */
         initializeUI();
+
+        // Check if the device is already registered
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Device is already registered, fetch and display profile data
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> profileData = documentSnapshot.getData();
+                        if (profileData != null) {
+                            editTextName.setText((String) profileData.get("name"));
+                            editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
+                            editTextHomePage.setText((String) profileData.get("homePage"));
+                            String imageString = (String) profileData.get("imageString");
+                            if (imageString != null) {
+                                Bitmap bitmap = convertImageStringToBitmap(imageString);
+                                if (bitmap != null) {
+                                    imageView.setImageBitmap(bitmap);
+                                }
+                            }
+                        }
+                    } else {
+                        // Device is not registered, let the user enter new information
+                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
 
         /**
          * Setup interaction listeners
          */
         setupListeners();
     }
+
 
     /**
      * Handles the result from the image picker activity, updating the profile picture accordingly.
