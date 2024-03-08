@@ -29,9 +29,9 @@ public class EventPage extends AppCompatActivity {
         String token = getIntent().getStringExtra("QRToken");
         // added DB stuff here
 
-        eventDescription.setText(description);
-        eventName.setText(name);
-        poster.setImageBitmap(posterMap);
+//        eventDescription.setText(description);
+//        eventName.setText(name);
+//        poster.setImageBitmap(posterMap);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
