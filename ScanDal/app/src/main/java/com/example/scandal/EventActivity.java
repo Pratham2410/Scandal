@@ -98,7 +98,7 @@ public class EventActivity extends AppCompatActivity {
         if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
             Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
             Random rnd = new Random();
-            String randomStr = String.valueOf(rnd.nextInt(10000)); // Create a more practical random string
+            String randomStr = String.valueOf(rnd.nextInt(10000));
             String token = name + randomStr;
             intent.putExtra("CheckinToken", token);
             String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));

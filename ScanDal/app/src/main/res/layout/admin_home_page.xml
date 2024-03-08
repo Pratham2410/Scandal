@@ -8,14 +8,14 @@
     <LinearLayout
         android:id="@+id/buttonManageEvents"
         style="@style/groupStyleteal_1"
-        android:layout_width="198dp"
-        android:layout_height="53dp"
+        android:layout_width="192dp"
+        android:layout_height="48dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/buttonManageImages"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonManageImages"
         app:layout_constraintTop_toBottomOf="@+id/buttonManageProfile">
 
         <TextView
@@ -227,10 +227,10 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/buttonManageEvents"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonManageEvents"
         app:layout_constraintTop_toBottomOf="@+id/frameStackellipseone">
 
         <TextView
