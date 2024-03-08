@@ -36,7 +36,10 @@ import org.junit.runner.RunWith;
         @Test
         public void ViewEventDetails() throws InterruptedException {
             Thread.sleep(2000);
-            onView(withText("Page Tester for testing")).check(matches(isDisplayed()));
+            onView(withText("Page Tester for testing")).check(matches(isDisplayed())); //checks description
+            onView(withText("PageTesting")).check(matches(isDisplayed())); //checks name
         }
+
+
 
     }
