@@ -34,7 +34,7 @@ public class NewEventActivity extends AppCompatActivity {
      */
     AppCompatButton savePromoCode;
     FrameLayout backButton;
-    // Assume QRCode is a class you have for generating and handling QR codes.
+
 
     /**
      * QRCode object for generating and handling QR codes.
@@ -52,7 +52,7 @@ public class NewEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.events_created_page); // Ensure this matches your layout file name
+        setContentView(R.layout.events_created_page);
 
         // Initialize your components here
         backButton = findViewById(R.id.buttonBack_EventsCreatedPage);
@@ -65,15 +65,14 @@ public class NewEventActivity extends AppCompatActivity {
 
         String token = getIntent().getStringExtra("CheckinToken");
 
-        // Example QR code generation and setting, replace with your actual methods
-        if (QR.generateQR(checkinQRCode, token)) { // Assuming generateQR returns a boolean
-            checkinQRCode.setImageBitmap(QR.getQRPic()); // Placeholder method, replace with your actual QR code bitmap
+        if (QR.generateQR(checkinQRCode, token)) {
+            checkinQRCode.setImageBitmap(QR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Checkin QR generation failed");
         }
         token = getIntent().getStringExtra("PromoToken");
-        if (QR.generateQR(promoQRCode, token)) { // Assuming generateQR returns a boolean
-            promoQRCode.setImageBitmap(QR.getQRPic()); // Placeholder method, replace with your actual QR code bitmap
+        if (QR.generateQR(promoQRCode, token)) {
+            promoQRCode.setImageBitmap(QR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Promo QR generation failed");
         }

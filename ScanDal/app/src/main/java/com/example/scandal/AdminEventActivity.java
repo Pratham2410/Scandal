@@ -89,10 +89,10 @@ public class AdminEventActivity extends AppCompatActivity {
     private void loadEvents() {
         eventNames.clear(); // Clear previous data
         eventNameToId.clear(); // Clear previous data
-        db.collection("events").get().addOnCompleteListener(task -> { // Changed to "profiles" as per your request
+        db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String eventName = document.getString("name"); // Assuming the profiles have a 'name' field
+                    String eventName = document.getString("name");
                     if (eventName != null) {
                         eventNames.add(eventName);
                         eventNameToId.put(eventName, document.getId());
