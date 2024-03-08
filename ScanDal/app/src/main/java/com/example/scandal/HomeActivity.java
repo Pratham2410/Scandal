@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(myintent);
             }
         });
-        Log.e("hpeebles", "Inside HomeAct Before Attendee events");
+        //Log.e("hpeebles", "Inside HomeAct Before Attendee events");
 
         attendeeEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(myintent);
             }
         });
-        Log.e("hpeebles", "Inside HomeAct After Attendee events");
+        //Log.e("hpeebles", "Inside HomeAct After Attendee events");
 
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
