@@ -5,6 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/buttonAdminLogin"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="272dp"
+        android:layout_weight="0.61"
+        android:background="@drawable/rectangle_bg_pink_400_radius_25_08"
+        android:drawableStart="@drawable/img_contrast"
+        android:drawablePadding="@dimen/_4pxh"
+        android:ellipsize="end"
+        android:fontFamily="@font/archivo_black"
+        android:hint="@string/lbl_browse_events"
+        android:inputType="text"
+        android:paddingStart="@dimen/_4pxh"
+        android:paddingTop="@dimen/_16pxv"
+        android:paddingEnd="@dimen/_27pxh"
+        android:paddingBottom="@dimen/_17pxv"
+        android:singleLine="true"
+        android:text="ADMIN LOGIN"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@color/white_A700"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
+        tools:ignore="Autofill" />
+
     <LinearLayout
         android:id="@+id/buttonScanQRCode"
         style="@style/groupStyleteal_1"
@@ -14,6 +42,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/frameStackundrawcomplete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPressToCheckIn"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -127,22 +156,6 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
-        <TextView
-            android:id="@+id/txtHomePage"
-            style="@style/txtPoppinsbold15"
-            android:layout_width="90dp"
-            android:layout_height="77dp"
-            android:gravity="top|center"
-            android:shadowColor="#65FEEB"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2.5"
-            android:text="Home Page"
-            android:textAllCaps="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Home Page" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -208,7 +221,8 @@
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/white_A700"
                 android:textSize="15sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"
+                android:clickable="true"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -274,5 +288,6 @@
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearRowarrowleft"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill"
+        android:clickable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

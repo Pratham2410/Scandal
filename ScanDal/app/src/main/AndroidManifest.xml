@@ -21,17 +21,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".HomeActivity">
+            <!--            android:exported="true">-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".QRCodeScanner">
+            <!--        android:exported="true">-->
+            <!--        <intent-filter>-->
+            <!--            <action android:name="android.intent.action.MAIN" />-->
+
+            <!--            <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--        </intent-filter>-->
+
+        </activity>
         <activity android:name=".Profile">
         </activity>
         <activity android:name=".QRActivity">
         </activity>
 
-        <activity android:name=".SettingsAndOrganiserActivity">
+        <activity android:name=".SettingsAndOrganiserActivity"></activity>
+        <activity android:name=".AdminActivity">
         </activity>
         <activity android:name=".OrganisorEventActivity"></activity>
         <activity android:name=".EventActivity">
         </activity>
         <activity android:name=".OrganisorActivity"></activity>
+        <activity android:name=".BrowseEventActivity"></activity>
+        <activity android:name=".AttendeeEventActivity"></activity>
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui"/>

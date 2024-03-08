@@ -1,13 +1,10 @@
 package com.example.scandal;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,31 +13,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrganisorEventActivity extends AppCompatActivity {
-    FrameLayout backToOrganiser;
-    FrameLayout buttonBackToHomepage;
+public class AdminEventActivity extends AppCompatActivity {
+    FrameLayout backToAdmin;
     ListView eventsList;
     FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organisor_events_page);
+        setContentView(R.layout.admin_events_page);
 
         db = FirebaseFirestore.getInstance();
-        eventsList = findViewById(R.id.eventsList_OrganisorEventsPage);
-        backToOrganiser = findViewById(R.id.buttonBack_OrganisorEventsPage);
-        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
+        eventsList = findViewById(R.id.eventsList_AdminEventsPage);
+        backToAdmin = findViewById(R.id.buttonBack_AdminEventsPage);
 
-        backToOrganiser.setOnClickListener(v -> finish());
-        // Navigate back to home page
-        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_home = new Intent(OrganisorEventActivity.this, QRActivity.class);
-                startActivity(intent_home);
-            }
-        });
+        backToAdmin.setOnClickListener(v -> finish());
 
         loadEvents();
     }

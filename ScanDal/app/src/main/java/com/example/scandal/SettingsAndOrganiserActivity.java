@@ -11,6 +11,7 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
 
     LinearLayout buttonGotoOrganisorPage;
     FrameLayout buttonBack_SettingsAndOrganisorPage; // Corrected variable name
+    FrameLayout buttonBackToHomepage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,16 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
 
         buttonGotoOrganisorPage = findViewById(R.id.buttonGotoOrganisorPage);
         buttonBack_SettingsAndOrganisorPage = findViewById(R.id.buttonBack_SettingsAndOrganisorPage); // Corrected ID reference
+        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
+        // Navigate back to home page
+        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent_home = new Intent(SettingsAndOrganiserActivity.this, QRActivity.class);
+                startActivity(intent_home);
+            }
+        });
         buttonGotoOrganisorPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
