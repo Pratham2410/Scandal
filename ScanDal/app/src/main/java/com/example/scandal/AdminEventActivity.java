@@ -2,7 +2,9 @@ package com.example.scandal;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,9 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-/**
- * Activity for managing events from the admin's perspective.
- */
+
 public class AdminEventActivity extends AppCompatActivity {
     /**
      * FrameLayout for navigating back to the admin interface.
@@ -30,26 +30,18 @@ public class AdminEventActivity extends AppCompatActivity {
      * ListView for displaying the list of events.
      */
     ListView eventsList;
+    Button buttonDelete;
+    String eventName;
+    String eventId;
 
     /**
      * FirebaseFirestore instance for interacting with Firestore database.
      */
     FirebaseFirestore db;
-
-    /**
-     * Map to store event names and their corresponding Firestore document IDs.
-     */
+    // Store event names and their Firestore document IDs
     Map<String, String> eventNameToId = new HashMap<>();
-
-    /**
-     * ArrayAdapter for populating event names in the ListView.
-     */
-    ArrayAdapter<String> adapter;
-
-    /**
-     * List to store event names.
-     */
-    List<String> eventNames;
+    ArrayAdapter<String> adapter; // Declare the adapter at the class level to access it easily
+    List<String> eventNames; // Store the event names here
 
     /**
      * Called when the activity is starting. This is where most initialization should go:
@@ -67,6 +59,7 @@ public class AdminEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsList = findViewById(R.id.eventsList_AdminEventsPage);
         backToAdmin = findViewById(R.id.buttonBack_AdminEventsPage);
+        buttonDelete = findViewById(R.id.buttonDelete_AdminEventPage);
 
         // Initialize your adapter and eventNames list here
         eventNames = new ArrayList<>();
@@ -78,16 +71,21 @@ public class AdminEventActivity extends AppCompatActivity {
 
         // Set an item click listener to delete the event on click
         eventsList.setOnItemClickListener((parent, view, position, id) -> {
-            String eventName = (String) parent.getItemAtPosition(position);
-            String eventId = eventNameToId.get(eventName);
-            if (eventId != null) {
-                showDeleteConfirmationDialog(eventId, eventName);
+            eventName = (String) parent.getItemAtPosition(position);
+            eventId = eventNameToId.get(eventName);
+            Toast.makeText(AdminEventActivity.this, eventName+" is selected", Toast.LENGTH_SHORT).show();
+
+        });
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (eventId != null) {
+                    showDeleteConfirmationDialog(eventId, eventName);
+                }
             }
         });
     }
-    /**
-     * Loads events from Firestore database and populates the ListView.
-     */
+
     private void loadEvents() {
         eventNames.clear(); // Clear previous data
         eventNameToId.clear(); // Clear previous data
@@ -106,23 +104,14 @@ public class AdminEventActivity extends AppCompatActivity {
             }
         });
     }
-    /**
-     * Deletes the event from Firestore database.
-     *
-     * @param eventId   ID of the event to be deleted.
-     */
+
     private void deleteEvent(String eventId) {
         db.collection("events").document(eventId).delete().addOnSuccessListener(aVoid -> { // Changed to "profiles"
             Toast.makeText(AdminEventActivity.this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
             loadEvents(); // Reload to reflect changes
         }).addOnFailureListener(e -> Toast.makeText(AdminEventActivity.this, "Error deleting event", Toast.LENGTH_SHORT).show());
     }
-    /**
-     * Displays a confirmation dialog before deleting the event.
-     *
-     * @param eventId   ID of the event to be deleted.
-     * @param eventName Name of the event to be deleted.
-     */
+
     private void showDeleteConfirmationDialog(String eventId, String eventName) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Event")
