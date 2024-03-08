@@ -13,6 +13,7 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
     FrameLayout buttonBack_SettingsAndOrganisorPage; // Corrected variable name
     FrameLayout buttonBackToHomepage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,7 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
                 startActivity(intent_home);
             }
         });
+
         buttonGotoOrganisorPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

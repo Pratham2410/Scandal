@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Activity for creating and saving event details, including the event name,
@@ -79,11 +80,20 @@ public class EventActivity extends AppCompatActivity {
         String description = editEventDescription.getText().toString().trim();
 
         if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
+            Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
+            Random rnd = new Random();
+            String randomStr = String.valueOf(rnd.nextInt(10000)); // Create a more practical random string
+            String token = name + randomStr;
+            intent.putExtra("CheckinToken", token);
+            String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));
+            intent.putExtra("PromoToken", token2);
             String imageString = convertImageUriToString(imageUri);
             if (imageString != null) {
                 Map<String, Object> event = new HashMap<>();
                 event.put("name", name);
                 event.put("description", description);
+                event.put("QRCode", token);
+                event.put("PromoQRCode", token2);
                 event.put("posterImage", imageString); // Add the image string to the event map
 
                 // Save event to Firestore
@@ -91,6 +101,8 @@ public class EventActivity extends AppCompatActivity {
                         .add(event)
                         .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Event created successfully", Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
+
+                startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
             }

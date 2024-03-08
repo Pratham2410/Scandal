@@ -58,5 +58,6 @@ public class QRActivity extends AppCompatActivity {
                 startActivity(intent_start);
             }
         });
+
     }
 }
