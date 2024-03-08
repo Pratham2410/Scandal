@@ -53,7 +53,7 @@ public class NewEventActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
+                Intent homeIntent = new Intent(NewEventActivity.this, OrganisorActivity.class);
                 startActivity(homeIntent);
             }
         });
