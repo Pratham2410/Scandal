@@ -42,6 +42,7 @@ public class NewEventActivity extends AppCompatActivity {
      */
     QRCode QR;
     /**
+     *
      * Called when the activity is starting. This is where most initialization should go:
      * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
      *
@@ -80,7 +81,7 @@ public class NewEventActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
+                Intent homeIntent = new Intent(NewEventActivity.this, OrganisorActivity.class);
                 startActivity(homeIntent);
             }
         });
