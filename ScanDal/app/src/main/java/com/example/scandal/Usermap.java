@@ -1,5 +1,8 @@
 package com.example.scandal;
 
+/**
+ * Manages creating and displaying a map of users
+ */
 public class Usermap {
     // Assuming this is a placeholder for map-related attributes
     // In a real scenario, this would interact with a mapping service API

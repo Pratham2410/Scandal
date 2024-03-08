@@ -7,7 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * The main activity for ScanDal
+ */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Button to initialize QRCode scanner
+     */
     private Button toQrScan;
 
     @Override

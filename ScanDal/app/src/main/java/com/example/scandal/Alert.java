@@ -1,5 +1,8 @@
 package com.example.scandal;
 
+/**
+ * Sends alerts to organizers and attendees
+ */
 public class Alert {
     private String message;
 
