@@ -32,8 +32,6 @@ public class OrganisorActivity extends AppCompatActivity {
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +53,6 @@ public class OrganisorActivity extends AppCompatActivity {
                 startActivity(intent_create);
             }
         });
-
         // Navigate back to home page
         buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
             @Override
