@@ -74,6 +74,7 @@
         <activity android:name=".OrganisorActivity"></activity>
         <activity android:name=".BrowseEventActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
+        <activity android:name=".EventDetailsActivity"></activity>
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui"/>
