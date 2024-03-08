@@ -6,13 +6,22 @@ import java.util.List;
  */
 public class EventList {
     private List<Event> eventDatabase;
-
-    // Method to add an event to the list
+    /**
+     *  Method to add an event to the list
+     * @param event An event object
+     * @see Event
+     */
     public void addEvent(Event event) {
         eventDatabase.add(event);
     }
 
-    // Method to search for an event by its QR code
+    /**
+     *  Method to search for an event by its QR code
+     * @param QRCode QRCode belonging to Event begin searched for
+     * @return Event object associated with given QRCode
+     * @see QRCode
+     * @see Event
+     */
     public Event searchEvent(String QRCode) {
         for (Event event : eventDatabase) {
             if (event.getSignInQRCode().equals(QRCode) || event.getPromoQRCode().equals(QRCode)) {
@@ -22,7 +31,11 @@ public class EventList {
         return null;
     }
 
-    // Method to delete an event from the list
+    /**
+     * Method to delete an event from the list
+     * @param event The event to be deleted
+     * @see Event
+     */
     public void deleteEvent(Event event) {
         eventDatabase.remove(event);
     }

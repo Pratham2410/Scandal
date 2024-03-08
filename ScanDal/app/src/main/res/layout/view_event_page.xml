@@ -17,9 +17,8 @@
         tools:ignore="ContentDescription"
         tools:src="@drawable/img_undrawdoneche" />
 
-    <EditText
-        android:id="@+id/editTextEventName_ViewEventPage"
-        style="@style/etSolidRoundedOutline"
+    <TextView
+        android:id="@+id/textEventName_ViewEventPage"
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
@@ -35,16 +34,15 @@
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
         android:textColorHint="@color/black_900_99"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEventDescription_ViewEventPage"
+        app:layout_constraintBottom_toTopOf="@+id/textEventDescription_ViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_ViewEventPage"
         tools:ignore="Autofill" />
 
-    <EditText
-        android:id="@+id/editTextEventDescription_ViewEventPage"
-        style="@style/etSolidRoundedOutline"
+    <TextView
+        android:id="@+id/textEventDescription_ViewEventPage"
         android:layout_width="match_parent"
         android:layout_height="265dp"
         android:layout_marginStart="8dp"
@@ -64,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventName_ViewEventPage"
+        app:layout_constraintTop_toBottomOf="@+id/textEventName_ViewEventPage"
         tools:ignore="Autofill" />
 
     <FrameLayout
@@ -120,7 +118,7 @@
         android:layout_height="200dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEventName_ViewEventPage"
+        app:layout_constraintBottom_toTopOf="@+id/textEventName_ViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonBack_ViewEventPage"

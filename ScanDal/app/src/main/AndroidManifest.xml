@@ -40,6 +40,15 @@
             <!--            </intent-filter>-->
         </activity>
         <activity
+            android:name=".EventPage">
+            <!--            android:exported="true">-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".QRCodeScanner">
             <!--        android:exported="true">-->
             <!--        <intent-filter>-->
@@ -51,8 +60,7 @@
         </activity>
         <activity android:name=".Profile">
         </activity>
-        <activity android:name=".QRActivity">
-        </activity>
+
         <activity android:name=".AdminProfileActivity" />
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
