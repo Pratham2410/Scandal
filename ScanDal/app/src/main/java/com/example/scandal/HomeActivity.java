@@ -1,14 +1,25 @@
 package com.example.scandal;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
     /**
@@ -49,6 +60,37 @@ public class HomeActivity extends AppCompatActivity {
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
         attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
+        // check if user is in database
+        // check if there is a non empty profile picture
+        // get profile picture from database
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Device is already registered, fetch and display profile data
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> profileData = documentSnapshot.getData();
+                        if (profileData != null) {
+                            String imageString = (String) profileData.get("imageString");
+                            if (imageString != null) {
+                                Bitmap bitmap = convertImageStringToBitmap(imageString);
+                                if (bitmap != null) {
+                                    profile.setImageBitmap(bitmap);
+                                }
+                            }
+                        }
+                    } else {
+                        // Device is not registered, let the user enter new information
+                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
 //            myintent.putExtra("Activity", 1);
 //            startActivity(myintent);
 //        });
-        Log.e("hpeebles", "Inside HomeAct");
+        //Log.e("hpeebles", "Inside HomeAct");
         profile.setOnClickListener(view -> {
             Intent myintent = new Intent(HomeActivity.this, Profile.class);
             startActivity(myintent);
@@ -100,5 +142,14 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(myintent);
         });
 
+    }
+    private Bitmap convertImageStringToBitmap(String imageString) {
+        try {
+            byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
