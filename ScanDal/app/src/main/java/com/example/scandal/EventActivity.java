@@ -67,7 +67,6 @@ public class EventActivity extends AppCompatActivity {
      * Firebase Firestore instance for database operationsgit statu
      */
     private FirebaseFirestore db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

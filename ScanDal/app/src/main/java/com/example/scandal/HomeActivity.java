@@ -14,13 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+/** Activity for managing the homepage of ScanDal */
 
 import com.google.firebase.Firebase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
-
 public class HomeActivity extends AppCompatActivity {
     /**
      * Profile image

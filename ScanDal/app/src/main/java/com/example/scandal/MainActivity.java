@@ -11,6 +11,7 @@ import android.widget.Button;
  * The main activity for ScanDal
  */
 public class MainActivity extends AppCompatActivity {
+    // This is a test
     /**
      * Button to initialize QRCode scanner
      */

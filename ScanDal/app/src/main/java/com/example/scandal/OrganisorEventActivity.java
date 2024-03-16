@@ -67,6 +67,9 @@ public class OrganisorEventActivity extends AppCompatActivity {
         loadEvents();
     }
 
+    /**
+     * A method to populate activity with event names
+     */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);

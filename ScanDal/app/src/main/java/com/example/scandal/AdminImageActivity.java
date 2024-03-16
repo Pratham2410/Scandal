@@ -19,15 +19,28 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for managing images in the admin panel.
+ */
 public class AdminImageActivity extends AppCompatActivity {
+    /** Button to navigate back to homepage. */
     FrameLayout backToHomepage;
+    /** ListView to display images. */
     ListView listView;
+    /** Firestore instance for database operations. */
     FirebaseFirestore db;
+    /** Custom adapter to handle Bitmaps. */
     CustomImageAdapter adapter; // Custom adapter to handle Bitmaps
+    /** List to hold loaded images. */
     List<Bitmap> imagesList = new ArrayList<>();
+    /** Store image document IDs for deletion. */
     List<String> imageIds = new ArrayList<>(); // Store image document IDs for deletion
 
+    /**
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +78,10 @@ public class AdminImageActivity extends AppCompatActivity {
             alertDialog.show();
         });
     }
-
+    /**
+     * Load images from Firestore.
+     * Fetches images and their document IDs from Firestore, and updates the adapter.
+     */
     private void loadImages() {
         db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -87,14 +103,25 @@ public class AdminImageActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Delete an image from Firestore.
+     * Deletes the image with the given document ID from Firestore,
+     * and removes it from the list and adapter upon success.
+     *
+     * @param imageId  The document ID of the image to delete.
+     */
     private void deleteImage(String imageId) {
         db.collection("events").document(imageId)
                 .update("posterImage", "")
                 .addOnSuccessListener(aVoid -> Log.d("AdminImageActivity", "Image deleted successfully"))
                 .addOnFailureListener(e -> Log.e("AdminImageActivity", "Error deleting image: " + e.getMessage()));
     }
-
+    /**
+     * Convert a Base64-encoded image string to a Bitmap.
+     *
+     * @param imageString The Base64-encoded image string.
+     * @return The decoded Bitmap, or null if decoding fails.
+     */
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
