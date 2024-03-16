@@ -233,32 +233,42 @@
             android:gravity="end"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/profilePicture"
 
-                android:layout_width="169dp"
-                android:layout_height="178dp"
-                android:scaleType="centerInside"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view2"
+                android:layout_width="172dp"
+                android:layout_height="167dp"
+                android:layout_centerHorizontal="true"
+                android:innerRadius="0dp"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_ellipse1_124x124"
-                tools:ignore="ContentDescription"
-                tools:src="@drawable/img_ellipse1_124x124" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/txtEditProfilePi"
-                style="@style/txtPoetsenOneregular13_1"
-                android:layout_width="168dp"
-                android:layout_height="89dp"
-                android:layout_marginTop="100sp"
-                android:fontFamily="@font/poppinsbold"
-                android:gravity="top|center"
-                android:text="Edit Profile"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/profilePicture"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Edit Profile" />
+
+                <ImageView
+                    android:id="@+id/profilePicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/img_ellipse1_124x124"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_ellipse1_124x124" />
+
+                <TextView
+                    android:id="@+id/txtEditProfilePi"
+                    style="@style/txtPoetsenOneregular13_1"
+                    android:layout_width="168dp"
+                    android:layout_height="89dp"
+                    android:layout_marginTop="100sp"
+                    android:fontFamily="@font/poppinsbold"
+                    android:gravity="top|center"
+                    android:text="Edit Profile"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Edit Profile" />
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
