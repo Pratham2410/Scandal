@@ -2,21 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="AdminImageActivityIntentTest">
+        <State />
+      </entry>
+      <entry key="OrganisorActivityIntentTest">
+        <State />
+      </entry>
+      <entry key="OrganisorEventActivityIntentTest">
+        <State />
+      </entry>
+      <entry key="SettingsAndOrganiserActivityIntentTest">
+        <State />
+      </entry>
+      <entry key="Tests in 'com.example.scandal'">
+        <State />
+      </entry>
       <entry key="app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\ethan\.android\avd\Pixel_7_API.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-11T17:01:54.007189100Z" />
-        </State>
       </entry>
     </value>
   </component>
