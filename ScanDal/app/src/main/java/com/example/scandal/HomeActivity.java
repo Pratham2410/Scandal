@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+/** Activity for managing the homepage of ScanDal */
 public class HomeActivity extends AppCompatActivity {
     /**
      * Profile image

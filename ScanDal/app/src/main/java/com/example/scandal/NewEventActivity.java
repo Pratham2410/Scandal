@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import java.util.Random;
-
+/** Activity for managing the creation of a new event */
 public class NewEventActivity extends AppCompatActivity {
 
     /**

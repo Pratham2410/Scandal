@@ -19,16 +19,27 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for managing images in the admin panel.
+ */
 public class AdminImageActivity extends AppCompatActivity {
+    /** Button to navigate back to homepage. */
     FrameLayout backToHomepage;
+    /** ListView to display images. */
     ListView listView;
+    /** Firestore instance for database operations. */
     FirebaseFirestore db;
+    /** Custom adapter to handle Bitmaps. */
     CustomImageAdapter adapter; // Custom adapter to handle Bitmaps
+    /** List to hold loaded images. */
     List<Bitmap> imagesList = new ArrayList<>();
+    /** Store image document IDs for deletion. */
     List<String> imageIds = new ArrayList<>(); // Store image document IDs for deletion
+
     /**
-     * Activity for managing images in the admin panel.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
