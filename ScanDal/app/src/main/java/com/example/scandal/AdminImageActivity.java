@@ -109,7 +109,6 @@ public class AdminImageActivity extends AppCompatActivity {
      * and removes it from the list and adapter upon success.
      *
      * @param imageId  The document ID of the image to delete.
-     * @param position The position of the image in the list.
      */
     private void deleteImage(String imageId) {
         db.collection("events").document(imageId)
