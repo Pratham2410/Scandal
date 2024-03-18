@@ -1,27 +1,53 @@
 package com.example.scandal;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-import android.util.Log;
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.example.scandal.R;
 
+/**
+ * The main activity for ScanDal
+ */
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity"; // It's better to use the class name for logging
+    // This is a test
+    /**
+     * Button to initialize QRCode scanner
+     */
     private Button toQrScan;
-
+    /**
+     * Handled initialization of ScanDal
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.starting_page);
 
+        // Gets Emulator Key and Checks if Device is New
+        Intent intent_userLog = new Intent(MainActivity.this, User.class);
+        startService(intent_userLog);
+
+        setContentView(R.layout.starting_page);
+        toQrScan = findViewById(R.id.buttonGetStarted);
+        toQrScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -37,19 +63,5 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, msg);
                     }
                 });
-        
-
-        toQrScan = findViewById(R.id.buttonGetStarted);
-        toQrScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // The intent to start User service
-        Intent intent_userLog = new Intent(MainActivity.this, User.class);
-        startService(intent_userLog);
     }
 }
