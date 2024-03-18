@@ -321,21 +321,15 @@ public class Profile extends AppCompatActivity {
 
         String imageString = null;
         if (imageUri != null) {
+            // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
-        }
-        if (imageReferString == null && imageString != "") {
-            // Generate TextDrawable if there's no original image or if the user deleted the image
-            if (!name.isEmpty()) {
-                String initials = getInitials(name);
-                ColorGenerator generator = ColorGenerator.MATERIAL;
-                int color = generator.getColor(name);
-                TextDrawable drawable = TextDrawable.builder()
-                        .buildRound(initials, color);
-                imageView.setImageDrawable(drawable);
+        } else {
+            // No image was selected; generate a TextDrawable based on the user's name
+            // Only do this if you really need a placeholder image for every profile without an image
+            if (!TextUtils.isEmpty(name)) {
+                // This block can be removed if you decide not to use a generated image when no image is selected
+                imageString = generateProfileImageForName(name);
             }
-        }
-        if (imageString == null) {
-            imageString = ""; // Set to blank if conversion fails or no image selected
         }
 
         final Map<String, Object> profileData = new HashMap<>();
@@ -348,6 +342,22 @@ public class Profile extends AppCompatActivity {
         saveDataToFirestore(profileData, deviceId);
     }
 
+
+    /**
+     * Generates a profile image for the user based on their name and converts it to a Base64 encoded string.
+     * @param name The name of the user to generate an image for.
+     * @return A Base64 encoded string representing the generated image; null if an error occurs.
+     */
+    private String generateProfileImageForName(String name) {
+        String initials = getInitials(name);
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(name);
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(initials, color);
+
+        Bitmap bitmap = drawableToBitmap(drawable);
+        return convertBitmapToImageString(bitmap);
+    }
     /**
      * Initializes UI components and Firebase Firestore instance.
      */
