@@ -31,6 +31,9 @@ public class AdminEventActivity extends AppCompatActivity {
      * ListView for displaying the list of events.
      */
     ListView eventsList;
+    /**
+     * Button to delete event
+     */
     Button buttonDelete;
     /**
      * String representing event name.
