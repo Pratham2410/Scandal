@@ -16,13 +16,25 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
-
+/** An activity for managing the viewing of event details */
 public class EventDetailsActivity extends AppCompatActivity {
+    /** Firestore instance for database operations */
     private FirebaseFirestore db;
+    /** TextView to display the event name. */
     TextView textEventName_ViewEventPage;
+    /** TextView to display the event description. */
     TextView textEventDescription_ViewEventPage;
+    /** ImageView to display the event image. */
     ImageView imageView;
+    /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +75,12 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
 
     }
-    // Helper method to decode Base64 string to Bitmap
+    /**
+     * Helper method to decode Base64 string to Bitmap.
+     *
+     * @param imageString The Base64-encoded image string.
+     * @return The decoded Bitmap, or null if decoding fails.
+     */
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);

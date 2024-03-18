@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
+/** An Activity for managing the settings page */
 public class SettingsAndOrganiserActivity extends AppCompatActivity {
 
     /**

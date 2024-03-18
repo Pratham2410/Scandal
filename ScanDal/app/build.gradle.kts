@@ -8,6 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+
         applicationId = "com.example.scandal"
         minSdk = 24
         targetSdk = 34
@@ -44,6 +45,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.mlkit:barcode-scanning-common:17.0.0")
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0") // Using KTX version for Kotlin-friendly APIs
