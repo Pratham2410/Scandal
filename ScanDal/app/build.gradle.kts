@@ -8,6 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+
         applicationId = "com.example.scandal"
         minSdk = 24
         targetSdk = 34
@@ -24,7 +25,9 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility(JavaVersion.VERSION_1_8)
+
         targetCompatibility(JavaVersion.VERSION_1_8)
     }
 }
@@ -47,5 +50,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0") // Using KTX version for Kotlin-friendly APIs
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("org.mockito:mockito-android:4.0.0") // Use the latest version available
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

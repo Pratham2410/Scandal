@@ -34,6 +34,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/buttonManageImages"
         style="@style/groupStyleteal_1"
@@ -63,12 +64,12 @@
 
     </LinearLayout>
 
-
     <FrameLayout
         android:id="@+id/frameStackellipseone"
         android:layout_width="408dp"
         android:layout_height="214dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -162,12 +163,12 @@
 
     <ImageView
         android:id="@+id/imageEllipseThree"
-        android:layout_width="119dp"
-        android:layout_height="163dp"
+        android:layout_width="122dp"
+        android:layout_height="220dp"
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"

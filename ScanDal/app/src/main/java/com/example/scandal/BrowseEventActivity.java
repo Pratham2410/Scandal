@@ -15,11 +15,25 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for browsing events.
+ */
 public class BrowseEventActivity extends AppCompatActivity {
+    /**
+     * FrameLayout for navigating back to the previous page.
+     */
     FrameLayout buttonBack_BrowseEventsPage;
+    /**
+     * ListView for displaying events.
+     */
     ListView eventsList;
+    /**
+     * Firebase Firestore instance for database operations.
+     */
     FirebaseFirestore db;
+    /**
+     * Provides functionality for event list
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +55,9 @@ public class BrowseEventActivity extends AppCompatActivity {
         });
         loadEvents();
     }
+    /**
+     * Retrieves and displays profiles pulled from firebase
+     */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
@@ -49,7 +66,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String eventName = document.getString("name"); // Assuming you have a 'name' field for event names
+                    String eventName = document.getString("name");
                     if (eventName != null) {
                         eventNames.add(eventName);
                     }

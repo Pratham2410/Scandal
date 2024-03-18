@@ -5,6 +5,7 @@ import java.util.List;
  * A list of all events managed by ScanDal
  */
 public class EventList {
+    /** A list of events to populate activity */
     private List<Event> eventDatabase;
     /**
      *  Method to add an event to the list

@@ -19,28 +19,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Activity for managing events from the admin's perspective.
+ */
 public class AdminEventActivity extends AppCompatActivity {
     /**
      * FrameLayout for navigating back to the admin interface.
      */
     FrameLayout backToAdmin;
-
     /**
      * ListView for displaying the list of events.
      */
     ListView eventsList;
+    /**
+     * Button to delete event
+     */
     Button buttonDelete;
+    /**
+     * String representing event name.
+     */
     String eventName;
+    /**
+     * String representing eventID
+     */
     String eventId;
-
     /**
      * FirebaseFirestore instance for interacting with Firestore database.
      */
     FirebaseFirestore db;
-    // Store event names and their Firestore document IDs
+    /**
+     * Map to store event names and their corresponding Firestore document IDs.
+     */
     Map<String, String> eventNameToId = new HashMap<>();
+    /**
+     * ArrayAdapter for populating event names in the ListView.
+     */
     ArrayAdapter<String> adapter; // Declare the adapter at the class level to access it easily
+    /**
+     * List to store event names.
+     */
     List<String> eventNames; // Store the event names here
 
     /**
@@ -85,14 +102,16 @@ public class AdminEventActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Loads events from Firestore database and populates the ListView.
+     */
     private void loadEvents() {
         eventNames.clear(); // Clear previous data
         eventNameToId.clear(); // Clear previous data
-        db.collection("events").get().addOnCompleteListener(task -> { // Changed to "profiles" as per your request
+        db.collection("events").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String eventName = document.getString("name"); // Assuming the profiles have a 'name' field
+                    String eventName = document.getString("name");
                     if (eventName != null) {
                         eventNames.add(eventName);
                         eventNameToId.put(eventName, document.getId());
@@ -104,14 +123,23 @@ public class AdminEventActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Deletes the event from Firestore database.
+     *
+     * @param eventId   ID of the event to be deleted.
+     */
     private void deleteEvent(String eventId) {
         db.collection("events").document(eventId).delete().addOnSuccessListener(aVoid -> { // Changed to "profiles"
             Toast.makeText(AdminEventActivity.this, "Event deleted successfully", Toast.LENGTH_SHORT).show();
             loadEvents(); // Reload to reflect changes
         }).addOnFailureListener(e -> Toast.makeText(AdminEventActivity.this, "Error deleting event", Toast.LENGTH_SHORT).show());
     }
-
+    /**
+     * Displays a confirmation dialog before deleting the event.
+     *
+     * @param eventId   ID of the event to be deleted.
+     * @param eventName Name of the event to be deleted.
+     */
     private void showDeleteConfirmationDialog(String eventId, String eventName) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Event")

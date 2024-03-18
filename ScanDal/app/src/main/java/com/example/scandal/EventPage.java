@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,17 +12,28 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.scandal.HomeActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
+/**
+ * Activity for displaying details of an event based on QR code.
+ */
 public class EventPage extends AppCompatActivity {
+    /** ImageView to display the poster of the event. */
     ImageView poster;
+    /** FrameLayout for navigating back. */
     FrameLayout back;
+    /** TextView to display the name of the event. */
     TextView eventName;
+    /** TextView to display the description of the event. */
     TextView eventDescription;
-
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +90,11 @@ public class EventPage extends AppCompatActivity {
         });
     }
 
-    // Method to search for events based on PromoQRCode
+    /**
+     * Method to search for events based on PromoQRCode.
+     *
+     * @param token The QR token to search for.
+     */
     private void searchWithPromoQRCode(String token) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("events")
@@ -112,7 +128,12 @@ public class EventPage extends AppCompatActivity {
                     }
                 });
     }
-
+    /**
+     * Helper method to decode Base64 string to Bitmap.
+     *
+     * @param imageString The Base64-encoded image string.
+     * @return The decoded Bitmap, or null if decoding fails.
+     */
     // Helper method to decode Base64 string to Bitmap
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
