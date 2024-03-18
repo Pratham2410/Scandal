@@ -238,28 +238,38 @@ public class Profile extends AppCompatActivity {
     private void saveProfileData() {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        // Use trim() to remove leading and trailing spaces, and check if empty
         String name = editTextName.getText().toString().trim();
-        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
-        String homePage = editTextHomePage.getText().toString().trim();
-
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(phoneNumber)) {
-            final String imageString = convertImageUriToString(imageUri);
-
-            if (imageString != null) {
-                final Map<String, Object> profileData = new HashMap<>();
-                profileData.put("deviceId", deviceId);
-                profileData.put("name", name);
-                profileData.put("phoneNumber", phoneNumber);
-                profileData.put("homePage", homePage);
-                profileData.put("imageString", imageString);
-
-                saveDataToFirestore(profileData, deviceId);
-            } else {
-                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter name and phone number", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(name)) {
+            name = ""; // Set to blank if empty
         }
+
+        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+        if (TextUtils.isEmpty(phoneNumber)) {
+            phoneNumber = ""; // Set to blank if empty
+        }
+
+        String homePage = editTextHomePage.getText().toString().trim();
+        if (TextUtils.isEmpty(homePage)) {
+            homePage = ""; // Set to blank if empty
+        }
+
+        String imageString = null;
+        if (imageUri != null) { // Check if an image was selected
+            imageString = convertImageUriToString(imageUri);
+        }
+        if (imageString == null) {
+            imageString = ""; // Set to blank if conversion fails or no image selected
+        }
+
+        final Map<String, Object> profileData = new HashMap<>();
+        profileData.put("deviceId", deviceId);
+        profileData.put("name", name);
+        profileData.put("phoneNumber", phoneNumber);
+        profileData.put("homePage", homePage);
+        profileData.put("imageString", imageString);
+
+        saveDataToFirestore(profileData, deviceId);
     }
 
     /**

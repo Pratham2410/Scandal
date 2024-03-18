@@ -8,6 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+
         applicationId = "com.example.scandal"
         minSdk = 24
         targetSdk = 34
