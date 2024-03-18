@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,12 +24,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -87,6 +95,7 @@ public class Profile extends AppCompatActivity {
      * Contains reference to database
      */
     private FirebaseFirestore db;
+    private String imageReferString = null;
 
     /**
      * Returns the name of the user.
@@ -162,10 +171,24 @@ public class Profile extends AppCompatActivity {
                             editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
                             editTextHomePage.setText((String) profileData.get("homePage"));
                             String imageString = (String) profileData.get("imageString");
+                            imageReferString = (String) profileData.get("imageString");
                             if (imageString != null) {
+                                // Convert and display the original image
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
                                 if (bitmap != null) {
                                     imageView.setImageBitmap(bitmap);
+                                }
+                                else if (imageReferString != ""){
+                                    // Generate TextDrawable if there's no original image or if the user deleted the image
+                                    String name = (String) profileData.get("name");
+                                    if (name != null && !name.isEmpty()) {
+                                        String initials = getInitials(name);
+                                        ColorGenerator generator = ColorGenerator.MATERIAL;
+                                        int color = generator.getColor(name);
+                                        TextDrawable drawable = TextDrawable.builder()
+                                                .buildRound(initials, color);
+                                        imageView.setImageDrawable(drawable);
+                                    }
                                 }
                             }
                         }
@@ -181,8 +204,50 @@ public class Profile extends AppCompatActivity {
          */
         setupListeners();
     }
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
 
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
 
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+        if(drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0) {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        } else {
+            // If intrinsic size is not available, define a default size or use the view's size
+            bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888); // Example default size
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+    private String convertBitmapToImageString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    // Helper method to extract initials from a name
+    private String getInitials(String name) {
+        StringBuilder initials = new StringBuilder();
+        for (String part : name.split(" ")) {
+            if (!part.trim().isEmpty()) {
+                initials.append(part.charAt(0));
+            }
+        }
+        return initials.toString().toUpperCase();
+    }
     /**
      * Handles the result from the image picker activity, updating the profile picture accordingly.
      * @param requestCode The request code initially supplied to startActivityForResult(), allowing you to identify who this result came from.
@@ -255,11 +320,16 @@ public class Profile extends AppCompatActivity {
         }
 
         String imageString = null;
-        if (imageUri != null) { // Check if an image was selected
+        if (imageUri != null) {
+            // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
-        }
-        if (imageString == null) {
-            imageString = ""; // Set to blank if conversion fails or no image selected
+        } else {
+            // No image was selected; generate a TextDrawable based on the user's name
+            // Only do this if you really need a placeholder image for every profile without an image
+            if (!TextUtils.isEmpty(name)) {
+                // This block can be removed if you decide not to use a generated image when no image is selected
+                imageString = generateProfileImageForName(name);
+            }
         }
 
         final Map<String, Object> profileData = new HashMap<>();
@@ -272,6 +342,22 @@ public class Profile extends AppCompatActivity {
         saveDataToFirestore(profileData, deviceId);
     }
 
+
+    /**
+     * Generates a profile image for the user based on their name and converts it to a Base64 encoded string.
+     * @param name The name of the user to generate an image for.
+     * @return A Base64 encoded string representing the generated image; null if an error occurs.
+     */
+    private String generateProfileImageForName(String name) {
+        String initials = getInitials(name);
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(name);
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(initials, color);
+
+        Bitmap bitmap = drawableToBitmap(drawable);
+        return convertBitmapToImageString(bitmap);
+    }
     /**
      * Initializes UI components and Firebase Firestore instance.
      */
