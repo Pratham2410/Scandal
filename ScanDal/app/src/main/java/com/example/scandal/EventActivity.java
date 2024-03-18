@@ -6,21 +6,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -148,11 +143,11 @@ public class EventActivity extends AppCompatActivity {
      */
     private void initializeUIComponents() {
         poster = findViewById(R.id.imageView_CreateEventPage);
-        editEventName = findViewById(R.id.editTextEventName);
-        editEventDescription = findViewById(R.id.editTextEventDescription);
+        editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
+        editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
-        uploadPosterButton = findViewById(R.id.editPosterButton);
-        deletePosterButton = findViewById(R.id.deletePosterButton);
+        uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);
+        deletePosterButton = findViewById(R.id.deletePosterButton_CreateEventPage);
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_CreateEventPage);
 
         db = FirebaseFirestore.getInstance();
