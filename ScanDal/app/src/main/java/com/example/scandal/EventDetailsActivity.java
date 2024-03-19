@@ -25,6 +25,10 @@ public class EventDetailsActivity extends AppCompatActivity {
     /** TextView to display the event description. */
     TextView textEventDescription_ViewEventPage;
     /** ImageView to display the event image. */
+    TextView textEventTime_ViewEventPage;
+    /** ImageView to display the event time. */
+    TextView textEventLocation_ViewEventPage;
+    /** ImageView to display the event location. */
     ImageView imageView;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
@@ -41,6 +45,9 @@ public class EventDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.view_event_page);
 
         textEventName_ViewEventPage = findViewById(R.id.textEventName_ViewEventPage);
+        textEventLocation_ViewEventPage = findViewById(R.id.textEventLocation_ViewEventPage);
+        textEventTime_ViewEventPage = findViewById(R.id.textEventTime_ViewEventPage);
+
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
@@ -61,7 +68,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                         Map<String, Object> profileData = documentSnapshot.getData();
                         if (profileData != null) {
                             textEventName_ViewEventPage.setText((String) profileData.get("name"));
-                            textEventDescription_ViewEventPage.setText((String) profileData.get("description"));
+                            textEventTime_ViewEventPage.setText((String) profileData.get("Time"));
+                            textEventLocation_ViewEventPage.setText((String) profileData.get("Location"));
+                            textEventDescription_ViewEventPage.setText((String) profileData.get("Description"));
                             String imageString = (String) profileData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
