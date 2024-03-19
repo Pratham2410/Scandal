@@ -228,7 +228,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearColumnellipseone"
             android:layout_width="98dp"
-            android:layout_height="199dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.39"
             android:gravity="end"
             android:orientation="vertical">
@@ -256,19 +256,23 @@
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/img_ellipse1_124x124" />
 
-                <TextView
-                    android:id="@+id/txtEditProfilePi"
-                    style="@style/txtPoetsenOneregular13_1"
-                    android:layout_width="168dp"
-                    android:layout_height="89dp"
-                    android:layout_marginTop="100sp"
-                    android:fontFamily="@font/poppinsbold"
-                    android:gravity="top|center"
-                    android:text="Edit Profile"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="Edit Profile" />
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txtEditProfilePi"
+                style="@style/txtPoetsenOneregular13_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppinsbold"
+                android:gravity="top|center"
+                android:text="Click above to edit profile"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                tools:text="Click above to edit profile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
