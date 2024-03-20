@@ -48,6 +48,11 @@ public class EventActivity extends AppCompatActivity {
     /**
      * Button to trigger event data saving
      */
+    private EditText editEventTime;
+    /**
+     * Button for Event Time
+     */
+    private EditText editlocation;
     AppCompatButton generateEventButton;
     /**
      * Button to upload a poster image
@@ -96,6 +101,17 @@ public class EventActivity extends AppCompatActivity {
             description = ""; // Set to blank if no input
         }
 
+        String eventTime = editEventTime.getText().toString().trim();
+        if (description.isEmpty()) {
+            description = ""; // Set to blank if no input
+        }
+
+        String eventLocation = editlocation.getText().toString().trim();
+        if (description.isEmpty()) {
+            description = ""; // Set to blank if no input
+        }
+
+
         // Generate tokens for QRCode and PromoQRCode, regardless of the inputs
         Random rnd = new Random();
         String randomStr = String.valueOf(rnd.nextInt(10000));
@@ -104,10 +120,11 @@ public class EventActivity extends AppCompatActivity {
 
         String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
         // imageString will be an empty string if imageUri is null
-
         Map<String, Object> event = new HashMap<>();
         event.put("name", name);
-        event.put("description", description);
+        event.put("Time", eventTime);
+        event.put("Description", description);
+        event.put("Location", eventLocation);
         event.put("QRCode", token);
         event.put("PromoQRCode", token2);
         event.put("posterImage", imageString); // Add the image string or an empty string to the event map
@@ -144,6 +161,8 @@ public class EventActivity extends AppCompatActivity {
     private void initializeUIComponents() {
         poster = findViewById(R.id.imageView_CreateEventPage);
         editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
+        editEventTime = findViewById(R.id.editTextEventTime_CreateEventPage);
+        editlocation = findViewById(R.id.editTextEventLocation_CreateEventPage);
         editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
         uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);
