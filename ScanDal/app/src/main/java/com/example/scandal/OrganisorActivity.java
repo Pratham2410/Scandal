@@ -66,5 +66,23 @@ public class OrganisorActivity extends AppCompatActivity {
                 startActivity(intent_home);
             }
         });
+
+        buttonSendNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = "Event Notification"; // This should be retrieved from a user input or your data model
+                String message = "You have an upcoming event!"; // This should also be retrieved as above
+
+                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                        "/topics/all",
+                        title,
+                        message,
+                        getApplicationContext(),
+                        OrganisorActivity.this
+                );
+
+                notificationsSender.SendNotifications(); // Make sure you're calling the correct method (case-sensitive)
+            }
+        });
     }
 }

@@ -51,6 +51,7 @@ dependencies {
     implementation ("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.mlkit:barcode-scanning-common:17.0.0")
+    implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0") // Using KTX version for Kotlin-friendly APIs
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
