@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(new String[] {Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE);
         }
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         // Gets Emulator Key and Checks if Device is New
         Intent intent_userLog = new Intent(MainActivity.this, User.class);
