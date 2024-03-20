@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -81,7 +82,12 @@ public class OrganisorActivity extends AppCompatActivity {
                         OrganisorActivity.this
                 );
 
-                notificationsSender.SendNotifications(); // Make sure you're calling the correct method (case-sensitive)
+                Log.d("NotificationButton", "Send Notification button clicked");
+
+                notificationsSender.SendNotifications();
+
+                // Log after sending notification
+                Log.d("NotificationButton", "Notification sent, no further action"); // Make sure you're calling the correct method (case-sensitive)
             }
         });
     }
