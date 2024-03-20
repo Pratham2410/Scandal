@@ -120,7 +120,6 @@ public class EventActivity extends AppCompatActivity {
 
         String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
         // imageString will be an empty string if imageUri is null
-
         Map<String, Object> event = new HashMap<>();
         event.put("name", name);
         event.put("Time", eventTime);

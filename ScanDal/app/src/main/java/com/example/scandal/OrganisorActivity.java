@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -21,6 +22,7 @@ public class OrganisorActivity extends AppCompatActivity {
     /**
      * A button to display an organizer's events
      */
+    Button buttonSendNotifications;
     LinearLayout buttonViewMyEvents;
     /**
      * Button leading back to homepage
@@ -38,6 +40,7 @@ public class OrganisorActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
+        buttonSendNotifications = findViewById(R.id.sendnotifs);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
         buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
