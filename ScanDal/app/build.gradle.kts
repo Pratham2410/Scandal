@@ -42,8 +42,11 @@ dependencies {
     implementation("com.google.mlkit:barcode-scanning:17.0.0")
     implementation("com.google.android.material:material:1.6.1") // Corrected version to 1.6.1 to match appcompat
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-core:20.0.2") // Firebase Core
+    implementation("com.google.firebase:firebase-messaging") // Firebase Messaging
+    implementation("com.google.firebase:firebase-analytics")
     implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation ("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
     implementation("com.google.firebase:firebase-storage-ktx")
