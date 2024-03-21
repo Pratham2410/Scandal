@@ -45,9 +45,15 @@ public class HomeActivity extends AppCompatActivity {
     /**
      * Admin login button
      */
-    private String admin_passkey = "1234";
-    private String m_Text;
     private TextView adminLogin; // Declare the adminLogin TextView for ADMIN LOGIN button
+    /**
+     * Admin password key
+     */
+    private String admin_passkey = "1234";
+    /**
+     * Admin Password input string
+     */
+    private String m_Text;
     /**
      * Makes class attributes clickable
      * @param savedInstanceState If the activity is being re-initialized after
