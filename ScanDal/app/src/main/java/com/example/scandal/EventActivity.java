@@ -102,13 +102,13 @@ public class EventActivity extends AppCompatActivity {
         }
 
         String eventTime = editEventTime.getText().toString().trim();
-        if (description.isEmpty()) {
-            description = ""; // Set to blank if no input
+        if (eventTime.isEmpty()) {
+            eventTime = ""; // Set to blank if no input
         }
 
         String eventLocation = editlocation.getText().toString().trim();
-        if (description.isEmpty()) {
-            description = ""; // Set to blank if no input
+        if (eventLocation.isEmpty()) {
+            eventLocation = ""; // Set to blank if no input
         }
 
 
