@@ -33,7 +33,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
     /**
-     * Called when the activity is starting.
+     * Calle when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
