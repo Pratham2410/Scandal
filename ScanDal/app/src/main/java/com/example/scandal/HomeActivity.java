@@ -96,18 +96,6 @@ public class HomeActivity extends AppCompatActivity {
                                 if (bitmap != null) {
                                     profile.setImageBitmap(bitmap);
                                 }
-                                else {
-                                    // Generate TextDrawable if there's no original image or if the user deleted the image
-                                    String name = (String) profileData.get("name");
-                                    if (!name.isEmpty()) {
-                                        String initials = getInitials(name);
-                                        ColorGenerator generator = ColorGenerator.MATERIAL;
-                                        int color = generator.getColor(name);
-                                        TextDrawable drawable = TextDrawable.builder()
-                                                .buildRound(initials, color);
-                                        profile.setImageDrawable(drawable);
-                                    }
-                                }
                             }
                         }
                     } else {
