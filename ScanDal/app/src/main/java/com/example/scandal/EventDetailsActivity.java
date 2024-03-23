@@ -16,19 +16,38 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
-
+/** An activity for managing the viewing of event details */
 public class EventDetailsActivity extends AppCompatActivity {
+    /** Firestore instance for database operations */
     private FirebaseFirestore db;
+    /** TextView to display the event name. */
     TextView textEventName_ViewEventPage;
+    /** TextView to display the event description. */
     TextView textEventDescription_ViewEventPage;
+    /** ImageView to display the event image. */
+    TextView textEventTime_ViewEventPage;
+    /** ImageView to display the event time. */
+    TextView textEventLocation_ViewEventPage;
+    /** ImageView to display the event location. */
     ImageView imageView;
+    /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
+    /**
+     * Calle when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_page);
 
         textEventName_ViewEventPage = findViewById(R.id.textEventName_ViewEventPage);
+        textEventLocation_ViewEventPage = findViewById(R.id.textEventLocation_ViewEventPage);
+        textEventTime_ViewEventPage = findViewById(R.id.textEventTime_ViewEventPage);
+
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
@@ -49,7 +68,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                         Map<String, Object> profileData = documentSnapshot.getData();
                         if (profileData != null) {
                             textEventName_ViewEventPage.setText((String) profileData.get("name"));
-                            textEventDescription_ViewEventPage.setText((String) profileData.get("description"));
+                            textEventTime_ViewEventPage.setText((String) profileData.get("Time"));
+                            textEventLocation_ViewEventPage.setText((String) profileData.get("Location"));
+                            textEventDescription_ViewEventPage.setText((String) profileData.get("Description"));
                             String imageString = (String) profileData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
@@ -63,7 +84,12 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
 
     }
-    // Helper method to decode Base64 string to Bitmap
+    /**
+     * Helper method to decode Base64 string to Bitmap.
+     *
+     * @param imageString The Base64-encoded image string.
+     * @return The decoded Bitmap, or null if decoding fails.
+     */
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);

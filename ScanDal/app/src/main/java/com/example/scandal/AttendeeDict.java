@@ -7,6 +7,9 @@ import java.util.Map;
  * A dictionary for storing attendees of an event
  */
 public class AttendeeDict {
+    /**
+     * Map to store profile names and their Firestore document IDs.
+     */
     private Map<User, Integer> attendees = new HashMap<>();
 
     /**
