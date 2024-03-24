@@ -70,24 +70,9 @@ public class OrganisorActivity extends AppCompatActivity {
 
         buttonSendNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String title = "Event Notification"; // This should be retrieved from a user input or your data model
-                String message = "You have an upcoming event!"; // This should also be retrieved as above
-
-                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
-                        "/topics/all",
-                        title,
-                        message,
-                        getApplicationContext(),
-                        OrganisorActivity.this
-                );
-
-                Log.d("NotificationButton", "Send Notification button clicked");
-
-                notificationsSender.SendNotifications();
-
-                // Log after sending notification
-                Log.d("NotificationButton", "Notification sent, no further action"); // Make sure you're calling the correct method (case-sensitive)
+            public void onClick(View view) {
+                Intent intent_home = new Intent(OrganisorActivity.this, OrganiserNotificationActivity.class);
+                startActivity(intent_home);
             }
         });
     }

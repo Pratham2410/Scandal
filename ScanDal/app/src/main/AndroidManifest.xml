@@ -19,9 +19,9 @@
         <service
 
             android:name=".MyFirebaseMessagingService"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
 
             </intent-filter>
         </service>
@@ -52,6 +52,7 @@
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
         </activity>
+
         <activity
             android:name=".EventPage">
             <!--            android:exported="true">-->
@@ -78,6 +79,8 @@
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
         <activity android:name=".AdminActivity">
+        </activity>
+        <activity android:name=".OrganiserNotificationActivity">
         </activity>
         <activity android:name=".OrganisorEventActivity"></activity>
         <activity android:name=".AdminImageActivity"></activity>
