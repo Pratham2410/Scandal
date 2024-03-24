@@ -156,16 +156,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
-    // Helper method to extract initials from a name
-    private String getInitials(String name) {
-        StringBuilder initials = new StringBuilder();
-        for (String part : name.split(" ")) {
-            if (!part.trim().isEmpty()) {
-                initials.append(part.charAt(0));
-            }
-        }
-        return initials.toString().toUpperCase();
-    }
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
             byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
