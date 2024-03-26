@@ -150,14 +150,14 @@
         android:paddingEnd="@dimen/_28pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:text="Notification: Off"
+        android:text="Geo-Tracking: Off"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
-        app:layout_constraintTop_toBottomOf="@+id/textPressToNotify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Notification: Off" />
+        app:layout_constraintTop_toBottomOf="@+id/textPressToNotify"
+        tools:text="Geo-Tracking: Off" />
 
     <View
         android:id="@+id/viewEllipseFour"
@@ -215,7 +215,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
-        android:text="Press to turn notification on/off"
+        android:text="Press to turn geo-tracking on/off"
         android:textSize="@dimen/_16pxh"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonNotification_SettingsPage"
