@@ -3,7 +3,9 @@ package com.example.scandal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -21,6 +23,7 @@ public class OrganisorActivity extends AppCompatActivity {
     /**
      * A button to display an organizer's events
      */
+    Button buttonSendNotifications;
     LinearLayout buttonViewMyEvents;
     /**
      * Button leading back to homepage
@@ -38,6 +41,7 @@ public class OrganisorActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organisor_homepage);
+        buttonSendNotifications = findViewById(R.id.sendnotifs);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
         buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
 
@@ -61,6 +65,29 @@ public class OrganisorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent_home = new Intent(OrganisorActivity.this, HomeActivity.class);
                 startActivity(intent_home);
+            }
+        });
+
+        buttonSendNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = "Event Notification"; // This should be retrieved from a user input or your data model
+                String message = "You have an upcoming event!"; // This should also be retrieved as above
+
+                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                        "/topics/all",
+                        title,
+                        message,
+                        getApplicationContext(),
+                        OrganisorActivity.this
+                );
+
+                Log.d("NotificationButton", "Send Notification button clicked");
+
+                notificationsSender.SendNotifications();
+
+                // Log after sending notification
+                Log.d("NotificationButton", "Notification sent, no further action"); // Make sure you're calling the correct method (case-sensitive)
             }
         });
     }
