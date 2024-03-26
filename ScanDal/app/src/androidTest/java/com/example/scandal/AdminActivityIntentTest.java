@@ -1,7 +1,5 @@
 package com.example.scandal;
 
-import android.content.Intent;
-
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
