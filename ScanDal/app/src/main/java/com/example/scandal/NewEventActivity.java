@@ -68,13 +68,14 @@ public class NewEventActivity extends AppCompatActivity {
      * Called when the activity is starting. This is where most initialization should go:
      * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     * param savedInstanceState If the activity is being re-initialized after previously being shut down
      *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
      *                           Note: Otherwise, it is null.
      */
-    @Override
+  //  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.events_created_page);
 
         // Initialize your components here
@@ -128,6 +129,8 @@ public class NewEventActivity extends AppCompatActivity {
                         .add(event)
                         .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Event created successfully", Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
+                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
+                startActivity(homeIntent);
 
             }
         });
