@@ -25,10 +25,10 @@
         style="@style/groupStyleteal_1"
         android:layout_width="190dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintBottom_toTopOf="@+id/textPressToNotify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,7 @@
         android:layout_width="409dp"
         android:layout_height="194dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -136,6 +137,28 @@
 
     </FrameLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonNotification_SettingsPage"
+        style="@style/btnSolidRounded"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_29pxh"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingEnd="@dimen/_28pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:text="Geo-Tracking: Off"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPressToNotify"
+        tools:text="Geo-Tracking: Off" />
+
     <View
         android:id="@+id/viewEllipseFour"
         android:layout_width="@dimen/_153pxh"
@@ -186,5 +209,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/img_completed_m9ci" />
+
+    <TextView
+        android:id="@+id/textPressToNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Press to turn geo-tracking on/off"
+        android:textSize="@dimen/_16pxh"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNotification_SettingsPage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGotoOrganisorPage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -96,18 +96,6 @@ public class HomeActivity extends AppCompatActivity {
                                 if (bitmap != null) {
                                     profile.setImageBitmap(bitmap);
                                 }
-                                else {
-                                    // Generate TextDrawable if there's no original image or if the user deleted the image
-                                    String name = (String) profileData.get("name");
-                                    if (!name.isEmpty()) {
-                                        String initials = getInitials(name);
-                                        ColorGenerator generator = ColorGenerator.MATERIAL;
-                                        int color = generator.getColor(name);
-                                        TextDrawable drawable = TextDrawable.builder()
-                                                .buildRound(initials, color);
-                                        profile.setImageDrawable(drawable);
-                                    }
-                                }
                             }
                         }
                     } else {
@@ -167,16 +155,6 @@ public class HomeActivity extends AppCompatActivity {
             showAdminPasswordDialog();
         });
 
-    }
-    // Helper method to extract initials from a name
-    private String getInitials(String name) {
-        StringBuilder initials = new StringBuilder();
-        for (String part : name.split(" ")) {
-            if (!part.trim().isEmpty()) {
-                initials.append(part.charAt(0));
-            }
-        }
-        return initials.toString().toUpperCase();
     }
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
