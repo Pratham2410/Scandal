@@ -96,7 +96,6 @@ public class QRCodeScanner extends AppCompatActivity {
                                 intent.putExtra("CheckinToken", token2);
                                 intent.putExtra("PromoToken", decoded);
                             }
-                            finish();
                             startActivity(intent);
                         } //else{
 //                            Log.e("hpeebles", "QRCodeScanner needs a integer to be passed through an intent to function properly");
