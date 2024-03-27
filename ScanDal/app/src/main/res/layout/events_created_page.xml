@@ -19,7 +19,7 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Save Project"
+        android:text="Save Event"
         android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +133,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
-        android:text="You have made a new event!"
+        android:text="Tap save event when ready!"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/checkinQRCode"
         app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +231,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="Congratulations!"
+            android:text="Almost Done!"
             android:textSize="24sp"
             tools:text="Congratulations!" />
 

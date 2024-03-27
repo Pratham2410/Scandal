@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.android.datatransport.cct.internal.LogEvent;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -109,8 +112,8 @@ public class NewEventActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
+                Log.e("hpeebles", "Going to event page");
+                finish();
             }
         });
         saveProj.setOnClickListener(new View.OnClickListener() {
@@ -125,13 +128,20 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("PromoQRCode", token2);
                 event.put("posterImage", imageString); // Add the image string to the event map
                 // Save event to Firestore
+                Log.e("hpeebles", "before storing in db");
                 db.collection("events")
                         .add(event)
-                        .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Event created successfully", Toast.LENGTH_SHORT).show())
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.e("hpeebles", "Added to DB");
+                                Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);
+                                startActivity(homePage);
+                            }
+                        })
                         .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
-                Intent homeIntent = new Intent(NewEventActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
-
+//                Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);
+//                startActivity(homePage);
             }
         });
 
@@ -139,6 +149,7 @@ public class NewEventActivity extends AppCompatActivity {
          * activates the QR scanner to get the custom qr code for checkins
          */
         saveCheckinCode.setOnClickListener(v -> {
+
             Intent scanner = new Intent(NewEventActivity.this, QRCodeScanner.class);
             scanner.putExtra("Activity", 2);
             scanner.putExtra("name", name);
