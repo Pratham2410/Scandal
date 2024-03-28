@@ -18,7 +18,7 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Post"
+        android:text="Next"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
