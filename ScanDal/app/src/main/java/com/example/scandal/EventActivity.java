@@ -63,10 +63,7 @@ public class EventActivity extends AppCompatActivity {
      */
     AppCompatButton deletePosterButton;
 
-    /**
-     * Firebase Firestore instance for database operationsgit statu
-     */
-    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,45 +92,44 @@ public class EventActivity extends AppCompatActivity {
         if (name.isEmpty()) {
             name = ""; // Set to blank if no input
         }
+            String description = editEventDescription.getText().toString().trim();
+            if (description.isEmpty()) {
+                description = ""; // Set to blank if no input
+            }
 
-        String description = editEventDescription.getText().toString().trim();
-        if (description.isEmpty()) {
-            description = ""; // Set to blank if no input
+            String eventTime = editEventTime.getText().toString().trim();
+            if (eventTime.isEmpty()) {
+                eventTime = ""; // Set to blank if no input
+            }
+
+            String eventLocation = editlocation.getText().toString().trim();
+            if (eventLocation.isEmpty()) {
+                eventLocation = ""; // Set to blank if no input
+            }
+
+        if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
+            Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
+            Random rnd = new Random();
+            String randomStr = String.valueOf(rnd.nextInt(10000));
+            String token = name + randomStr;
+            intent.putExtra("CheckinToken", token);
+            String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));
+            intent.putExtra("PromoToken", token2);
+            String imageString = convertImageUriToString(imageUri);
+            if (imageString != null) {
+                intent.putExtra("name", name);
+                intent.putExtra("Time", eventTime);
+                intent.putExtra("Location", eventLocation);
+                intent.putExtra("description", description);
+                intent.putExtra("QRCode", token);
+                intent.putExtra("posterImage", imageString);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Please enter event name and description, and upload a poster", Toast.LENGTH_SHORT).show();
         }
-
-        String eventTime = editEventTime.getText().toString().trim();
-        if (eventTime.isEmpty()) {
-            eventTime = ""; // Set to blank if no input
-        }
-
-        String eventLocation = editlocation.getText().toString().trim();
-        if (eventLocation.isEmpty()) {
-            eventLocation = ""; // Set to blank if no input
-        }
-
-
-        // Generate tokens for QRCode and PromoQRCode, regardless of the inputs
-        Random rnd = new Random();
-        String randomStr = String.valueOf(rnd.nextInt(10000));
-        String token = name + randomStr; // Use the event name and a random string for the QRCode
-        String token2 = "Promo" + name + rnd.nextInt(10000); // Similarly for PromoQRCode
-
-        String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
-        // imageString will be an empty string if imageUri is null
-        Map<String, Object> event = new HashMap<>();
-        event.put("name", name);
-        event.put("Time", eventTime);
-        event.put("Description", description);
-        event.put("Location", eventLocation);
-        event.put("QRCode", token);
-        event.put("PromoQRCode", token2);
-        event.put("posterImage", imageString); // Add the image string or an empty string to the event map
-
-        // Save event to Firestore
-        db.collection("events")
-                .add(event)
-                .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Event created successfully", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -169,7 +165,6 @@ public class EventActivity extends AppCompatActivity {
         deletePosterButton = findViewById(R.id.deletePosterButton_CreateEventPage);
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_CreateEventPage);
 
-        db = FirebaseFirestore.getInstance();
 
         // Navigate back to OrganisorActivity
         backToOrganiser.setOnClickListener(v -> finish());
