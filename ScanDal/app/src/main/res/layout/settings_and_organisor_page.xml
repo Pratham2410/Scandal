@@ -138,7 +138,7 @@
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonNotification_SettingsPage"
+        android:id="@+id/buttonGeoTracking_SettingsPage"
         style="@style/btnSolidRounded"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_47pxv"
@@ -215,11 +215,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
-        android:text="Press to turn geo-tracking on/off for event verification"
-        android:textAlignment="center"
+        android:text="Press to turn geo-tracking on/off"
         android:textSize="@dimen/_16pxh"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNotification_SettingsPage"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGeoTracking_SettingsPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGotoOrganisorPage" />

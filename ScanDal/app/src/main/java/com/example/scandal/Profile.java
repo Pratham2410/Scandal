@@ -60,6 +60,10 @@ public class Profile extends AppCompatActivity {
      */
     private String homePage;
     /**
+     * An integer representing the GeoTracking Status(Set to 0 representing no as default)
+     */
+    private Integer GeoTracking;
+    /**
      * A URL link leading to the profile image
      */
     private Uri imageUri;
@@ -112,7 +116,20 @@ public class Profile extends AppCompatActivity {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * Returns the GeoTracking status of the user.
+     * @return An Integer representing whether the user allows geotracking(1 for yes 0 for no).
+     */
+    public Integer getGeoTracking() {
+        return GeoTracking;
+    }
+    /**
+     * Sets the GeoTracking status of the user.
+     * @param GeoTracking The new GeoTracking status to be set.
+     */
+    public void setGeoTracking(Integer GeoTracking) {
+        this.GeoTracking = GeoTracking;
+    }
     /**
      * Returns the phone number of the user.
      * @return A string representing the user's phone number.
@@ -331,6 +348,7 @@ public class Profile extends AppCompatActivity {
         profileData.put("imageString", imageString);
         profileData.put("customedImage",customedImage);
 
+
         saveDataToFirestore(profileData, deviceId);
     }
 
@@ -430,6 +448,8 @@ public class Profile extends AppCompatActivity {
                                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
                     } else {
+                        GeoTracking = 0;
+                        profileData.put("GeoTracking",GeoTracking);
                         db.collection("profiles")
                                 .add(profileData)
                                 .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())
