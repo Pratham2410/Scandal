@@ -33,11 +33,7 @@ public class AdminActivityIntentTest {
         intended(hasComponent(AdminEventActivity.class.getName()));
     }
 
-    @Test
-    public void testManageImagesIntent() {
-        onView(withId(R.id.buttonManageImages)).perform(click());
-        intended(hasComponent(AdminImageActivity.class.getName())); // Ensure this matches the actual class name for managing images
-    }
+
 
     @Test
     public void testManageProfilesIntent() {

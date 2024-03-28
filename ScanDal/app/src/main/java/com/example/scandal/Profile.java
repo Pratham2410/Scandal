@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,7 @@ public class Profile extends AppCompatActivity {
     /**
      * The phone number of the user
      */
+    private boolean imagePicked = false;
     private String phoneNumber;
     /**
      * A string representing the homepage
@@ -293,45 +295,51 @@ public class Profile extends AppCompatActivity {
     private void saveProfileData() {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        // Use trim() to remove leading and trailing spaces, and check if empty
-        String name = editTextName.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
-            name = ""; // Set to blank if empty
-        }
+        // Fetch the current state of imagePicked from Firestore to ensure we are using the latest state
+        db.collection("profiles").document(deviceId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Boolean imagePicked = document.getBoolean("imagePicked");
 
-        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
-        if (TextUtils.isEmpty(phoneNumber)) {
-            phoneNumber = ""; // Set to blank if empty
-        }
+                String name = editTextName.getText().toString().trim();
+                String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+                String homePage = editTextHomePage.getText().toString().trim();
 
-        String homePage = editTextHomePage.getText().toString().trim();
-        if (TextUtils.isEmpty(homePage)) {
-            homePage = ""; // Set to blank if empty
-        }
+                final Map<String, Object> profileData = new HashMap<>();
+                profileData.put("deviceId", deviceId);
+                profileData.put("name", name);
+                profileData.put("phoneNumber", phoneNumber);
+                profileData.put("homePage", homePage);
 
-        String imageString = null;
-        if (imageUri != null) {
-            // An image was selected by the user; convert it to a string
-            imageString = convertImageUriToString(imageUri);
-            customedImage = true;
-        } else if (customedImage == false){
-            // No image was selected; generate a TextDrawable based on the user's name
-            // Only do this if you really need a placeholder image for every profile without an image
-            if (!TextUtils.isEmpty(name)) {
-                // This block can be removed if you decide not to use a generated image when no image is selected
-                imageString = generateProfileImageForName(name);
+                if (Boolean.TRUE.equals(imagePicked)) {
+                    // If an image has been picked and is present, save that image
+                    String imageString = convertImageUriToString(imageUri);
+                    profileData.put("imageString", imageString);
+                } else if (!Boolean.TRUE.equals(imagePicked) && !name.isEmpty()) {
+                    // If no image has been picked or it has been deleted, generate a new one based on initials
+                    String imageString = generateProfileImageForName(name);
+                    profileData.put("imageString", imageString);
+                }
+                // Now that we have the complete profile data, including the correct image handling, proceed to save it
+                saveDataToFirestore(profileData, deviceId);
+            } else {
+                Log.d("Profile", "Failed to fetch imagePicked state from Firestore", task.getException());
+                // Consider handling the failure to fetch from Firestore, such as by using default behavior or notifying the user
             }
-        }
+        });
+    }
 
-        final Map<String, Object> profileData = new HashMap<>();
-        profileData.put("deviceId", deviceId);
-        profileData.put("name", name);
-        profileData.put("phoneNumber", phoneNumber);
-        profileData.put("homePage", homePage);
-        profileData.put("imageString", imageString);
-        profileData.put("customedImage",customedImage);
 
-        saveDataToFirestore(profileData, deviceId);
+    private void updateFirestoreImagePickedState(boolean imagePicked) {
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        Map<String, Object> update = new HashMap<>();
+        update.put("imagePicked", imagePicked);
+
+        // Assuming 'profiles' is your collection and 'deviceId' uniquely identifies a document
+        db.collection("profiles").document(deviceId)
+                .update(update)
+                .addOnSuccessListener(aVoid -> Log.d("Profile", "Firestore imagePicked state updated successfully"))
+                .addOnFailureListener(e -> Log.d("Profile", "Error updating Firestore imagePicked state", e));
     }
 
 
@@ -377,8 +385,8 @@ public class Profile extends AppCompatActivity {
                 .start());
 
         deleteButton.setOnClickListener(view -> {
-            customedImage = false;
-            saveProfileData();
+            updateFirestoreImagePickedState(false); // Update Firestore immediately when the image is deleted
+            // Additional code for handling the deletion...
         });
 
         findViewById(R.id.buttonSave).setOnClickListener(view -> saveProfileData());
@@ -395,6 +403,7 @@ public class Profile extends AppCompatActivity {
     private void processImagePickerResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE && data != null) {
             imageUri = data.getData();
+            updateFirestoreImagePickedState(true);
             String imageString = convertImageUriToString(imageUri);
             if (imageString != null) {
                 Bitmap bitmap = convertImageStringToBitmap(imageString);
