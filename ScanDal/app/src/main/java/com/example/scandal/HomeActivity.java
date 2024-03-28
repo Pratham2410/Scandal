@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 /** Activity for managing the homepage of ScanDal */
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.Firebase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
         attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
+
+
         // check if user is in database
         // check if there is a non empty profile picture
         // get profile picture from database

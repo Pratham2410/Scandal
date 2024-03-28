@@ -2,21 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AdminImageActivityIntentTest">
-        <State />
-      </entry>
-      <entry key="OrganisorActivityIntentTest">
-        <State />
-      </entry>
-      <entry key="OrganisorEventActivityIntentTest">
-        <State />
-      </entry>
-      <entry key="SettingsAndOrganiserActivityIntentTest">
-        <State />
-      </entry>
-      <entry key="Tests in 'com.example.scandal'">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>

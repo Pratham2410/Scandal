@@ -35,7 +35,7 @@
         <TextView
             android:id="@+id/textOrganisorPage"
             style="@style/txtPoppinsbold17"
-            android:layout_width="0dp"
+            android:layout_width="204dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16pxh"
             android:layout_marginTop="@dimen/_11pxv"
@@ -152,11 +152,20 @@
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"
         tools:src="@drawable/img_ellipse3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="165dp"
+        android:layout_height="208dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/img_completed_m9ci" />
 
     <FrameLayout
         android:id="@+id/buttonBackToHomepage"
@@ -176,14 +185,44 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
+        <TextView
+            android:id="@+id/txtHomePage"
+            style="@style/txtPoppinsbold15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_18pxh"
+            android:layout_marginTop="@dimen/_16pxv"
+            android:layout_marginEnd="@dimen/_18pxh"
+            android:layout_marginBottom="@dimen/_16pxv"
+            android:gravity="top|center"
+            android:shadowColor="#65FEEB"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="2.5"
+            android:text="Home Page"
+            android:textAllCaps="true"
+            tools:text="HOME PAGE" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="165dp"
-        android:layout_height="208dp"
+    <Button
+        android:id="@+id/sendnotifs"
+        style="@style/txtPoppinsbold17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#FFC107"
+        android:text="Send Notifications"
+        android:textColor="@color/pink_500"
+        android:textColorHighlight="#FFC107"
+        android:textColorHint="#FFC107"
+        android:textColorLink="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/img_completed_m9ci" />
+        app:layout_constraintHorizontal_bias="0.426"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textPressBelow1"
+        app:layout_constraintVertical_bias="0.496"
+        app:rippleColor="#FFC107"
+        app:strokeColor="#FFC107" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

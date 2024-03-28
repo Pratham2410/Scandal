@@ -6,6 +6,8 @@
     <string name="no_internet_connection">No internet connection!</string>
     <string name="lbl_your_name">Your Name</string>
     <string name="msg_press_the_butto">Press the button below to start!</string>
+    <string name="msg_token_fmt">FCM Registration Token: %1$s</string>
+
     <string name="msg_choose_from_alb">Choose From
 Albums</string>
     <string name="msg_edit_profile_pi">Edit Profile
@@ -19,7 +21,7 @@ Organisors and Admin page</string>
     <string name="lbl_get_started">Get Started</string>
     <string name="lbl_edit_name_info">Edit Name/Info</string>
     <string name="lbl_view_my_events">View My Events</string>
-    <string name="msg_your_contact_in">Your Contact Info</string>
+    <string name="msg_your_contact_in">Your Phone Number</string>
     <string name="lbl_my_events">My Events</string>
     <string name="lbl_take_a_photo">Take A Photo</string>
     <string name="lbl_your_homepage">Your HomePage</string>

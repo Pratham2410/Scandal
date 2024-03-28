@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScanDal"
         tools:targetApi="31">
+        <service
+
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+
+            </intent-filter>
+        </service>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -39,6 +52,7 @@
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
         </activity>
+
         <activity
             android:name=".EventPage">
             <!--            android:exported="true">-->
@@ -65,6 +79,8 @@
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
         <activity android:name=".AdminActivity">
+        </activity>
+        <activity android:name=".OrganiserNotificationActivity">
         </activity>
         <activity android:name=".OrganisorEventActivity"></activity>
         <activity android:name=".AdminImageActivity"></activity>
