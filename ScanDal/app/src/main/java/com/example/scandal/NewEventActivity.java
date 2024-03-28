@@ -1,24 +1,31 @@
 package com.example.scandal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.FileProvider;
 
-import com.google.android.datatransport.cct.internal.LogEvent;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.Objects;
 /** Activity for managing the creation of a new event */
 public class NewEventActivity extends AppCompatActivity {
 
@@ -70,7 +77,6 @@ public class NewEventActivity extends AppCompatActivity {
      *
      * Called when the activity is starting. This is where most initialization should go:
      * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
-     *
      * param savedInstanceState If the activity is being re-initialized after previously being shut down
      *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
      *                           Note: Otherwise, it is null.
@@ -88,6 +94,7 @@ public class NewEventActivity extends AppCompatActivity {
         saveCheckinCode = findViewById(R.id.buttonSaveCheckinCode);
         savePromoCode = findViewById(R.id.buttonSavePromoCode);
         saveProj = findViewById(R.id.buttonSaveProject);
+        Button share = findViewById(R.id.sharebtn123); // Remove line after testing
         String name = getIntent().getStringExtra("name");
         String description = getIntent().getStringExtra("description");
         String imageString = getIntent().getStringExtra("posterImage");
@@ -174,5 +181,53 @@ public class NewEventActivity extends AppCompatActivity {
             scanner.putExtra("QRCode", token);
             scanner.putExtra("posterImage", imageString);
             startActivity(scanner);        });
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareImage(QR.getQRPic(), "Promo QR shared from Scandal");
+            }
+        });
+    }
+
+    /**
+     * Shares in image pic with other apps and send the textAccompany with it
+     * @param pic img being shared
+     * @param textAccompany text to be sent with img
+     */
+    protected void shareImage(Bitmap pic, String textAccompany){
+        Intent share = new Intent(Intent.ACTION_SENDTO);
+        share.setType("image/jpeg");
+        Uri picUri;
+        picUri = saveImage(pic, getApplicationContext());
+        share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        share.putExtra(Intent.EXTRA_STREAM, picUri);
+        share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");
+        share.putExtra(Intent.EXTRA_TEXT, textAccompany);
+        startActivity(Intent.createChooser(share, "Share Data"));
+    }
+
+    /**
+     * This method takes a bit map and the context and converts and returns the uri of the image
+     * @param pic bitmap to be converted to uri format
+     * @param instance the context in which the method is called
+     * @return a uri version of the bitmap passed
+     */
+    private Uri saveImage(Bitmap pic, Context instance){
+        File imageFolder = new File(instance.getCacheDir(), "images");
+        Uri picUri = null;
+        try{
+            imageFolder.mkdir();
+            File file = new File(imageFolder, "share_codes.jpg");
+            FileOutputStream stream = new FileOutputStream(file);
+            pic.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            stream.flush();
+            stream.close();
+            picUri = FileProvider.getUriForFile(Objects.requireNonNull(instance.getApplicationContext()),
+                    "com.example.scandal"+".provider", file);
+
+        } catch (IOException error){
+            Log.d("saveImage", "Exception"+error.getMessage());
+        }
+        return picUri;
     }
 }
