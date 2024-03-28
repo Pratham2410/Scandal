@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
         attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
+
+
         // check if user is in database
         // check if there is a non empty profile picture
         // get profile picture from database
