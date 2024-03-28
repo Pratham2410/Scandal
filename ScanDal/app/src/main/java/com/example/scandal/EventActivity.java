@@ -107,6 +107,11 @@ public class EventActivity extends AppCompatActivity {
                 eventLocation = ""; // Set to blank if no input
             }
 
+        name = name.isEmpty() ? "" : name;
+        description = description.isEmpty() ? "" : description;
+        eventTime = eventTime.isEmpty() ? "" : eventTime;
+        eventLocation = eventLocation.isEmpty() ? "" : eventLocation;
+
         if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
             Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
             Random rnd = new Random();
@@ -116,6 +121,15 @@ public class EventActivity extends AppCompatActivity {
             String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));
             intent.putExtra("PromoToken", token2);
             String imageString = convertImageUriToString(imageUri);
+
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("name", name);
+            eventData.put("description", description);
+            eventData.put("eventTime", eventTime);
+            eventData.put("eventLocation", eventLocation);
+            eventData.put("QRCode", token);
+            eventData.put("posterImage", imageString);
+
             if (imageString != null) {
                 intent.putExtra("name", name);
                 intent.putExtra("Time", eventTime);
