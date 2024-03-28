@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,10 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView textEventDescription_ViewEventPage;
     /** ImageView to display the event image. */
     ImageView imageView;
+    /** ImageView to display QRCode */
+    ImageView QRCodeImage;
+    /** Button to see QRCode */
+    Button button_seeQR;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
     /**
@@ -44,6 +49,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
+        button_seeQR = findViewById(R.id.button_seeQRCode);
         db = FirebaseFirestore.getInstance();
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
