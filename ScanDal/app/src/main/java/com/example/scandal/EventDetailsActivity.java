@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -53,6 +54,15 @@ public class EventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
+
+        button_seeQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+                myIntent.putExtra("source", "EventDetails");
+                startActivity(myIntent);
+            }
+        });
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
