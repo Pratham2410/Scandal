@@ -67,25 +67,24 @@ public class AttendeeEventActivity extends AppCompatActivity {
     /**
      * Retrieves and displays event pulled from firebase
      */
+
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
         eventsList.setAdapter(adapter);
 
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        db.collection("profiles")
-                .whereEqualTo("deviceId", deviceId)
-                .limit(1)
+
+        db.collection("events")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        Map<String, Object> profileData = documentSnapshot.getData();
-                        if (profileData != null && profileData.containsKey("signedUp")) {
-                            Map<String, Object> signedUpEvent = (Map<String, Object>) profileData.get("signedUp");
-                            // Load every events a user signed up
-                            for (Object eventNameObject : signedUpEvent.values()) {
-                                String eventName = (String) eventNameObject;
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        Map<String, Object> eventData = documentSnapshot.getData();
+                        if (eventData.containsKey("signedUp")) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            if (signedUpUsers.containsKey(deviceId)) {
+                                // Assuming each event document has a 'name' field
+                                String eventName = documentSnapshot.getString("name");
                                 if (eventName != null) {
                                     eventNames.add(eventName);
                                     adapter.notifyDataSetChanged();
@@ -95,4 +94,5 @@ public class AttendeeEventActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
