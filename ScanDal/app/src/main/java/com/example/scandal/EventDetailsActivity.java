@@ -28,8 +28,6 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView textEventDescription_ViewEventPage;
     /** ImageView to display the event image. */
     ImageView imageView;
-    /** ImageView to display QRCode */
-    ImageView QRCodeImage;
     /** Button to see QRCode */
     Button button_seeQR;
     /** Button to navigate back from the event details page. */
