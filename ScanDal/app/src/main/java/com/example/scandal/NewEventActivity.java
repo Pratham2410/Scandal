@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,14 @@ public class NewEventActivity extends AppCompatActivity {
      */
     FrameLayout backButton;
     /**
+     * Text congratulating user on new event creation.
+     */
+    TextView congratsText;
+    /**
+     * Text informing user of new event creation
+     */
+    TextView newEventText;
+    /**
      * Button for saving project.
      */
     AppCompatButton saveProj;
@@ -58,6 +67,10 @@ public class NewEventActivity extends AppCompatActivity {
      * QRCode object for generating and handling QR codes.
      */
     QRCode QR;
+    /**
+     * String containing source of activity intent
+     */
+    String source;
     /**
      * token to be encoded in the default QR code for checkins
      */
@@ -88,15 +101,28 @@ public class NewEventActivity extends AppCompatActivity {
         saveCheckinCode = findViewById(R.id.buttonSaveCheckinCode);
         savePromoCode = findViewById(R.id.buttonSavePromoCode);
         saveProj = findViewById(R.id.buttonSaveProject);
+        congratsText = findViewById(R.id.textCongratEventsCreated);
+        newEventText = findViewById(R.id.textNewEventsCreated);
         String name = getIntent().getStringExtra("name");
         String description = getIntent().getStringExtra("description");
         String imageString = getIntent().getStringExtra("posterImage");
         String eventLocation = getIntent().getStringExtra("Location");
         String eventTime = getIntent().getStringExtra("Time");
 
+
         QR = new QRCode(); // Assuming you have a default constructor
 
         token = getIntent().getStringExtra("CheckinToken");
+
+        source = getIntent().getStringExtra("source");
+
+        if (source.equals("EventDetails")) {
+            saveCheckinCode.setVisibility(View.INVISIBLE);
+            savePromoCode.setVisibility(View.INVISIBLE);
+            saveProj.setVisibility(View.INVISIBLE);
+            congratsText.setVisibility(View.INVISIBLE);
+            newEventText.setVisibility(View.INVISIBLE);
+        }
 
         if (QR.generateQR(checkinQRCode, token)) {
             checkinQRCode.setImageBitmap(QR.getQRPic());
