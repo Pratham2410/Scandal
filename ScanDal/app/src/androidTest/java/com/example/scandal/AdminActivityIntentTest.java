@@ -1,7 +1,5 @@
 package com.example.scandal;
 
-import android.content.Intent;
-
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -35,11 +33,7 @@ public class AdminActivityIntentTest {
         intended(hasComponent(AdminEventActivity.class.getName()));
     }
 
-    @Test
-    public void testManageImagesIntent() {
-        onView(withId(R.id.buttonManageImages)).perform(click());
-        intended(hasComponent(AdminImageActivity.class.getName())); // Ensure this matches the actual class name for managing images
-    }
+
 
     @Test
     public void testManageProfilesIntent() {

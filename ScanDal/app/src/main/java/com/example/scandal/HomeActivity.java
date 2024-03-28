@@ -1,13 +1,17 @@
 package com.example.scandal;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +49,14 @@ public class HomeActivity extends AppCompatActivity {
      */
     private TextView adminLogin; // Declare the adminLogin TextView for ADMIN LOGIN button
     /**
+     * Admin password key
+     */
+    private String admin_passkey = "1234";
+    /**
+     * Admin Password input string
+     */
+    private String m_Text;
+    /**
      * Makes class attributes clickable
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
@@ -62,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
         adminLogin = findViewById(R.id.buttonAdminLogin); // Initialize the adminLogin TextView
         attendeeEvents = findViewById(R.id.buttonViewMyAttendeeEvents);
         ImageView settings = findViewById(R.id.imageGearOne);
+
+
         // check if user is in database
         // check if there is a non empty profile picture
         // get profile picture from database
@@ -83,18 +97,6 @@ public class HomeActivity extends AppCompatActivity {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
                                 if (bitmap != null) {
                                     profile.setImageBitmap(bitmap);
-                                }
-                                else {
-                                    // Generate TextDrawable if there's no original image or if the user deleted the image
-                                    String name = (String) profileData.get("name");
-                                    if (!name.isEmpty()) {
-                                        String initials = getInitials(name);
-                                        ColorGenerator generator = ColorGenerator.MATERIAL;
-                                        int color = generator.getColor(name);
-                                        TextDrawable drawable = TextDrawable.builder()
-                                                .buildRound(initials, color);
-                                        profile.setImageDrawable(drawable);
-                                    }
                                 }
                             }
                         }
@@ -152,20 +154,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Setup click listener for ADMIN LOGIN button
         adminLogin.setOnClickListener(view -> {
-            Intent myintent = new Intent(HomeActivity.this, AdminActivity.class);
-            startActivity(myintent);
+            showAdminPasswordDialog();
         });
 
-    }
-    // Helper method to extract initials from a name
-    private String getInitials(String name) {
-        StringBuilder initials = new StringBuilder();
-        for (String part : name.split(" ")) {
-            if (!part.trim().isEmpty()) {
-                initials.append(part.charAt(0));
-            }
-        }
-        return initials.toString().toUpperCase();
     }
     private Bitmap convertImageStringToBitmap(String imageString) {
         try {
@@ -175,5 +166,54 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    //Helper function to prompt user for admin password
+    private void showAdminPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Admin Password");
+
+        // Set up the input
+        final EditText admin_key_input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        admin_key_input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        builder.setView(admin_key_input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = admin_key_input.getText().toString();
+                if (m_Text.equals(admin_passkey)) {
+                    Intent myintent = new Intent(HomeActivity.this, AdminActivity.class);
+                    startActivity(myintent);
+                }
+                else {
+                    showIncorrectPasswordDialog();
+                    //showAdminPasswordDialog("Password Invalid");
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+    //Helper function to handle incorrect admin password
+    private void showIncorrectPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Password Invalid");
+        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showAdminPasswordDialog();
+            }
+        });
+        builder.show();
     }
 }

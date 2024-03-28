@@ -60,6 +60,10 @@ public class Profile extends AppCompatActivity {
      */
     private String homePage;
     /**
+     * An integer representing the GeoTracking Status(Set to 0 representing no as default)
+     */
+    private Integer GeoTracking;
+    /**
      * A URL link leading to the profile image
      */
     private Uri imageUri;
@@ -95,7 +99,7 @@ public class Profile extends AppCompatActivity {
      * Contains reference to database
      */
     private FirebaseFirestore db;
-    private String imageReferString = null;
+    private boolean customedImage;
 
     /**
      * Returns the name of the user.
@@ -112,7 +116,20 @@ public class Profile extends AppCompatActivity {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * Returns the GeoTracking status of the user.
+     * @return An Integer representing whether the user allows geotracking(1 for yes 0 for no).
+     */
+    public Integer getGeoTracking() {
+        return GeoTracking;
+    }
+    /**
+     * Sets the GeoTracking status of the user.
+     * @param GeoTracking The new GeoTracking status to be set.
+     */
+    public void setGeoTracking(Integer GeoTracking) {
+        this.GeoTracking = GeoTracking;
+    }
     /**
      * Returns the phone number of the user.
      * @return A string representing the user's phone number.
@@ -170,25 +187,15 @@ public class Profile extends AppCompatActivity {
                             editTextName.setText((String) profileData.get("name"));
                             editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
                             editTextHomePage.setText((String) profileData.get("homePage"));
+                            // Check if user has customized image before
+                            Object customImageFlag = profileData.get("customedImage");
+                            customedImage = customImageFlag instanceof Boolean && (Boolean) customImageFlag;
                             String imageString = (String) profileData.get("imageString");
-                            imageReferString = (String) profileData.get("imageString");
                             if (imageString != null) {
                                 // Convert and display the original image
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
                                 if (bitmap != null) {
                                     imageView.setImageBitmap(bitmap);
-                                }
-                                else if (imageReferString != ""){
-                                    // Generate TextDrawable if there's no original image or if the user deleted the image
-                                    String name = (String) profileData.get("name");
-                                    if (name != null && !name.isEmpty()) {
-                                        String initials = getInitials(name);
-                                        ColorGenerator generator = ColorGenerator.MATERIAL;
-                                        int color = generator.getColor(name);
-                                        TextDrawable drawable = TextDrawable.builder()
-                                                .buildRound(initials, color);
-                                        imageView.setImageDrawable(drawable);
-                                    }
                                 }
                             }
                         }
@@ -323,7 +330,8 @@ public class Profile extends AppCompatActivity {
         if (imageUri != null) {
             // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
-        } else {
+            customedImage = true;
+        } else if (customedImage == false){
             // No image was selected; generate a TextDrawable based on the user's name
             // Only do this if you really need a placeholder image for every profile without an image
             if (!TextUtils.isEmpty(name)) {
@@ -338,6 +346,8 @@ public class Profile extends AppCompatActivity {
         profileData.put("phoneNumber", phoneNumber);
         profileData.put("homePage", homePage);
         profileData.put("imageString", imageString);
+        profileData.put("customedImage",customedImage);
+
 
         saveDataToFirestore(profileData, deviceId);
     }
@@ -356,6 +366,7 @@ public class Profile extends AppCompatActivity {
                 .buildRound(initials, color);
 
         Bitmap bitmap = drawableToBitmap(drawable);
+        imageView.setImageDrawable(drawable);
         return convertBitmapToImageString(bitmap);
     }
     /**
@@ -383,7 +394,10 @@ public class Profile extends AppCompatActivity {
                 .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080
                 .start());
 
-        deleteButton.setOnClickListener(view -> imageView.setImageResource(R.drawable.img_ellipse1_124x124));
+        deleteButton.setOnClickListener(view -> {
+            customedImage = false;
+            saveProfileData();
+        });
 
         findViewById(R.id.buttonSave).setOnClickListener(view -> saveProfileData());
 
@@ -428,12 +442,16 @@ public class Profile extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        GeoTracking = 0;
+                        profileData.put("GeoTracking",GeoTracking);
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
                                 .set(profileData)
                                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
                     } else {
+                        GeoTracking = 0;
+                        profileData.put("GeoTracking",GeoTracking);
                         db.collection("profiles")
                                 .add(profileData)
                                 .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())

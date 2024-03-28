@@ -2,42 +2,8 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AndroidStudioProjects.ScanDal.app.androidTest">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\prath\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-08T10:11:20.915245800Z" />
-        </State>
-      </entry>
-      <entry key="AndroidStudioProjects.ScanDal.app.unitTest">
-        <State />
-      </entry>
-      <entry key="Tests in 'com.example.scandal'">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\prath\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-08T20:20:55.158931Z" />
-        </State>
-      </entry>
       <entry key="app">
+<<<<<<< Updated upstream
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -52,6 +18,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-22T00:32:33.742840200Z" />
         </State>
+=======
+        <State />
+>>>>>>> Stashed changes
       </entry>
     </value>
   </component>

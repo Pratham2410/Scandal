@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    //implementation(files("/Users/dhruvilpatel/Library/Android/sdk/platforms/android-34/android.jar"))
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
@@ -51,6 +52,7 @@ dependencies {
     implementation ("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.mlkit:barcode-scanning-common:17.0.0")
+    implementation("androidx.work:work-runtime:2.9.0")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0") // Using KTX version for Kotlin-friendly APIs
     testImplementation("junit:junit:4.13.2")

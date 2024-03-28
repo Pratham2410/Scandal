@@ -74,15 +74,33 @@ public class QRCodeScanner extends AppCompatActivity {
                             Intent nextIntent = new Intent(QRCodeScanner.this, EventPage.class); // Put the next activity here to go there after a QR is scanned
                             nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
                             startActivity(nextIntent);
-                        } //else if (act == 2) {
-//                            Intent nextIntent = new Intent(QRCodeScanner.this, OtherNextActivity.class); // Put the next activity here to go there after a QR is scanned
-//                            nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
-//                            nextIntent.putExtra("userID", userID);
-//                            QRCodeScanner.this.startActivity(nextIntent);
-//                        } else{
+                        } else if (act == 2) {
+                            String name = getIntent().getStringExtra("name");
+                            String description = getIntent().getStringExtra("description");
+                            String imageString = getIntent().getStringExtra("posterImage");
+                            String eventLocation = getIntent().getStringExtra("Location");
+                            String eventTime = getIntent().getStringExtra("Time");
+                            Intent intent = new Intent(QRCodeScanner.this, NewEventActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("Time", eventTime);
+                            intent.putExtra("Location", eventLocation);
+                            intent.putExtra("description", description);
+                            intent.putExtra("posterImage", imageString);
+                            Bundle extras = getIntent().getExtras();
+                            if (extras.containsKey("PromoQRCode")){
+                                String token2 = getIntent().getStringExtra("PromoQRCode");
+                                intent.putExtra("PromoToken", token2);
+                                intent.putExtra("CheckinToken", decoded);
+                            } else if (extras.containsKey("QRCode")){
+                                String token2 = getIntent().getStringExtra("QRCode");
+                                intent.putExtra("CheckinToken", token2);
+                                intent.putExtra("PromoToken", decoded);
+                            }
+                            startActivity(intent);
+                        } //else{
 //                            Log.e("hpeebles", "QRCodeScanner needs a integer to be passed through an intent to function properly");
 //                        }
-                        //Toast.makeText(CameraTesting.this, decoded, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CameraTesting.this, decoded, Toast.LENGTH_SHORT).show();
 
                     }
                 });

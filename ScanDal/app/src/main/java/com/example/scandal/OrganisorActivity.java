@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -69,19 +70,9 @@ public class OrganisorActivity extends AppCompatActivity {
 
         buttonSendNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String title = "Event Notification"; // This should be retrieved from a user input or your data model
-                String message = "You have an upcoming event!"; // This should also be retrieved as above
-
-                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
-                        "/topics/all",
-                        title,
-                        message,
-                        getApplicationContext(),
-                        OrganisorActivity.this
-                );
-
-                notificationsSender.SendNotifications(); // Make sure you're calling the correct method (case-sensitive)
+            public void onClick(View view) {
+                Intent intent_home = new Intent(OrganisorActivity.this, OrganiserNotificationActivity.class);
+                startActivity(intent_home);
             }
         });
     }

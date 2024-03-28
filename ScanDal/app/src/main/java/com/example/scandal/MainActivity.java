@@ -2,6 +2,8 @@ package com.example.scandal;
 
 import static android.content.ContentValues.TAG;
 
+
+
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.Manifest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -68,12 +74,14 @@ public class MainActivity extends AppCompatActivity {
                         // Get new FCM registration token
                         String token = task.getResult();
 
+
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+
 
     }
 }
