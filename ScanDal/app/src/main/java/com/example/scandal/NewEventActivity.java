@@ -2,177 +2,80 @@ package com.example.scandal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.android.datatransport.cct.internal.LogEvent;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-/** Activity for managing the creation of a new event */
+
 public class NewEventActivity extends AppCompatActivity {
 
-    /**
-     * ImageView for displaying the check-in QR code.
-     */
-    ImageView checkinQRCode;
-
-    /**
-     * ImageView for displaying the promo QR code.
-     */
-    ImageView promoQRCode;
-
-    /**
-     * Button for saving the check-in code.
-     */
-    AppCompatButton saveCheckinCode;
-
-    /**
-     * Button for saving the promo code.
-     */
-    AppCompatButton savePromoCode;
-    /**
-     * Button for going back.
-     */
-    FrameLayout backButton;
-    /**
-     * Button for saving project.
-     */
-    AppCompatButton saveProj;
-    /**
-     * Firebase Firestore instance for database operations
-     */
+    // Assuming these ImageViews are for displaying the QR codes or posters if needed
+    ImageView checkinQRCode, promoQRCode;
+    AppCompatButton saveEventButton;
     FirebaseFirestore db;
 
-    /**
-     * QRCode object for generating and handling QR codes.
-     */
-    QRCode QR;
-    /**
-     * token to be encoded in the default QR code for checkins
-     */
-    String token;
-    /**
-     *  the token to be encoded for the default QR code for event promo
-     */
-    String token2;
-    /**
-     *
-     * Called when the activity is starting. This is where most initialization should go:
-     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
-     *
-     * param savedInstanceState If the activity is being re-initialized after previously being shut down
-     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
-     *                           Note: Otherwise, it is null.
-     */
-  //  @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.events_created_page); // Ensure you have this layout
 
-        setContentView(R.layout.events_created_page);
+        db = FirebaseFirestore.getInstance();
 
-        // Initialize your components here
-        backButton = findViewById(R.id.buttonBack_EventsCreatedPage);
-        checkinQRCode = findViewById(R.id.checkinQRCode);
-        promoQRCode = findViewById(R.id.promoQRCode);
-        saveCheckinCode = findViewById(R.id.buttonSaveCheckinCode);
-        savePromoCode = findViewById(R.id.buttonSavePromoCode);
-        saveProj = findViewById(R.id.buttonSaveProject);
-        String name = getIntent().getStringExtra("name");
-        String description = getIntent().getStringExtra("description");
-        String imageString = getIntent().getStringExtra("posterImage");
-        String eventLocation = getIntent().getStringExtra("Location");
-        String eventTime = getIntent().getStringExtra("Time");
+        initializeUI();
 
-        QR = new QRCode(); // Assuming you have a default constructor
+        // Retrieve event details passed from EventActivity
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        String description = intent.getStringExtra("description");
+        String eventTime = intent.getStringExtra("Time");
+        String eventLocation = intent.getStringExtra("Location");
+        String checkinToken = intent.getStringExtra("CheckinToken");
+        String promoToken = intent.getStringExtra("PromoToken");
+        String posterImage = intent.getStringExtra("posterImage"); // Base64 image string
+        // Fetch device ID to use as organizer
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        token = getIntent().getStringExtra("CheckinToken");
 
-        if (QR.generateQR(checkinQRCode, token)) {
-            checkinQRCode.setImageBitmap(QR.getQRPic());
-        } else {
-            Log.e("NewEventActivity", "Checkin QR generation failed");
-        }
-        token2 = getIntent().getStringExtra("PromoToken");
-        if (QR.generateQR(promoQRCode, token2)) {
-            promoQRCode.setImageBitmap(QR.getQRPic());
-        } else {
-            Log.e("NewEventActivity", "Promo QR generation failed");
-        }
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("hpeebles", "Going to event page");
-                finish();
-            }
+        // Save button action
+        saveEventButton.setOnClickListener(v -> {
+            Map<String, Object> event = new HashMap<>();
+            event.put("name", name);
+            event.put("description", description);
+            event.put("time", eventTime);
+            event.put("location", eventLocation);
+            event.put("checkinToken", checkinToken);
+            event.put("promoToken", promoToken);
+            event.put("posterImage", posterImage);
+            event.put("organizer", deviceId); // Add device ID as organizer
+
+            // Save the event to Firestore
+            saveEventToFirestore(event);
         });
-        saveProj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> event = new HashMap<>();
-                event.put("name", name);
-                event.put("Time", eventTime);
-                event.put("Location", eventLocation);
-                event.put("description", description);
-                event.put("QRCode", token);
-                event.put("PromoQRCode", token2);
-                event.put("posterImage", imageString); // Add the image string to the event map
-                // Save event to Firestore
-                Log.e("hpeebles", "before storing in db");
-                db.collection("events")
-                        .add(event)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.e("hpeebles", "Added to DB");
-                                Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);
-                                startActivity(homePage);
-                            }
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
-//                Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);
-//                startActivity(homePage);
-            }
-        });
+    }
 
-        /**
-         * activates the QR scanner to get the custom qr code for checkins
-         */
-        saveCheckinCode.setOnClickListener(v -> {
+    private void initializeUI() {
+        // Initialize your UI components here
+        // Example:
+        saveEventButton = findViewById(R.id.buttonSaveProject);
+        checkinQRCode = findViewById(R.id.checkinQRCode); // If you're displaying QR codes or images
+        promoQRCode = findViewById(R.id.promoQRCode); // If you're displaying QR codes or images
+    }
 
-            Intent scanner = new Intent(NewEventActivity.this, QRCodeScanner.class);
-            scanner.putExtra("Activity", 2);
-            scanner.putExtra("name", name);
-            scanner.putExtra("Time", eventTime);
-            scanner.putExtra("Location", eventLocation);
-            scanner.putExtra("description", description);
-            scanner.putExtra("PromoQRCode", token2);
-            scanner.putExtra("posterImage", imageString);
-            startActivity(scanner);
-
-        });
-        /**
-         * activates the QR scanner to get the custom qr code for event promotion
-         */
-        savePromoCode.setOnClickListener(v -> {
-            Intent scanner = new Intent(NewEventActivity.this, QRCodeScanner.class);
-            scanner.putExtra("Activity", 2);
-            scanner.putExtra("name", name);
-            scanner.putExtra("Time", eventTime);
-            scanner.putExtra("Location", eventLocation);
-            scanner.putExtra("description", description);
-            scanner.putExtra("QRCode", token);
-            scanner.putExtra("posterImage", imageString);
-            startActivity(scanner);        });
+    private void saveEventToFirestore(Map<String, Object> event) {
+        db.collection("events")
+                .add(event)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(NewEventActivity.this, "Event saved successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // Optionally finish this activity
+                })
+                .addOnFailureListener(e -> Toast.makeText(NewEventActivity.this, "Error saving event", Toast.LENGTH_SHORT).show());
     }
 }
