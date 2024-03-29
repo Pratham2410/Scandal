@@ -442,11 +442,15 @@ public class Profile extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        if(!profileData.containsKey("GeoTracking")){
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> preData = documentSnapshot.getData();
+                        if(preData.get("GeoTracking")!=null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1){
+                            GeoTracking = 1;
+                            profileData.put("GeoTracking",GeoTracking);
+                        }else {
                             GeoTracking = 0;
                             profileData.put("GeoTracking",GeoTracking);
                         }
-
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
                                 .set(profileData)
