@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NewEventActivity extends AppCompatActivity {
+
 
     // Assuming these ImageViews are for displaying the QR codes or posters if needed
     ImageView checkinQRCode, promoQRCode;
@@ -58,6 +60,7 @@ public class NewEventActivity extends AppCompatActivity {
 
             // Save the event to Firestore
             saveEventToFirestore(event);
+
         });
     }
 

@@ -102,6 +102,15 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Please enter your name first", Toast.LENGTH_SHORT).show();
+                            buttonGeoTracking.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(getApplicationContext(), "Please enter your name first", Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
                         }
                     } else {
                         // Device is not registered, let the user enter new information
