@@ -82,7 +82,7 @@
         </activity>
         <activity android:name=".OrganiserNotificationActivity">
         </activity>
-        <activity android:name=".OrganisorEventActivity"></activity>
+        <activity android:name=".OrganizerEventActivity"></activity>
         <activity android:name=".AdminImageActivity"></activity>
         <activity android:name=".AdminEventActivity"></activity>
         <activity android:name=".EventActivity">

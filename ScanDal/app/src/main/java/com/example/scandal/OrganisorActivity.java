@@ -23,8 +23,7 @@ public class OrganisorActivity extends AppCompatActivity {
     /**
      * A button to display an organizer's events
      */
-    Button buttonSendNotifications;
-    LinearLayout buttonViewMyEvents;
+    Button buttonSendNotifications, buttonViewMyEvents;;
     /**
      * Button leading back to homepage
      */
@@ -44,6 +43,7 @@ public class OrganisorActivity extends AppCompatActivity {
         buttonSendNotifications = findViewById(R.id.sendnotifs);
         buttonCreateNewEvents = findViewById(R.id.buttonCreateNewEvents);
         buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
+        buttonViewMyEvents = findViewById(R.id.buttonViewMyEvents_OrganisorHomepage);
 
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_OrganisorHomepage);
 
@@ -74,6 +74,12 @@ public class OrganisorActivity extends AppCompatActivity {
                 Intent intent_home = new Intent(OrganisorActivity.this, OrganiserNotificationActivity.class);
                 startActivity(intent_home);
             }
+        });
+
+        // Functionality to navigate to OrganizerEventActivity
+        buttonViewMyEvents.setOnClickListener(v -> {
+            Intent intent_viewMyEvents = new Intent(OrganisorActivity.this, OrganizerEventActivity.class);
+            startActivity(intent_viewMyEvents);
         });
     }
 }
