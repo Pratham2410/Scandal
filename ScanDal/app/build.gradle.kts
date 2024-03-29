@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    //implementation(files("/Users/dhruvilpatel/Library/Android/sdk/platforms/android-34/android.jar"))
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")

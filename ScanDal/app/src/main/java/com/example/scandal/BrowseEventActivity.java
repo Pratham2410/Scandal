@@ -56,7 +56,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         loadEvents();
     }
     /**
-     * Retrieves and displays profiles pulled from firebase
+     * Retrieves and displays event pulled from firebase
      */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();

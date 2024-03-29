@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,12 +34,15 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView textEventLocation_ViewEventPage;
     /** ImageView to display the event location. */
     ImageView imageView;
+    /** Button to see QRCode */
+    Button button_seeQR;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
     LinearLayout buttonSignUp;
     String attendeeName;
+    String promoQRCode;
     /**
-     * Calle when the activity is starting.
+     * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
@@ -60,6 +65,15 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
+        button_seeQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+                myIntent.putExtra("source", "EventDetails");
+                startActivity(myIntent);
+            }
+        });
+
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
@@ -76,6 +90,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             textEventTime_ViewEventPage.setText((String) eventData.get("Time"));
                             textEventLocation_ViewEventPage.setText((String) eventData.get("Location"));
                             textEventDescription_ViewEventPage.setText((String) eventData.get("Description"));
+                            promoQRCode = (String) eventData.get("PromoQRCode");
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
@@ -100,7 +115,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                             Map<String, Object> profileData = documentSnapshot.getData();
                             if (profileData != null) {
                                 attendeeName = (String) profileData.get("name");
-                                saveSignUpToDataBase(eventName);
+                                saveSignUpToEvent(eventName);
+                                saveSignUpToAttendee(eventName);
                             }
                             else {
                                 // Device is not registered, let the user enter new information
@@ -111,7 +127,52 @@ public class EventDetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
-    private void saveSignUpToDataBase(String eventName) {
+    private void saveSignUpToAttendee(String eventName) {
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final Map<String, Object> signedUp = new HashMap<>();
+        signedUp.put(promoQRCode, eventName);
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        String documentId = documentSnapshot.getId();
+                        Map<String, Object> profileData = documentSnapshot.getData();
+                        // If there is dictionary storing signed up event
+                        if (profileData != null && profileData.containsKey("signedUp")) {
+                            Map<String, Object> existingSignedUp = (Map<String, Object>) profileData.get("signedUp");
+                            existingSignedUp.put(promoQRCode, eventName);
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("signedUp", existingSignedUp);
+                            // Perform the update
+                            db.collection("profiles").document(documentId)
+                                    .update(update)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                        else {
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("signedUp", signedUp);
+                            // Perform the update
+                            db.collection("profiles").document(documentId)
+                                    .update(update)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    }
+                });
+    }
+    private void saveSignUpToEvent(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final Map<String, Object> signedUp = new HashMap<>();
         signedUp.put(deviceId, attendeeName);

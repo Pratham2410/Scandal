@@ -89,12 +89,12 @@ public class QRCodeScanner extends AppCompatActivity {
                             Bundle extras = getIntent().getExtras();
                             if (extras.containsKey("PromoQRCode")){
                                 String token2 = getIntent().getStringExtra("PromoQRCode");
-                                intent.putExtra("PromoQRCode", token2);
-                                intent.putExtra("QRCode", decoded);
+                                intent.putExtra("PromoToken", token2);
+                                intent.putExtra("CheckinToken", decoded);
                             } else if (extras.containsKey("QRCode")){
                                 String token2 = getIntent().getStringExtra("QRCode");
-                                intent.putExtra("QRCode", token2);
-                                intent.putExtra("PromoQRCode", decoded);
+                                intent.putExtra("CheckinToken", token2);
+                                intent.putExtra("PromoToken", decoded);
                             }
                             startActivity(intent);
                         } //else{
