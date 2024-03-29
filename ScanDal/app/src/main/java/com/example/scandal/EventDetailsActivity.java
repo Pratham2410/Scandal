@@ -90,6 +90,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             textEventTime_ViewEventPage.setText((String) eventData.get("Time"));
                             textEventLocation_ViewEventPage.setText((String) eventData.get("Location"));
                             textEventDescription_ViewEventPage.setText((String) eventData.get("Description"));
+
                             promoQRCode = (String) eventData.get("promoToken");
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
