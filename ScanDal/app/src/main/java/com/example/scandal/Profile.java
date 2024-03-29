@@ -446,6 +446,7 @@ public class Profile extends AppCompatActivity {
                             GeoTracking = 0;
                             profileData.put("GeoTracking",GeoTracking);
                         }
+
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
                                 .set(profileData)
