@@ -64,15 +64,15 @@ public class EventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
-
-        button_seeQR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
-                myIntent.putExtra("source", "EventDetails");
-                startActivity(myIntent);
-            }
-        });
+        // The below code is causing app crush
+//        button_seeQR.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+//                myIntent.putExtra("source", "EventDetails");
+//                startActivity(myIntent);
+//            }
+//        });
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
@@ -87,10 +87,10 @@ public class EventDetailsActivity extends AppCompatActivity {
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData != null) {
                             textEventName_ViewEventPage.setText((String) eventData.get("name"));
-                            textEventTime_ViewEventPage.setText((String) eventData.get("Time"));
-                            textEventLocation_ViewEventPage.setText((String) eventData.get("Location"));
-                            textEventDescription_ViewEventPage.setText((String) eventData.get("Description"));
-                            promoQRCode = (String) eventData.get("PromoQRCode");
+                            textEventTime_ViewEventPage.setText((String) eventData.get("time"));
+                            textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
+                            textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
+                            promoQRCode = (String) eventData.get("promoToken");
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
