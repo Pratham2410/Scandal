@@ -16,24 +16,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Activity for displaying events organized by the user (as determined by device ID).
+ * Activity for displaying the list of user who signed up for an event
  */
-public class OrganizerEventActivity extends AppCompatActivity {
+public class OrganizerListSignedUpActivity extends AppCompatActivity {
     /**
      * FrameLayout for navigating back to the main page.
      */
     FrameLayout backMain;
     /**
-     * ListView for displaying events.
+     * ListView for displaying signed up users.
      */
-    ListView eventsList;
+    ListView userList;
     /**
      * Firebase Firestore instance for database operations.
      */
     FirebaseFirestore db;
-
     /**
      * Called when the activity is starting.
      *
@@ -42,33 +42,24 @@ public class OrganizerEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events_page); // Assuming you're reusing the same layout
+        setContentView(R.layout.my_events_page); // Change to correct page later
 
         backMain = findViewById(R.id.buttonBack_MyEventsPage);
-        eventsList = findViewById(R.id.listView_MyEventsPage);
+        userList = findViewById(R.id.listView_MyEventsPage);
         db = FirebaseFirestore.getInstance();
 
         backMain.setOnClickListener(v -> finish());
-        eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String eventName = (String) parent.getItemAtPosition(position);
-                //Intent intent = new Intent(OrganizerEventActivity.this, SignedUpEventDetailsActivity.class); // Use appropriate activity to show event details
-                Intent intent = new Intent(OrganizerEventActivity.this, OrganizerListSignedUpActivity.class);
-                intent.putExtra("eventName", eventName);
-                startActivity(intent);
-            }
-        });
-        loadEvents();
+
+        loadUsers();
     }
 
     /**
      * Retrieves and displays events organized by the user.
      */
-    private void loadEvents() {
-        List<String> eventNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
-        eventsList.setAdapter(adapter);
+    private void loadUsers() {
+        List<String> userNames = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userNames);
+        userList.setAdapter(adapter);
 
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -77,10 +68,16 @@ public class OrganizerEventActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        String eventName = documentSnapshot.getString("name");
-                        if (eventName != null) {
-                            eventNames.add(eventName);
-                            adapter.notifyDataSetChanged();
+                        Map<String, Object> eventData = documentSnapshot.getData();
+                        if (eventData.containsKey("signedUp")) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            for (Object userNameObj : signedUpUsers.values()) {
+                                String userName = (String) userNameObj;
+                                if (userName != null) {
+                                    userNames.add(userName);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
                         }
                     }
                 });
