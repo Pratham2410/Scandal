@@ -49,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
         android:ellipsize="end"
@@ -70,9 +71,10 @@
 
     <TextView
         android:id="@+id/textEventDescription_ViewEventPage"
-        android:layout_width="362dp"
+        android:layout_width="match_parent"
         android:layout_height="124dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
         android:ellipsize="end"
@@ -94,9 +96,10 @@
     <TextView
         android:id="@+id/textEventLocation_ViewEventPage"
         style="sans-sarif"
-        android:layout_width="396dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
         android:ellipsize="end"
@@ -108,7 +111,7 @@
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
         android:textColorHint="@color/black_900_99"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_seeQRCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textEventDescription_ViewEventPage"
@@ -252,11 +255,10 @@
         android:id="@+id/button_seeQRCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:text="See QRCode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEventDescription_ViewEventPage" />
+        app:layout_constraintTop_toBottomOf="@+id/textEventLocation_ViewEventPage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
