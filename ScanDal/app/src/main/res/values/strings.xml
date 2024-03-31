@@ -7,6 +7,7 @@
     <string name="lbl_your_name">Your Name</string>
     <string name="msg_press_the_butto">Press the button below to start!</string>
     <string name="msg_token_fmt">FCM Registration Token: %1$s</string>
+    <string name="checked_in_attendees">Checked In</string>
 
     <string name="msg_choose_from_alb">Choose From
 Albums</string>
