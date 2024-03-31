@@ -10,18 +10,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -110,20 +104,17 @@ public class EventActivity extends AppCompatActivity {
         String promoToken = "Promo" + name + rnd.nextInt(10000);
 
         // Prepare intent for the next activity, using the exact keys you've provided
+        String imageString = convertImageUriToString(imageUri);
+        NewEventActivity.imageString = imageString;
         Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
-        intent.putExtra("name", name);
+        intent.putExtra("name", name) ;
         intent.putExtra("description", description);
         intent.putExtra("Time", eventTime); // Changed from "eventTime" to "Time"
         intent.putExtra("Location", eventLocation); // Changed from "eventLocation" to "Location"
         intent.putExtra("CheckinToken", checkinToken); // Changed to match "CheckinToken"
         intent.putExtra("PromoToken", promoToken); // Changed to match "PromoToken"
-        intent.putExtra("posterImage", imageString); // Base64 image string
-
         // Start the next activity with the prepared intent
         startActivity(intent);
-
-        // Optionally, you could add code here to save these details to Firestore
-        // Implementation depends on your Firestore structure
     }
 
 

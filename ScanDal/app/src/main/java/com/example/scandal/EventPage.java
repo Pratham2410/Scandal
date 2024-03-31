@@ -52,7 +52,7 @@ EventPage extends AppCompatActivity {
 
         // Query Firestore for events with matching QRCode or PromoQRCode
         db.collection("events")
-                .whereEqualTo("QRCode", token)
+                .whereEqualTo("checkinToken", token)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -99,7 +99,7 @@ EventPage extends AppCompatActivity {
     private void searchWithPromoQRCode(String token) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("events")
-                .whereEqualTo("PromoQRCode", token)
+                .whereEqualTo("promoToken", token)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
