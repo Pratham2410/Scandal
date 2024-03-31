@@ -10,18 +10,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -108,6 +102,8 @@ public class EventActivity extends AppCompatActivity {
             }
 
         if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
+            String imageString = convertImageUriToString(imageUri);
+            NewEventActivity.imageString = imageString;
             Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
             Random rnd = new Random();
             String randomStr = String.valueOf(rnd.nextInt(10000));
@@ -115,14 +111,13 @@ public class EventActivity extends AppCompatActivity {
             intent.putExtra("CheckinToken", token);
             String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));
             intent.putExtra("PromoToken", token2);
-            String imageString = convertImageUriToString(imageUri);
             if (imageString != null) {
                 intent.putExtra("name", name);
                 intent.putExtra("Time", eventTime);
                 intent.putExtra("Location", eventLocation);
                 intent.putExtra("description", description);
                 intent.putExtra("QRCode", token);
-                intent.putExtra("posterImage", imageString);
+                //intent.putExtra("posterImage", imageString);
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
