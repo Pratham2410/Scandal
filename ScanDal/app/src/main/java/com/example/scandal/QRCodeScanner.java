@@ -46,7 +46,7 @@ public class QRCodeScanner extends AppCompatActivity {
      * A code scanner object to handle QR code scanning flow
      */
     private CodeScanner mCodeScanner;
-
+    static String imageString;
     /**
      * Displays QRCode scanner to user, and handles the scanning procedure
      * @param savedInstanceState If the activity is being re-initialized after
@@ -77,15 +77,15 @@ public class QRCodeScanner extends AppCompatActivity {
                         } else if (act == 2) {
                             String name = getIntent().getStringExtra("name");
                             String description = getIntent().getStringExtra("description");
-                            String imageString = getIntent().getStringExtra("posterImage");
                             String eventLocation = getIntent().getStringExtra("Location");
                             String eventTime = getIntent().getStringExtra("Time");
+                            NewEventActivity.imageString =imageString;
                             Intent intent = new Intent(QRCodeScanner.this, NewEventActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("Time", eventTime);
                             intent.putExtra("Location", eventLocation);
                             intent.putExtra("description", description);
-                            intent.putExtra("posterImage", imageString);
+
                             Bundle extras = getIntent().getExtras();
                             if (extras.containsKey("PromoQRCode")){
                                 String token2 = getIntent().getStringExtra("PromoQRCode");

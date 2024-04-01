@@ -91,6 +91,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
                             textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
                             promoQRCode = (String) eventData.get("promoToken");
+
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
