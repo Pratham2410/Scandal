@@ -18,7 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 /**
  * Activity for displaying details of an event based on QR code.
  */
-public class EventPage extends AppCompatActivity {
+public class
+EventPage extends AppCompatActivity {
     /** ImageView to display the poster of the event. */
     ImageView poster;
     /** FrameLayout for navigating back. */

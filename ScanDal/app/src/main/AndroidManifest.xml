@@ -82,7 +82,7 @@
         </activity>
         <activity android:name=".OrganiserNotificationActivity">
         </activity>
-        <activity android:name=".OrganisorEventActivity"></activity>
+        <activity android:name=".OrganizerEventActivity"></activity>
         <activity android:name=".AdminImageActivity"></activity>
         <activity android:name=".AdminEventActivity"></activity>
         <activity android:name=".EventActivity">
@@ -92,6 +92,7 @@
         <activity android:name=".AttendeeEventActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
+        <activity android:name=".OrganizerListSignedUpActivity"></activity>
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui"/>
