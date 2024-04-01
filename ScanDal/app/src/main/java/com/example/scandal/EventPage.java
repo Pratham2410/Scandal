@@ -18,7 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 /**
  * Activity for displaying details of an event based on QR code.
  */
-public class EventPage extends AppCompatActivity {
+public class
+EventPage extends AppCompatActivity {
     /** ImageView to display the poster of the event. */
     ImageView poster;
     /** FrameLayout for navigating back. */
@@ -51,7 +52,7 @@ public class EventPage extends AppCompatActivity {
 
         // Query Firestore for events with matching QRCode or PromoQRCode
         db.collection("events")
-                .whereEqualTo("QRCode", token)
+                .whereEqualTo("checkinToken", token)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -98,7 +99,7 @@ public class EventPage extends AppCompatActivity {
     private void searchWithPromoQRCode(String token) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("events")
-                .whereEqualTo("PromoQRCode", token)
+                .whereEqualTo("promoToken", token)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

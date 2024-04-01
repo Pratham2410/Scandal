@@ -10,18 +10,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -88,63 +82,40 @@ public class EventActivity extends AppCompatActivity {
      * and a Base64 encoded string of the poster image.
      */
     private void saveEventData() {
+        // Extract input values, defaulting to empty string if any field is empty
         String name = editEventName.getText().toString().trim();
-        if (name.isEmpty()) {
-            name = ""; // Set to blank if no input
-        }
-            String description = editEventDescription.getText().toString().trim();
-            if (description.isEmpty()) {
-                description = ""; // Set to blank if no input
-            }
+        String description = editEventDescription.getText().toString().trim();
+        String eventTime = editEventTime.getText().toString().trim();
+        String eventLocation = editlocation.getText().toString().trim();
 
-            String eventTime = editEventTime.getText().toString().trim();
-            if (eventTime.isEmpty()) {
-                eventTime = ""; // Set to blank if no input
-            }
-
-            String eventLocation = editlocation.getText().toString().trim();
-            if (eventLocation.isEmpty()) {
-                eventLocation = ""; // Set to blank if no input
-            }
-
+        // Ensure values are set to an empty string if they are empty
         name = name.isEmpty() ? "" : name;
         description = description.isEmpty() ? "" : description;
         eventTime = eventTime.isEmpty() ? "" : eventTime;
         eventLocation = eventLocation.isEmpty() ? "" : eventLocation;
 
-        if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
-            Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
-            Random rnd = new Random();
-            String randomStr = String.valueOf(rnd.nextInt(10000));
-            String token = name + randomStr;
-            intent.putExtra("CheckinToken", token);
-            String token2 = "Promo"+name+String.valueOf(rnd.nextInt(10000));
-            intent.putExtra("PromoToken", token2);
-            String imageString = convertImageUriToString(imageUri);
+        // Convert the selected image to a Base64 string, default to empty string if no image is selected
+        String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
 
-            Map<String, Object> eventData = new HashMap<>();
-            eventData.put("name", name);
-            eventData.put("description", description);
-            eventData.put("eventTime", eventTime);
-            eventData.put("eventLocation", eventLocation);
-            eventData.put("QRCode", token);
-            eventData.put("posterImage", imageString);
+        // Generate unique tokens for check-in and promotional purposes
+        Random rnd = new Random();
+        String randomStr = String.valueOf(rnd.nextInt(10000));
+        String checkinToken = name + randomStr; // Note: This might result in a non-unique token if 'name' is empty
+        String promoToken = "Promo" + name + rnd.nextInt(10000);
 
-            if (imageString != null) {
-                intent.putExtra("name", name);
-                intent.putExtra("Time", eventTime);
-                intent.putExtra("Location", eventLocation);
-                intent.putExtra("description", description);
-                intent.putExtra("QRCode", token);
-                intent.putExtra("posterImage", imageString);
-                startActivity(intent);
-            } else {
-                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter event name and description, and upload a poster", Toast.LENGTH_SHORT).show();
-        }
+        // Prepare intent for the next activity, using the exact keys you've provided
+        NewEventActivity.imageString = imageString;
+        Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
+        intent.putExtra("name", name) ;
+        intent.putExtra("description", description);
+        intent.putExtra("Time", eventTime); // Changed from "eventTime" to "Time"
+        intent.putExtra("Location", eventLocation); // Changed from "eventLocation" to "Location"
+        intent.putExtra("CheckinToken", checkinToken); // Changed to match "CheckinToken"
+        intent.putExtra("PromoToken", promoToken); // Changed to match "PromoToken"
+        // Start the next activity with the prepared intent
+        startActivity(intent);
     }
+
 
     /**
      * Converts the image located at the provided Uri to a Base64 encoded string.

@@ -11,18 +11,16 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Activity for displaying events attended by an attendee.
+ * Activity for displaying events organized by the user (as determined by device ID).
  */
-public class AttendeeEventActivity extends AppCompatActivity {
+public class OrganizerEventActivity extends AppCompatActivity {
     /**
      * FrameLayout for navigating back to the main page.
      */
@@ -35,18 +33,16 @@ public class AttendeeEventActivity extends AppCompatActivity {
      * Firebase Firestore instance for database operations.
      */
     FirebaseFirestore db;
+
     /**
-     * Called when the activity is starting. This is where most initialization should go:
-     * calling setContentView(int) to inflate the activity's UI, initializing objects, etc.
+     * Called when the activity is starting.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
-     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
-     *                           Note: Otherwise, it is null.
+     * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events_page);
+        setContentView(R.layout.my_events_page); // Assuming you're reusing the same layout
 
         backMain = findViewById(R.id.buttonBack_MyEventsPage);
         eventsList = findViewById(R.id.listView_MyEventsPage);
@@ -57,17 +53,18 @@ public class AttendeeEventActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String eventName = (String) parent.getItemAtPosition(position);
-                Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
+                //Intent intent = new Intent(OrganizerEventActivity.this, SignedUpEventDetailsActivity.class); // Use appropriate activity to show event details
+                Intent intent = new Intent(OrganizerEventActivity.this, OrganizerListSignedUpActivity.class);
                 intent.putExtra("eventName", eventName);
                 startActivity(intent);
             }
         });
         loadEvents();
     }
-    /**
-     * Retrieves and displays event pulled from firebase
-     */
 
+    /**
+     * Retrieves and displays events organized by the user.
+     */
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
@@ -76,23 +73,16 @@ public class AttendeeEventActivity extends AppCompatActivity {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db.collection("events")
+                .whereEqualTo("organizer", deviceId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData.containsKey("signedUp")) {
-                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
-                            if (signedUpUsers.containsKey(deviceId)) {
-                                // Assuming each event document has a 'name' field
-                                String eventName = documentSnapshot.getString("name");
-                                if (eventName != null) {
-                                    eventNames.add(eventName);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }
+                        String eventName = documentSnapshot.getString("name");
+                        if (eventName != null) {
+                            eventNames.add(eventName);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 });
     }
-
 }

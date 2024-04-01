@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,13 +34,15 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView textEventLocation_ViewEventPage;
     /** ImageView to display the event location. */
     ImageView imageView;
+    /** Button to see QRCode */
+    Button button_seeQR;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
     LinearLayout buttonSignUp;
     String attendeeName;
     String promoQRCode;
     /**
-     * Calle when the activity is starting.
+     * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
@@ -60,6 +64,15 @@ public class EventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
+        // The below code is causing app crush
+//        button_seeQR.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+//                myIntent.putExtra("source", "EventDetails");
+//                startActivity(myIntent);
+//            }
+//        });
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
@@ -74,10 +87,11 @@ public class EventDetailsActivity extends AppCompatActivity {
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData != null) {
                             textEventName_ViewEventPage.setText((String) eventData.get("name"));
-                            textEventTime_ViewEventPage.setText((String) eventData.get("Time"));
-                            textEventLocation_ViewEventPage.setText((String) eventData.get("Location"));
-                            textEventDescription_ViewEventPage.setText((String) eventData.get("Description"));
-                            promoQRCode = (String) eventData.get("PromoQRCode");
+                            textEventTime_ViewEventPage.setText((String) eventData.get("time"));
+                            textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
+                            textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
+                            promoQRCode = (String) eventData.get("promoToken");
+
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
                                 Bitmap bitmap = convertImageStringToBitmap(imageString);
