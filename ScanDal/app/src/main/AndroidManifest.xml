@@ -100,6 +100,7 @@
         <activity android:name=".BrowseEventActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
+        <activity android:name=".OrganizerViewEventActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
         <activity android:name=".OrganizerListSignedUpActivity"></activity>
         <meta-data
