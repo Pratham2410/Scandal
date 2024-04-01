@@ -104,7 +104,6 @@ public class EventActivity extends AppCompatActivity {
         String promoToken = "Promo" + name + rnd.nextInt(10000);
 
         // Prepare intent for the next activity, using the exact keys you've provided
-        String imageString = convertImageUriToString(imageUri);
         NewEventActivity.imageString = imageString;
         Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
         intent.putExtra("name", name) ;
