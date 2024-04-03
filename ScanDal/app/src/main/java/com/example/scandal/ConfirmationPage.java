@@ -23,15 +23,25 @@ import com.google.firebase.firestore.QuerySnapshot;
  * goes to the right event
  */
 public class ConfirmationPage extends AppCompatActivity {
-    /** loading to display the poster of the event. */
+    /**
+     * loading to display the poster of the event.
+     */
     ProgressBar bar;
-    /** yes button procceeds to next page . */
+    /**
+     * yes button procceeds to next page .
+     */
     Button yesButton;
-    /** No button will nav back. */
+    /**
+     * No button will nav back.
+     */
     Button noButton;
-    /** TextView to display the description of the event. */
+    /**
+     * TextView to display the description of the event.
+     */
     TextView eventDescription;
-    /** TextView to display the loading bar. */
+    /**
+     * TextView to display the loading bar.
+     */
     TextView loading;
     /**
      * stores the fetched poster image from the db
@@ -45,6 +55,7 @@ public class ConfirmationPage extends AppCompatActivity {
      * stores the name of the event
      */
     String name;
+
     /**
      * Called when the activity is starting.
      *
@@ -88,7 +99,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
                             // Convert posterImage to Bitmap
                             // Set the event name, description, and poster image
-                            eventDescription.setText(defaultText+"checkin to "+name+"?");
+                            eventDescription.setText(defaultText + "checkin to " + name + "?");
                             eventDescription.setVisibility(View.VISIBLE);
                             yesButton.setVisibility(View.VISIBLE);
                             noButton.setVisibility(View.VISIBLE);
@@ -125,63 +136,55 @@ public class ConfirmationPage extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                    );
+        );
+    }
+
+        /**
+         * Method to search for events based on PromoQRCode.
+         *
+         * @param token The QR token to search for.
+         */
+        private void searchWithPromoQRCode(String token){
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("events")
+                    .whereEqualTo("promoToken", token)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                // Get the first matching document
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                // Retrieve values from the document
+                                name = document.getString("name");
+                                bar.setProgress(10);
+                                description = document.getString("description");
+                                bar.setProgress(20);
+
+                                posterImage = document.getString("posterImage");
+                                bar.setProgress(100);
+
+                                eventDescription.setText("Do you want to view " + name + "?");
+                                eventDescription.setVisibility(View.VISIBLE);
+                                yesButton.setVisibility(View.VISIBLE);
+                                noButton.setVisibility(View.VISIBLE);
+                                bar.setVisibility(View.INVISIBLE);
+                                loading.setVisibility(View.INVISIBLE);
 
 
-    /**
-     * Method to search for events based on PromoQRCode.
-     *
-     * @param token The QR token to search for.
-     */
-    private void searchWithPromoQRCode(String token) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("events")
-                .whereEqualTo("promoToken", token)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            // Get the first matching document
-                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                            // Retrieve values from the document
-                             name = document.getString("name");
-                             description = document.getString("description");
-                             posterImage = document.getString("posterImage");
-                             eventDescription.setText("Do you want to view "+name+"?");
-                             eventDescription.setVisibility(View.VISIBLE);
-                             yesButton.setVisibility(View.VISIBLE);
-                             noButton.setVisibility(View.VISIBLE);
-                             bar.setVisibility(View.INVISIBLE);
-                             loading.setVisibility(View.INVISIBLE);
-
-
+                            } else {
+                                // No matching document found with PromoQRCode as well
+                                Toast.makeText(ConfirmationPage.this, "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                                Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
+                                startActivity(home);
+                            }
                         } else {
-                            // No matching document found with PromoQRCode as well
-                            Toast.makeText(ConfirmationPage.this, "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                            // Failed to retrieve documents
+                            Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
                             Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
-                            startActivity(home);                        }
-                    } else {
-                        // Failed to retrieve documents
-                        Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
-                        Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
-                        startActivity(home);                    }
-                });
-    }
-    /**
-     * Helper method to decode Base64 string to Bitmap.
-     *
-     * @param imageString The Base64-encoded image string.
-     * @return The decoded Bitmap, or null if decoding fails.
-     */
-    // Helper method to decode Base64 string to Bitmap
-    private Bitmap convertImageStringToBitmap(String imageString) {
-        try {
-            byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+                            startActivity(home);
+                        }
+                    });
         }
-    }
+
 }
