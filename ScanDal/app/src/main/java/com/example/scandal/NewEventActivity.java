@@ -172,6 +172,7 @@ public class NewEventActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 shareImage(QR.getQRPic(), "Promo QR shared from Scandal");
             }
         });
@@ -212,6 +213,7 @@ public class NewEventActivity extends AppCompatActivity {
         share.setType("image/jpeg");
         Uri picUri;
         picUri = saveImage(pic, getApplicationContext());
+
         share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         share.putExtra(Intent.EXTRA_STREAM, picUri);
         share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");

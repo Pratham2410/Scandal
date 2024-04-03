@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,22 +19,32 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 /**
- * Activity for displaying details of an event based on QR code.
+ * Activity for displaying a confirmation page to ensure the user
+ * goes to the right event
  */
-public class
-EventPage extends AppCompatActivity {
-    /** ImageView to display the poster of the event. */
-    ImageView poster;
-    /** FrameLayout for navigating back. */
-    FrameLayout back;
-    /** TextView to display the name of the event. */
-    TextView eventName;
+public class ConfirmationPage extends AppCompatActivity {
+    /** loading to display the poster of the event. */
+    ProgressBar bar;
+    /** yes button procceeds to next page . */
+    Button yesButton;
+    /** No button will nav back. */
+    Button noButton;
     /** TextView to display the description of the event. */
     TextView eventDescription;
+    /** TextView to display the loading bar. */
+    TextView loading;
     /**
-     * string of the event poster to make the passed intents smaller
+     * stores the fetched poster image from the db
      */
-    static String imageString;
+    String posterImage;
+    /**
+     * stroes the description of the event as in the db
+     */
+    String description;
+    /**
+     * stores the name of the event
+     */
+    String name;
     /**
      * Called when the activity is starting.
      *
@@ -42,13 +55,13 @@ EventPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_event_page);
-
-        back = findViewById(R.id.buttonBack_ViewEventPage);
-        poster = findViewById(R.id.imageView_ViewEventPage);
-        eventName = findViewById(R.id.textEventName_ViewEventPage);
-        eventDescription = findViewById(R.id.textEventDescription_ViewEventPage);
-
+        setContentView(R.layout.confirmation_page);
+        String defaultText = "Do you want to ";
+        yesButton = findViewById(R.id.confYes);
+        noButton = findViewById(R.id.confNo);
+        bar = findViewById(R.id.progressBarConf);
+        loading = findViewById(R.id.loadingBar);
+        eventDescription = findViewById(R.id.conf_descrip);
         String token = getIntent().getStringExtra("QRToken");
 
         // Initialize Firestore
@@ -65,35 +78,55 @@ EventPage extends AppCompatActivity {
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
-                            String name = document.getString("name");
-                            String description = document.getString("description");
-                            String posterImage = document.getString("posterImage");
+                            name = document.getString("name");
+                            bar.setProgress(10);
+                            description = document.getString("description");
+                            bar.setProgress(20);
+
+                            posterImage = document.getString("posterImage");
+                            bar.setProgress(100);
+
                             // Convert posterImage to Bitmap
-                            Bitmap posterBitmap = convertImageStringToBitmap(posterImage);
                             // Set the event name, description, and poster image
-                            eventName.setText(name);
-                            eventDescription.setText(description);
-                            if (posterBitmap != null) {
-                                poster.setImageBitmap(posterBitmap);
-                            }
+                            eventDescription.setText(defaultText+"checkin to "+name+"?");
+                            eventDescription.setVisibility(View.VISIBLE);
+                            yesButton.setVisibility(View.VISIBLE);
+                            noButton.setVisibility(View.VISIBLE);
+                            bar.setVisibility(View.INVISIBLE);
+                            loading.setVisibility(View.INVISIBLE);
+
                         } else {
                             // No matching document found with QRCode, try PromoQRCode
                             searchWithPromoQRCode(token);
                         }
                     } else {
                         // Failed to retrieve documents
-                        Toast.makeText(EventPage.this, "Failed to fetch event data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
+                        Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
+                        startActivity(home);
                     }
                 });
 
-        // Set OnClickListener for back button
-        back.setOnClickListener(view -> {
-            // Navigate to HomeActivity when back button is clicked
-            Intent intent = new Intent(EventPage.this, HomeActivity.class);
+        // Set OnClickListener for yes button
+        yesButton.setOnClickListener(view -> {
+            // Navigate to Event page when yes button is clicked
+            EventPage.imageString = posterImage;
+            Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
+            intent.putExtra("name", name);
+            intent.putExtra("description", description);
             startActivity(intent);
             finish();
         });
-    }
+        // Set OnClickListener for no button
+
+        noButton.setOnClickListener(view -> {
+                    // Navigate to HomeActivity when no button is clicked
+                    Intent intent = new Intent(ConfirmationPage.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                    );
+
 
     /**
      * Method to search for events based on PromoQRCode.
@@ -112,25 +145,27 @@ EventPage extends AppCompatActivity {
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
-                            String name = document.getString("name");
-                            String description = document.getString("description");
-                            String posterImage = document.getString("posterImage");
-                            // Convert posterImage to Bitmap
-                            Bitmap posterBitmap = convertImageStringToBitmap(posterImage);
-                            // Set the event name, description, and poster image
-                            eventName.setText(name);
-                            eventDescription.setText(description);
-                            if (posterBitmap != null) {
-                                poster.setImageBitmap(posterBitmap);
-                            }
+                             name = document.getString("name");
+                             description = document.getString("description");
+                             posterImage = document.getString("posterImage");
+                             eventDescription.setText("Do you want to view "+name+"?");
+                             eventDescription.setVisibility(View.VISIBLE);
+                             yesButton.setVisibility(View.VISIBLE);
+                             noButton.setVisibility(View.VISIBLE);
+                             bar.setVisibility(View.INVISIBLE);
+                             loading.setVisibility(View.INVISIBLE);
+
+
                         } else {
                             // No matching document found with PromoQRCode as well
-                            Toast.makeText(EventPage.this, "Event not found", Toast.LENGTH_SHORT).show();
-                        }
+                            Toast.makeText(ConfirmationPage.this, "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                            Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
+                            startActivity(home);                        }
                     } else {
                         // Failed to retrieve documents
-                        Toast.makeText(EventPage.this, "Failed to fetch event data", Toast.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
+                        Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
+                        startActivity(home);                    }
                 });
     }
     /**
