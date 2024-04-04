@@ -1,5 +1,7 @@
 package com.example.scandal;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,11 +77,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                        //Log here
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData != null) {
@@ -121,6 +126,22 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         // Sign Attendee up for the event
         buttonSignUp.setOnClickListener(v -> {
+            // Retrieve the event name from the TextView
+            String event_Name = textEventName_ViewEventPage.getText().toString();
+
+            // Check if eventName is not empty
+            if (!eventName.isEmpty()) {
+                // Subscribe to the event topic
+                FirebaseMessaging.getInstance().subscribeToTopic(event_Name)
+                        .addOnCompleteListener(task -> {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Topic subscription failed");
+                            } else {
+                                // Optionally notify the user of successful subscription
+                                Toast.makeText(EventDetailsActivity.this, "Subscribed to event notifications", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
             db.collection("profiles")
                     .whereEqualTo("deviceId", deviceId)
                     .limit(1)
