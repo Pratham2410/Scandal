@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,6 +44,8 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_events_page); // Change to correct page later
+        TextView txtMyEvents = findViewById(R.id.txtMyEvents);
+        txtMyEvents.setText("SignedUp Attendees");
 
         backMain = findViewById(R.id.buttonBack_MyEventsPage);
         userList = findViewById(R.id.listView_MyEventsPage);
