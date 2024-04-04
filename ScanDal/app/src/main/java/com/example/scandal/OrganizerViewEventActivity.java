@@ -44,6 +44,20 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
 
         buttonBack.setOnClickListener(v -> finish());
 
+        notifyUsersBtn.setOnClickListener(v -> {
+            // Get the event name from the textEventName TextView
+            String event_Name = textEventName.getText().toString();
+
+            // Create an intent to start OrganiserNotificationActivity
+            Intent notifyIntent = new Intent(OrganizerViewEventActivity.this, OrganiserNotificationActivity.class);
+
+            // Put the event name into the intent to pass to the OrganiserNotificationActivity
+            notifyIntent.putExtra("event_Name", event_Name);
+
+            // Start the OrganiserNotificationActivity
+            startActivity(notifyIntent);
+        });
+
 
         Intent intent = getIntent();
         String eventName = intent.getStringExtra("eventName");

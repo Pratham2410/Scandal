@@ -1,10 +1,7 @@
 package com.example.scandal;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -12,24 +9,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class OrganizerListSignedUpActivity extends AppCompatActivity {
+public class AttendeeAnnouncements extends AppCompatActivity {
     FrameLayout backMain;
-    ListView userList;
+    ListView announcementList;
     FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events_page); // Ensure this is the correct layout
+        setContentView(R.layout.my_events_page); // Assuming this layout fits the purpose
         TextView txtMyEvents = findViewById(R.id.txtMyEvents);
-        txtMyEvents.setText("SignedUp Attendees");
-
+        txtMyEvents.setText("Announcements");
         backMain = findViewById(R.id.buttonBack_MyEventsPage);
-        userList = findViewById(R.id.listView_MyEventsPage);
+        announcementList = findViewById(R.id.listView_MyEventsPage);
         db = FirebaseFirestore.getInstance();
 
         backMain.setOnClickListener(v -> finish());
@@ -37,16 +34,16 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
         // Retrieve the event name from the intent
         String eventName = getIntent().getStringExtra("eventName");
 
-        loadUsers(eventName); // Pass the eventName to the method
+        loadAnnouncements(eventName); // Pass the event name to the method
     }
 
     /**
-     * Retrieves and displays users signed up for the specified event.
+     * Retrieves and displays announcements for the specified event.
      */
-    private void loadUsers(String eventName) {
-        List<String> userNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userNames);
-        userList.setAdapter(adapter);
+    private void loadAnnouncements(String eventName) {
+        List<String> announcements = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, announcements);
+        announcementList.setAdapter(adapter);
 
         db.collection("events")
                 .whereEqualTo("name", eventName) // Filter by the event name
@@ -54,21 +51,18 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData.containsKey("signedUp")) {
-                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
-                            for (Map.Entry<String, Object> entry : signedUpUsers.entrySet()) {
-                                // Assuming the value is the user's name. Adjust as necessary.
-                                String userName = (String) entry.getValue();
-                                if (userName != null) {
-                                    userNames.add(userName);
-                                }
+                        if (eventData != null && eventData.containsKey("announcements")) {
+                            Map<String, String> eventAnnouncements = (Map<String, String>) eventData.get("announcements");
+                            for (Map.Entry<String, String> entry : eventAnnouncements.entrySet()) {
+                                String announcementEntry = entry.getKey() + ": " + entry.getValue();
+                                announcements.add(announcementEntry);
+                                adapter.notifyDataSetChanged();
                             }
-                            adapter.notifyDataSetChanged();
                         }
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Handle errors
+                    // Handle any errors
                 });
     }
 }

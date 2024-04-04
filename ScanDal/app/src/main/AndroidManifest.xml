@@ -99,6 +99,9 @@
         <activity android:name=".OrganisorActivity"></activity>
         <activity android:name=".ConfirmationPage"></activity>
         <activity android:name=".BrowseEventActivity"></activity>
+
+        <activity android:name=".AttendeeAnnouncements"></activity>
+
         <activity android:name=".OrganizerListCheckedInActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
