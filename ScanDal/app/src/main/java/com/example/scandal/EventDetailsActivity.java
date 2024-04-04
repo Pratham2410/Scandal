@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -41,6 +42,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     LinearLayout buttonSignUp;
     String attendeeName;
     String promoQRCode;
+    String checkInQRCode;
     /**
      * Called when the activity is starting.
      *
@@ -61,28 +63,24 @@ public class EventDetailsActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
         buttonSignUp = findViewById(R.id.buttonSignUp);
+        button_seeQR = findViewById(R.id.button_seeQRCode);
         db = FirebaseFirestore.getInstance();
 
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
-        // The below code is causing app crush
-//        button_seeQR.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
-//                myIntent.putExtra("source", "EventDetails");
-//                startActivity(myIntent);
-//            }
-//        });
+
+
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                        //Log here
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData != null) {
@@ -91,6 +89,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                             textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
                             textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
                             promoQRCode = (String) eventData.get("promoToken");
+                            checkInQRCode = (String) eventData.get("checkinToken");
+
 
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
@@ -103,6 +103,24 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+
+        button_seeQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("etowsley", "SeeQRCode Button pushed");
+                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+                myIntent.putExtra("source", "EventDetails");
+                myIntent.putExtra("CheckInQRCodeEventDetails", checkInQRCode);
+                if (checkInQRCode != null) {
+                    Log.e("etowsley", "checkInQRCode is not null");
+                    myIntent.putExtra("PromoQRCodeEventDetails", promoQRCode);
+                    startActivity(myIntent);
+                    Log.e("etowsley", "Intent was started");
+                }
+            }
+        });
+
+
         // Sign Attendee up for the event
         buttonSignUp.setOnClickListener(v -> {
             db.collection("profiles")
