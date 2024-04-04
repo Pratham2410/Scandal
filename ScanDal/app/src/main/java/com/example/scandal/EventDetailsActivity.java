@@ -74,11 +74,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                        //Log here
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData != null) {
