@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -15,9 +16,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Activity for displaying a confirmation page to ensure the user
  * goes to the right event
@@ -125,6 +131,7 @@ public class ConfirmationPage extends AppCompatActivity {
             Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
             intent.putExtra("name", name);
             intent.putExtra("description", description);
+            checkInUserToEvent();
             startActivity(intent);
             finish();
         });
@@ -186,5 +193,47 @@ public class ConfirmationPage extends AppCompatActivity {
                         }
                     });
         }
+    private void checkInUserToEvent() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        // First, fetch the user's name using the device ID
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot profileDocument = queryDocumentSnapshots.getDocuments().get(0);
+                        String attendeeName = profileDocument.getString("name");
+
+                        // Now, update the event document
+                        Map<String, Object> checkInData = new HashMap<>();
+                        checkInData.put(deviceId, attendeeName);
+
+                        db.collection("events")
+                                .document(name) // Assuming 'name' is the document ID or you have a way to get the document ID
+                                .get()
+                                .addOnSuccessListener(eventDocumentSnapshot -> {
+                                    DocumentReference eventDocRef = eventDocumentSnapshot.getReference();
+                                    Map<String, Object> eventUpdate = new HashMap<>();
+
+                                    if (eventDocumentSnapshot.contains("checkedIn")) {
+                                        Map<String, Object> existingCheckedIn = (Map<String, Object>) eventDocumentSnapshot.get("checkedIn");
+                                        existingCheckedIn.putAll(checkInData);
+                                        eventUpdate.put("checkedIn", existingCheckedIn);
+                                    } else {
+                                        eventUpdate.put("checkedIn", checkInData);
+                                    }
+
+                                    eventDocRef.update(eventUpdate)
+                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Event not found", Toast.LENGTH_SHORT).show());
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show());
+    }
 
 }

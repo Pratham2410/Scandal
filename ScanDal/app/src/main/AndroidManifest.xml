@@ -84,6 +84,7 @@
         </activity>
 
         <activity android:name=".AdminProfileActivity" />
+        <activity android:name=".OrganizerViewEventActivity"></activity>
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
         <activity android:name=".AdminActivity">
@@ -98,6 +99,10 @@
         <activity android:name=".OrganisorActivity"></activity>
         <activity android:name=".ConfirmationPage"></activity>
         <activity android:name=".BrowseEventActivity"></activity>
+
+        <activity android:name=".AttendeeAnnouncements"></activity>
+
+        <activity android:name=".OrganizerListCheckedInActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
