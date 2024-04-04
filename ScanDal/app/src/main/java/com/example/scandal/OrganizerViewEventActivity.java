@@ -47,8 +47,22 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
         // Back button functionality
         backBtn.setOnClickListener(v -> finish());
 
+
         Intent intent = getIntent();
         String eventId = intent.getStringExtra("eventId");
+        // Button to view the list of users who signed up
+        signedUpListBtn.setOnClickListener(v -> {
+            Intent signedUpIntent = new Intent(OrganizerViewEventActivity.this, OrganizerListSignedUpActivity.class);
+            signedUpIntent.putExtra("eventId", eventId); // Pass the event ID to the next activity if needed
+            startActivity(signedUpIntent);
+        });
+
+        // Button to view the list of users who checked in
+        checkedInListBtn.setOnClickListener(v -> {
+            Intent checkedInIntent = new Intent(OrganizerViewEventActivity.this, OrganizerListCheckedInActivity.class);
+            checkedInIntent.putExtra("eventId", eventId); // Pass the event ID to the next activity if needed
+            startActivity(checkedInIntent);
+        });
 
         loadEventData(eventId);
     }
