@@ -47,6 +47,9 @@ public class EventActivity extends AppCompatActivity {
      * Button for Event Time
      */
     private EditText editlocation;
+    /**
+     * Button to generate new event
+     */
     AppCompatButton generateEventButton;
     /**
      * Button to upload a poster image

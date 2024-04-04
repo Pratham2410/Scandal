@@ -128,17 +128,19 @@ public class NewEventActivity extends AppCompatActivity {
             if (token == null) {
                 Log.e("etowsley", "Token was null");
             }
-            else {
+            else if (token2 == null) {
                 Log.e("etowsley", "Token2 was null");
             }
                 Log.e("etowsley", "Intent was not null");
-        }
+            }
         else {
             name = getIntent().getStringExtra("name");
             description = getIntent().getStringExtra("description");
             //String imageString = getIntent().getStringExtra("posterImage");
             eventLocation = getIntent().getStringExtra("Location");
             eventTime = getIntent().getStringExtra("Time");
+            token = getIntent().getStringExtra("CheckinToken");
+            token2 = getIntent().getStringExtra("PromoToken");
             Log.e("etowsley", "Intent was null");
         }
 
@@ -195,7 +197,6 @@ public class NewEventActivity extends AppCompatActivity {
             scanner.putExtra("description", description);
             scanner.putExtra("PromoQRCode", token2);
             startActivity(scanner);
-
         });
         /**
          * activates the QR scanner to get the custom qr code for event promotion
@@ -230,14 +231,12 @@ public class NewEventActivity extends AppCompatActivity {
     private void generateQRs(){
         QR = new QRCode(); // Assuming you have a default constructor
 
-       // token = getIntent().getStringExtra("CheckinToken");
 
         if (QR.generateQR(checkinQRCode, token)) {
             checkinQRCode.setImageBitmap(QR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Checkin QR generation failed");
         }
-      //  token2 = getIntent().getStringExtra("PromoToken");
         if (QR.generateQR(promoQRCode, token2)) {
             promoQRCode.setImageBitmap(QR.getQRPic());
         } else {

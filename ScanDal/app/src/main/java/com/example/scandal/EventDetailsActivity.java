@@ -87,7 +87,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
                             textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
                             promoQRCode = (String) eventData.get("promoToken");
-                            checkInQRCode = (String) eventData.get("CheckinToken");
+                            checkInQRCode = (String) eventData.get("checkinToken");
 
 
                             String imageString = (String) eventData.get("posterImage");
@@ -102,15 +102,22 @@ public class EventDetailsActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
 
-        button_seeQR.setOnClickListener(v -> {
-            Log.e("etowsley", "SeeQRCode pushed");
-            Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
-            myIntent.putExtra("source", "EventDetails");
-            myIntent.putExtra("CheckInQRCodeEventDetails", checkInQRCode);
-            myIntent.putExtra("PromoQRCodeEventDetails", promoQRCode);
-            startActivity(myIntent);
-            Log.e("etowsley", "Intent was started");
+        button_seeQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("etowsley", "SeeQRCode Button pushed");
+                Intent myIntent = new Intent(EventDetailsActivity.this, NewEventActivity.class);
+                myIntent.putExtra("source", "EventDetails");
+                myIntent.putExtra("CheckInQRCodeEventDetails", checkInQRCode);
+                if (checkInQRCode != null) {
+                    Log.e("etowsley", "checkInQRCode is not null");
+                    myIntent.putExtra("PromoQRCodeEventDetails", promoQRCode);
+                    startActivity(myIntent);
+                    Log.e("etowsley", "Intent was started");
+                }
+            }
         });
+
 
         // Sign Attendee up for the event
         buttonSignUp.setOnClickListener(v -> {
