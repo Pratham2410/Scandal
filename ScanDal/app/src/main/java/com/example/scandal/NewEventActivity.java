@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +55,18 @@ public class NewEventActivity extends AppCompatActivity {
      */
     FrameLayout backButton;
     /**
+     * Text congratulating user on new event creation.
+     */
+    TextView congratsText;
+    /**
+     * String containing source of activity intent
+     */
+    String intentSource;
+    /**
+     * Text informing user of new event creation
+     */
+    TextView newEventText;
+    /**
      * Button for saving project.
      */
     AppCompatButton saveProj;
@@ -77,6 +90,12 @@ public class NewEventActivity extends AppCompatActivity {
     /**
      * string of the event poster to make the passed intents smaller
      */
+    Button share;
+    String name;
+    String description;
+    //String imageString = getIntent().getStringExtra("posterImage");
+    String eventLocation;
+    String eventTime;
     static String imageString;
     /**
      *
@@ -94,12 +113,36 @@ public class NewEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         // Initialize your components here
         initializeUI();
-        Button share = findViewById(R.id.sharebtn123); // Remove line after testing
-        String name = getIntent().getStringExtra("name");
-        String description = getIntent().getStringExtra("description");
-        //String imageString = getIntent().getStringExtra("posterImage");
-        String eventLocation = getIntent().getStringExtra("Location");
-        String eventTime = getIntent().getStringExtra("Time");
+        share = findViewById(R.id.sharebtn123); // Remove line after testing
+        intentSource = getIntent().getStringExtra("source");
+
+        if (intentSource != null) {
+            Log.e("etowsley", "Successfully passed intent.");
+            saveCheckinCode.setVisibility(View.INVISIBLE);
+            savePromoCode.setVisibility(View.INVISIBLE);
+            saveProj.setVisibility(View.INVISIBLE);
+            congratsText.setVisibility(View.INVISIBLE);
+            newEventText.setVisibility(View.INVISIBLE);
+            token = getIntent().getStringExtra("CheckInQRCodeEventDetails");
+            token2 = getIntent().getStringExtra("PromoQRCodeEventDetails");
+            if (token == null) {
+                Log.e("etowsley", "Token was null");
+            }
+            else if (token2 == null) {
+                Log.e("etowsley", "Token2 was null");
+            }
+                Log.e("etowsley", "intentSource was not null");
+            }
+        else {
+            name = getIntent().getStringExtra("name");
+            description = getIntent().getStringExtra("description");
+            //String imageString = getIntent().getStringExtra("posterImage");
+            eventLocation = getIntent().getStringExtra("Location");
+            eventTime = getIntent().getStringExtra("Time");
+            token = getIntent().getStringExtra("CheckinToken");
+            token2 = getIntent().getStringExtra("PromoToken");
+            Log.e("etowsley", "Intent was null");
+        }
 
         generateQRs();
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +197,6 @@ public class NewEventActivity extends AppCompatActivity {
             scanner.putExtra("description", description);
             scanner.putExtra("PromoQRCode", token2);
             startActivity(scanner);
-
         });
         /**
          * activates the QR scanner to get the custom qr code for event promotion
@@ -172,6 +214,7 @@ public class NewEventActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 shareImage(QR.getQRPic(), "Promo QR shared from Scandal");
             }
         });
@@ -183,18 +226,18 @@ public class NewEventActivity extends AppCompatActivity {
         saveCheckinCode = findViewById(R.id.buttonSaveCheckinCode);
         savePromoCode = findViewById(R.id.buttonSavePromoCode);
         saveProj = findViewById(R.id.buttonSaveProject);
+        congratsText = findViewById(R.id.textCongratEventsCreated);
+        newEventText = findViewById(R.id.textNewEventsCreated);
     }
     private void generateQRs(){
         QR = new QRCode(); // Assuming you have a default constructor
 
-        token = getIntent().getStringExtra("CheckinToken");
 
         if (QR.generateQR(checkinQRCode, token)) {
             checkinQRCode.setImageBitmap(QR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Checkin QR generation failed");
         }
-        token2 = getIntent().getStringExtra("PromoToken");
         if (QR.generateQR(promoQRCode, token2)) {
             promoQRCode.setImageBitmap(QR.getQRPic());
         } else {
@@ -212,6 +255,7 @@ public class NewEventActivity extends AppCompatActivity {
         share.setType("image/jpeg");
         Uri picUri;
         picUri = saveImage(pic, getApplicationContext());
+
         share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         share.putExtra(Intent.EXTRA_STREAM, picUri);
         share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");

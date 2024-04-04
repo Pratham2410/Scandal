@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -85,6 +84,7 @@
         </activity>
 
         <activity android:name=".AdminProfileActivity" />
+        <activity android:name=".OrganizerViewEventActivity"></activity>
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
         <activity android:name=".AdminActivity">
@@ -97,10 +97,14 @@
         <activity android:name=".EventActivity">
         </activity>
         <activity android:name=".OrganisorActivity"></activity>
+        <activity android:name=".ConfirmationPage"></activity>
         <activity android:name=".BrowseEventActivity"></activity>
+
+        <activity android:name=".AttendeeAnnouncements"></activity>
+
+        <activity android:name=".OrganizerListCheckedInActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
-        <activity android:name=".OrganizerViewEventActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
         <activity android:name=".OrganizerListSignedUpActivity"></activity>
         <meta-data
