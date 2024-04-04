@@ -73,14 +73,13 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData.containsKey("signedUp")) {
                             Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
-                            for (Map.Entry<String, Object> entry : signedUpUsers.entrySet()) {
-                                // Assuming the value is the user's name. Adjust as necessary.
-                                String userName = (String) entry.getValue();
+                            for (Object userNameObj : signedUpUsers.values()) {
+                                String userName = (String) userNameObj;
                                 if (userName != null) {
                                     userNames.add(userName);
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
-                            adapter.notifyDataSetChanged();
                         }
                     }
                 })
