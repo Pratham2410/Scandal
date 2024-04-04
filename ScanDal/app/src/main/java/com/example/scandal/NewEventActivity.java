@@ -61,7 +61,7 @@ public class NewEventActivity extends AppCompatActivity {
     /**
      * String containing source of activity intent
      */
-    String source;
+    String intentSource;
     /**
      * Text informing user of new event creation
      */
@@ -114,9 +114,9 @@ public class NewEventActivity extends AppCompatActivity {
         // Initialize your components here
         initializeUI();
         share = findViewById(R.id.sharebtn123); // Remove line after testing
-        source = getIntent().getStringExtra("source");
+        intentSource = getIntent().getStringExtra("source");
 
-        if (source != null) {
+        if (intentSource != null) {
             Log.e("etowsley", "Successfully passed intent.");
             saveCheckinCode.setVisibility(View.INVISIBLE);
             savePromoCode.setVisibility(View.INVISIBLE);
@@ -131,7 +131,7 @@ public class NewEventActivity extends AppCompatActivity {
             else if (token2 == null) {
                 Log.e("etowsley", "Token2 was null");
             }
-                Log.e("etowsley", "Intent was not null");
+                Log.e("etowsley", "intentSource was not null");
             }
         else {
             name = getIntent().getStringExtra("name");
