@@ -16,10 +16,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity for displaying the list of user who signed up for an event
+ */
 public class OrganizerListSignedUpActivity extends AppCompatActivity {
+    /**
+     * FrameLayout for navigating back to the main page.
+     */
     FrameLayout backMain;
+    /**
+     * ListView for displaying signed up users.
+     */
     ListView userList;
+    /**
+     * Firebase Firestore instance for database operations.
+     */
     FirebaseFirestore db;
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
