@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,7 +55,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String eventName = (String) parent.getItemAtPosition(position);
                 //Intent intent = new Intent(OrganizerEventActivity.this, SignedUpEventDetailsActivity.class); // Use appropriate activity to show event details
-                Intent intent = new Intent(OrganizerEventActivity.this, OrganizerListSignedUpActivity.class);
+                Intent intent = new Intent(OrganizerEventActivity.this, OrganizerViewEventActivity.class);
                 intent.putExtra("eventName", eventName);
                 startActivity(intent);
             }

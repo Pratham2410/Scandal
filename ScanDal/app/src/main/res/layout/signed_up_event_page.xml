@@ -137,6 +137,17 @@
             tools:src="@drawable/img_arrowleft" />
     </FrameLayout>
 
+    <Button
+        android:id="@+id/buttonAnnouncements"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:text="Announcements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBack_ViewEventPage" />
+
     <ImageView
         android:id="@+id/profilePicture"
         android:layout_width="@dimen/_153pxh"

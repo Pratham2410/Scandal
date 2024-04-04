@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
     ImageView imageView;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
+    Button buttonAnnouncements;
     String promoQRCode;
     /**
      * Calle when the activity is starting.
@@ -42,6 +44,7 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +58,23 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
         db = FirebaseFirestore.getInstance();
-
+        buttonAnnouncements = findViewById(R.id.buttonAnnouncements);
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
+
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
+        buttonAnnouncements.setOnClickListener(v -> {
+            // Create an Intent to start AttendeeAnnouncements
+            Intent announcementsIntent = new Intent(SignedUpEventDetailsActivity.this, AttendeeAnnouncements.class);
+
+            // Pass the event name to AttendeeAnnouncements
+            announcementsIntent.putExtra("eventName", eventName); // Ensure this key is expected in AttendeeAnnouncements
+
+            // Start AttendeeAnnouncements activity
+            startActivity(announcementsIntent);
+        });
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db.collection("events")
                 .whereEqualTo("name", eventName)

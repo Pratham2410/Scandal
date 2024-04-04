@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.scandal"
     compileSdk = 34
 
