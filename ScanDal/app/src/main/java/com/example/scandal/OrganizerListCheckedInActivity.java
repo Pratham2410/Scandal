@@ -53,16 +53,15 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData != null && eventData.containsKey("checkedIn")) {
+                        if (eventData.containsKey("checkedIn")) {
                             Map<String, Object> checkedInUsers = (Map<String, Object>) eventData.get("checkedIn");
-                            for (Map.Entry<String, Object> entry : checkedInUsers.entrySet()) {
-                                // Assuming the value is the user's name. Adjust as necessary.
-                                String userName = (String) entry.getValue();
+                            for (Object userNameObj : checkedInUsers.values()) {
+                                String userName = (String) userNameObj;
                                 if (userName != null) {
                                     userNames.add(userName);
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
-                            adapter.notifyDataSetChanged();
                         }
                     }
                 })
