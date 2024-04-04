@@ -165,6 +165,30 @@ public class EventDetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
+    private void incrementAttendeeCount(String eventName) {
+        // Reference to the event document based on the event name
+        db.collection("events")
+                .whereEqualTo("name", eventName)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot eventDocSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        String eventDocId = eventDocSnapshot.getId();
+
+                        // Retrieve the current attendee count and increment it
+                        Number currentAttendeeCount = (Number) eventDocSnapshot.get("attendeeCount");
+                        int newAttendeeCount = currentAttendeeCount != null ? currentAttendeeCount.intValue() + 1 : 1;
+
+                        // Update the attendee count in the document
+                        db.collection("events").document(eventDocId)
+                                .update("attendeeCount", newAttendeeCount)
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Attendee count incremented successfully"))
+                                .addOnFailureListener(e -> Log.e(TAG, "Error incrementing attendee count", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching event to increment attendee count", e));
+    }
     private void saveSignUpToAttendee(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final Map<String, Object> signedUp = new HashMap<>();
@@ -212,8 +236,6 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
     private void saveSignUpToEvent(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        final Map<String, Object> signedUp = new HashMap<>();
-        signedUp.put(deviceId, attendeeName);
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
@@ -223,38 +245,33 @@ public class EventDetailsActivity extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        // If there is dictionary storing signed up user
-                        if (eventData != null && eventData.containsKey("signedUp")) {
-                            Map<String, Object> existingSignedUp = (Map<String, Object>) eventData.get("signedUp");
-                            existingSignedUp.put(deviceId, attendeeName);
-                            Map<String, Object> update = new HashMap<>();
-                            update.put("signedUp", existingSignedUp);
-                            // Perform the update
-                            db.collection("events").document(documentId)
-                                    .update(update)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
-                                    });
-                        }
-                        else {
-                            Map<String, Object> update = new HashMap<>();
-                            update.put("signedUp", signedUp);
-                            // Perform the update
-                            db.collection("events").document(documentId)
-                                    .update(update)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
-                                    });
+
+                        if (eventData != null) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            if (signedUpUsers == null) {
+                                signedUpUsers = new HashMap<>();
+                            }
+
+                            // Check if the user is already signed up for the event
+                            if (!signedUpUsers.containsKey(deviceId)) {
+                                signedUpUsers.put(deviceId, attendeeName);
+                                db.collection("events").document(documentId)
+                                        .update("signedUp", signedUpUsers)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                            // Increment the attendee count only if this is a new sign-up
+                                            incrementAttendeeCount(eventName);
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show());
+                            } else {
+                                Toast.makeText(getApplicationContext(), "You are already signed up for this event", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-                });
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch event data", Toast.LENGTH_SHORT).show());
     }
+
     /**
      * Helper method to decode Base64 string to Bitmap.
      *
