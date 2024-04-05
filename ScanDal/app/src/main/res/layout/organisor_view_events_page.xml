@@ -21,10 +21,7 @@
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:layout_constraintVertical_bias="0.484"
         tools:text="Signed Up" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -42,8 +39,6 @@
         android:singleLine="true"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
         tools:text="@string/checked_in_attendees" />
@@ -276,6 +271,21 @@
         app:layout_constraintBottom_toTopOf="@+id/buttoncCheckedInList_OraganisorViewEventsPage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonBack_OrganisorViewEventPage" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="11dp"
+        android:text="Notify Users"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/profilePicture_OrganisorViewEventPage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonBack_OrganisorViewEventPage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

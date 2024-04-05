@@ -44,9 +44,13 @@ public class EventActivity extends AppCompatActivity {
      */
     private EditText editEventTime;
     /**
-     * Button for Event Time
+     * edit text for Event location
      */
     private EditText editlocation;
+    /**
+     * Edit text for attendee limit
+     */
+    private EditText editLimit;
     /**
      * Button to generate new event
      */
@@ -90,12 +94,13 @@ public class EventActivity extends AppCompatActivity {
         String description = editEventDescription.getText().toString().trim();
         String eventTime = editEventTime.getText().toString().trim();
         String eventLocation = editlocation.getText().toString().trim();
-
+        String attendeeLimit = editLimit.getText().toString().trim();
         // Ensure values are set to an empty string if they are empty
         name = name.isEmpty() ? "" : name;
         description = description.isEmpty() ? "" : description;
         eventTime = eventTime.isEmpty() ? "" : eventTime;
         eventLocation = eventLocation.isEmpty() ? "" : eventLocation;
+        attendeeLimit = attendeeLimit.isEmpty() ? "" : attendeeLimit;
 
         // Convert the selected image to a Base64 string, default to empty string if no image is selected
         String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
@@ -110,6 +115,7 @@ public class EventActivity extends AppCompatActivity {
         NewEventActivity.imageString = imageString;
         Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
         intent.putExtra("name", name) ;
+        intent.putExtra("attendeeLimit", attendeeLimit);
         intent.putExtra("description", description);
         intent.putExtra("Time", eventTime); // Changed from "eventTime" to "Time"
         intent.putExtra("Location", eventLocation); // Changed from "eventLocation" to "Location"
@@ -147,6 +153,7 @@ public class EventActivity extends AppCompatActivity {
         editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
         editEventTime = findViewById(R.id.editTextEventTime_CreateEventPage);
         editlocation = findViewById(R.id.editTextEventLocation_CreateEventPage);
+        editLimit = findViewById(R.id.editTextEventLimit_CreateEventPage);
         editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
         uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);

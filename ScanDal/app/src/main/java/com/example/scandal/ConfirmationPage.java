@@ -61,7 +61,14 @@ public class ConfirmationPage extends AppCompatActivity {
      * stores the name of the event
      */
     String name;
-
+    /**
+     * stores the location of the event
+     */
+    String location;
+    /**
+     * stores the time of the event
+     */
+    String time;
     /**
      * Called when the activity is starting.
      *
@@ -99,7 +106,10 @@ public class ConfirmationPage extends AppCompatActivity {
                             bar.setProgress(10);
                             description = document.getString("description");
                             bar.setProgress(20);
-
+                            location = document.getString("Location");
+                            bar.setProgress(30);
+                            time = document.getString("Time");
+                            bar.setProgress(40);
                             posterImage = document.getString("posterImage");
                             bar.setProgress(100);
 
@@ -131,6 +141,8 @@ public class ConfirmationPage extends AppCompatActivity {
             Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
             intent.putExtra("name", name);
             intent.putExtra("description", description);
+            intent.putExtra("time", time);
+            intent.putExtra("location", location);
             checkInUserToEvent();
             startActivity(intent);
             finish();
@@ -167,7 +179,10 @@ public class ConfirmationPage extends AppCompatActivity {
                                 bar.setProgress(10);
                                 description = document.getString("description");
                                 bar.setProgress(20);
-
+                                location = document.getString("Location");
+                                bar.setProgress(30);
+                                time = document.getString("Time");
+                                bar.setProgress(40);
                                 posterImage = document.getString("posterImage");
                                 bar.setProgress(100);
 
@@ -181,7 +196,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
                             } else {
                                 // No matching document found with PromoQRCode as well
-                                Toast.makeText(ConfirmationPage.this, "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ConfirmationPage.this, "Event Not Found", Toast.LENGTH_SHORT).show();
                                 Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
                                 startActivity(home);
                             }
