@@ -78,7 +78,8 @@ public class NewEventActivity extends AppCompatActivity {
     /**
      * QRCode object for generating and handling QR codes.
      */
-    QRCode QR;
+    QRCode promoQR;
+    QRCode checkinQR;
     /**
      * token to be encoded in the default QR code for checkins
      */
@@ -90,8 +91,11 @@ public class NewEventActivity extends AppCompatActivity {
     /**
      * string of the event poster to make the passed intents smaller
      */
-    Button share;
+    Button shareCheckin;
+    Button sharePromo;
+
     String name;
+    String attendeeLimit;
     String description;
     //String imageString = getIntent().getStringExtra("posterImage");
     String eventLocation;
@@ -113,7 +117,9 @@ public class NewEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         // Initialize your components here
         initializeUI();
-        share = findViewById(R.id.sharebtn123); // Remove line after testing
+        shareCheckin = findViewById(R.id.shareCheckin);
+        sharePromo = findViewById(R.id.sharePromoCode);
+
         intentSource = getIntent().getStringExtra("source");
 
         if (intentSource != null) {
@@ -139,6 +145,7 @@ public class NewEventActivity extends AppCompatActivity {
             //String imageString = getIntent().getStringExtra("posterImage");
             eventLocation = getIntent().getStringExtra("Location");
             eventTime = getIntent().getStringExtra("Time");
+            attendeeLimit = getIntent().getStringExtra("attendeeLimit");
             token = getIntent().getStringExtra("CheckinToken");
             token2 = getIntent().getStringExtra("PromoToken");
             Log.e("etowsley", "Intent was null");
@@ -157,6 +164,7 @@ public class NewEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> event = new HashMap<>();
                 event.put("name", name);
+                event.put("attendeeLimit", attendeeLimit);
                 event.put("time", eventTime);
                 event.put("location", eventLocation);
                 event.put(" ", description);
@@ -193,6 +201,7 @@ public class NewEventActivity extends AppCompatActivity {
             Intent scanner = new Intent(NewEventActivity.this, QRCodeScanner.class);
             scanner.putExtra("Activity", 2);
             scanner.putExtra("name", name);
+            scanner.putExtra("attendeeLimit", attendeeLimit);
             scanner.putExtra("Time", eventTime);
             scanner.putExtra("Location", eventLocation);
             scanner.putExtra("description", description);
@@ -207,16 +216,24 @@ public class NewEventActivity extends AppCompatActivity {
             Intent scanner = new Intent(NewEventActivity.this, QRCodeScanner.class);
             scanner.putExtra("Activity", 2);
             scanner.putExtra("name", name);
+            scanner.putExtra("attendeeLimit", attendeeLimit);
             scanner.putExtra("Time", eventTime);
             scanner.putExtra("Location", eventLocation);
             scanner.putExtra("description", description);
             scanner.putExtra("QRCode", token);
             startActivity(scanner);        });
-        share.setOnClickListener(new View.OnClickListener() {
+        shareCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                shareImage(QR.getQRPic(), "Promo QR shared from Scandal");
+                shareImage(checkinQR.getQRPic(), "Check in QR shared from Scandal");
+            }
+        });
+        sharePromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                shareImage(promoQR.getQRPic(), "Promotional QR shared from Scandal");
             }
         });
     }
@@ -231,16 +248,16 @@ public class NewEventActivity extends AppCompatActivity {
         newEventText = findViewById(R.id.textNewEventsCreated);
     }
     private void generateQRs(){
-        QR = new QRCode(); // Assuming you have a default constructor
+        checkinQR = new QRCode(); // Assuming you have a default constructor
+        promoQR = new QRCode();
 
-
-        if (QR.generateQR(checkinQRCode, token)) {
-            checkinQRCode.setImageBitmap(QR.getQRPic());
+        if (checkinQR.generateQR(checkinQRCode, token)) {
+            checkinQRCode.setImageBitmap(checkinQR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Checkin QR generation failed");
         }
-        if (QR.generateQR(promoQRCode, token2)) {
-            promoQRCode.setImageBitmap(QR.getQRPic());
+        if (promoQR.generateQR(promoQRCode, token2)) {
+            promoQRCode.setImageBitmap(promoQR.getQRPic());
         } else {
             Log.e("NewEventActivity", "Promo QR generation failed");
         }
@@ -253,7 +270,7 @@ public class NewEventActivity extends AppCompatActivity {
      */
     protected void shareImage(Bitmap pic, String textAccompany){
         Intent share = new Intent(Intent.ACTION_SENDTO);
-        share.setType("image/jpeg");
+        share.setType("image/*");
         Uri picUri;
         picUri = saveImage(pic, getApplicationContext());
 
