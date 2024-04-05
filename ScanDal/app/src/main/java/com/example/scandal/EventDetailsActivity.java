@@ -26,32 +26,49 @@ import java.util.HashMap;
 import java.util.Map;
 /** An activity for managing the viewing of event details */
 public class EventDetailsActivity extends AppCompatActivity {
-    /** Firestore instance for database operations */
+    /**
+     * Firestore instance for database operations
+     */
     private FirebaseFirestore db;
-    /** TextView to display the event name. */
+    /**
+     * TextView to display the event name.
+     */
     TextView textEventName_ViewEventPage;
-    /** TextView to display the event description. */
+    /**
+     * TextView to display the event description.
+     */
     TextView textEventDescription_ViewEventPage;
-    /** ImageView to display the event image. */
+    /**
+     * ImageView to display the event image.
+     */
     TextView textEventTime_ViewEventPage;
-    /** ImageView to display the event time. */
+    /**
+     * ImageView to display the event time.
+     */
     TextView textEventLocation_ViewEventPage;
-    /** ImageView to display the event location. */
+    /**
+     * ImageView to display the event location.
+     */
     ImageView imageView;
-    /** Button to see QRCode */
+    /**
+     * Button to see QRCode
+     */
     Button button_seeQR;
-    /** Button to navigate back from the event details page. */
+    /**
+     * Button to navigate back from the event details page.
+     */
     FrameLayout buttonBack_ViewEventPage;
     LinearLayout buttonSignUp;
     String attendeeName;
     String promoQRCode;
     String checkInQRCode;
+
     /**
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}. Otherwise, it is null.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +89,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
 
-
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
@@ -83,26 +99,26 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                        //Log here
-                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData != null) {
-                            textEventName_ViewEventPage.setText((String) eventData.get("name"));
-                            textEventTime_ViewEventPage.setText((String) eventData.get("time"));
-                            textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
-                            textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
-                            promoQRCode = (String) eventData.get("promoToken");
-                            checkInQRCode = (String) eventData.get("checkinToken");
+                    //Log here
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    Map<String, Object> eventData = documentSnapshot.getData();
+                    if (eventData != null) {
+                        textEventName_ViewEventPage.setText((String) eventData.get("name"));
+                        textEventTime_ViewEventPage.setText((String) eventData.get("time"));
+                        textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
+                        textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
+                        promoQRCode = (String) eventData.get("promoToken");
+                        checkInQRCode = (String) eventData.get("checkinToken");
 
 
-                            String imageString = (String) eventData.get("posterImage");
-                            if (imageString != null) {
-                                Bitmap bitmap = convertImageStringToBitmap(imageString);
-                                if (bitmap != null) {
-                                    imageView.setImageBitmap(bitmap);
-                                }
+                        String imageString = (String) eventData.get("posterImage");
+                        if (imageString != null) {
+                            Bitmap bitmap = convertImageStringToBitmap(imageString);
+                            if (bitmap != null) {
+                                imageView.setImageBitmap(bitmap);
                             }
                         }
+                    }
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
@@ -155,8 +171,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 attendeeName = (String) profileData.get("name");
                                 saveSignUpToEvent(eventName);
                                 saveSignUpToAttendee(eventName);
-                            }
-                            else {
+                            } else {
                                 // Device is not registered, let the user enter new information
                                 Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
                             }
@@ -165,6 +180,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
+
     private void incrementAttendeeCount(String eventName) {
         // Reference to the event document based on the event name
         db.collection("events")
@@ -189,6 +205,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error fetching event to increment attendee count", e));
     }
+
     private void saveSignUpToAttendee(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final Map<String, Object> signedUp = new HashMap<>();
@@ -217,8 +234,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
-                        }
-                        else {
+                        } else {
                             Map<String, Object> update = new HashMap<>();
                             update.put("signedUp", signedUp);
                             // Perform the update
@@ -234,8 +250,11 @@ public class EventDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void saveSignUpToEvent(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final Map<String, Object> signedUp = new HashMap<>();
+        signedUp.put(deviceId, attendeeName);
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
@@ -246,45 +265,49 @@ public class EventDetailsActivity extends AppCompatActivity {
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
 
-                        if (eventData != null) {
-                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
-                            if (signedUpUsers == null) {
-                                signedUpUsers = new HashMap<>();
-                            }
+                        // Check if the user is already signed up
+                        boolean isAlreadySignedUp = eventData != null && eventData.containsKey("signedUp") &&
+                                ((Map<String, Object>) eventData.get("signedUp")).containsKey(deviceId);
 
-                            // Check if the user is already signed up for the event
-                            if (!signedUpUsers.containsKey(deviceId)) {
-                                signedUpUsers.put(deviceId, attendeeName);
-                                db.collection("events").document(documentId)
-                                        .update("signedUp", signedUpUsers)
-                                        .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
-                                            // Increment the attendee count only if this is a new sign-up
-                                            incrementAttendeeCount(eventName);
-                                        })
-                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show());
-                            } else {
-                                Toast.makeText(getApplicationContext(), "You are already signed up for this event", Toast.LENGTH_SHORT).show();
-                            }
+                        if (!isAlreadySignedUp) {
+                            // If the user is not signed up, add them to the signedUp map and increment attendee count
+                            Map<String, Object> update = eventData == null || !eventData.containsKey("signedUp") ?
+                                    new HashMap<>() : (Map<String, Object>) eventData.get("signedUp");
+
+                            update.put(deviceId, attendeeName);
+
+                            db.collection("events").document(documentId)
+                                    .update("signedUp", update)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        incrementAttendeeCount(eventName); // Increment the attendee count here
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            // If the user is already signed up, don't increment the count
+                            Toast.makeText(getApplicationContext(), "You are already signed up for this event", Toast.LENGTH_SHORT).show();
                         }
                     }
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch event data", Toast.LENGTH_SHORT).show());
+                });
     }
 
-    /**
-     * Helper method to decode Base64 string to Bitmap.
-     *
-     * @param imageString The Base64-encoded image string.
-     * @return The decoded Bitmap, or null if decoding fails.
-     */
-    private Bitmap convertImageStringToBitmap(String imageString) {
-        try {
-            byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+
+        /**
+         * Helper method to decode Base64 string to Bitmap.
+         *
+         * @param imageString The Base64-encoded image string.
+         * @return The decoded Bitmap, or null if decoding fails.
+         */
+        private Bitmap convertImageStringToBitmap (String imageString){
+            try {
+                byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
-}
+
