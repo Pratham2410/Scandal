@@ -19,7 +19,7 @@
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Save Project"
+        android:text="Save Event"
         android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,8 +47,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSavePromoCode"
         style="@style/btnSolidRoundedOutline"
-        android:layout_width="180dp"
-        android:layout_height="56dp"
+        android:layout_width="192dp"
+        android:layout_height="50dp"
         android:layout_gravity="top|center"
         android:layout_marginStart="101dp"
         android:layout_marginEnd="8dp"
@@ -59,7 +59,7 @@
         android:paddingEnd="@dimen/_5pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Customize Code"
+        android:text="Change Promo QR"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSaveProject"
@@ -72,8 +72,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSaveCheckinCode"
         style="@style/btnSolidRoundedOutline"
-        android:layout_width="180dp"
-        android:layout_height="56dp"
+        android:layout_width="197dp"
+        android:layout_height="53dp"
         android:layout_gravity="top|center"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
@@ -84,7 +84,7 @@
         android:paddingEnd="@dimen/_5pxh"
         android:paddingBottom="@dimen/_8pxv"
         android:singleLine="true"
-        android:text="Customize Code"
+        android:text="Change Checkin QR"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSaveProject"
@@ -133,7 +133,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
-        android:text="You have made a new event!"
+        android:text="Tap save event when ready!"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/checkinQRCode"
         app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +231,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="Congratulations!"
+            android:text="Almost Done!"
             android:textSize="24sp"
             tools:text="Congratulations!" />
 
@@ -277,4 +277,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkinQRCode"
         tools:text="Checkin QR Code" />
+
+    <Button
+        android:id="@+id/sharebtn123"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNewEventsCreated" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,11 +15,6 @@ public class User extends Service {
      * Stores a unique id pulled from the user's device
      */
     private String id; // Stores Emulator id
-    private String name; // Idk if this is still needed
-
-    // Do we need constructor?
-    public User() {
-    }
 
     /**
      * Gets the User id
@@ -27,14 +22,6 @@ public class User extends Service {
      */
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Nullable

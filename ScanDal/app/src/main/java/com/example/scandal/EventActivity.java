@@ -6,50 +6,60 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Activity for creating and saving event details, including the event name,
  * description, and an associated poster image, into Firebase Firestore.
  */
 public class EventActivity extends AppCompatActivity {
-    // URI of the selected poster image
+    /**
+     * URI of the selected poster image
+     */
     private Uri imageUri;
-    // ImageView to display the selected poster
+    /**
+     * ImageView to display the selected poster
+     */
     ImageView poster;
-    // EditText for event name input
+    /**
+     * EditText for event name input
+     */
     private EditText editEventName;
-    // EditText for event description input
+    /**
+     * EditText for event description input
+     */
     private EditText editEventDescription;
-    // Button to trigger event data saving
+    /**
+     * Button to trigger event data saving
+     */
+    private EditText editEventTime;
+    /**
+     * Button for Event Time
+     */
+    private EditText editlocation;
+    /**
+     * Button to generate new event
+     */
     AppCompatButton generateEventButton;
-    // Button to upload a poster image
+    /**
+     * Button to upload a poster image
+     */
     AppCompatButton uploadPosterButton;
-    // Button to delete the selected poster image
+    /**
+     * Button to upload a poster image
+     */
     AppCompatButton deletePosterButton;
 
-    // Firebase Firestore instance for database operations
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,29 +85,40 @@ public class EventActivity extends AppCompatActivity {
      * and a Base64 encoded string of the poster image.
      */
     private void saveEventData() {
+        // Extract input values, defaulting to empty string if any field is empty
         String name = editEventName.getText().toString().trim();
         String description = editEventDescription.getText().toString().trim();
+        String eventTime = editEventTime.getText().toString().trim();
+        String eventLocation = editlocation.getText().toString().trim();
 
-        if (!name.isEmpty() && !description.isEmpty() && imageUri != null) {
-            String imageString = convertImageUriToString(imageUri);
-            if (imageString != null) {
-                Map<String, Object> event = new HashMap<>();
-                event.put("name", name);
-                event.put("description", description);
-                event.put("posterImage", imageString); // Add the image string to the event map
+        // Ensure values are set to an empty string if they are empty
+        name = name.isEmpty() ? "" : name;
+        description = description.isEmpty() ? "" : description;
+        eventTime = eventTime.isEmpty() ? "" : eventTime;
+        eventLocation = eventLocation.isEmpty() ? "" : eventLocation;
 
-                // Save event to Firestore
-                db.collection("events")
-                        .add(event)
-                        .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Event created successfully", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to create event", Toast.LENGTH_SHORT).show());
-            } else {
-                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter event name and description, and upload a poster", Toast.LENGTH_SHORT).show();
-        }
+        // Convert the selected image to a Base64 string, default to empty string if no image is selected
+        String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
+
+        // Generate unique tokens for check-in and promotional purposes
+        Random rnd = new Random();
+        String randomStr = String.valueOf(rnd.nextInt(10000));
+        String checkinToken = name + randomStr; // Note: This might result in a non-unique token if 'name' is empty
+        String promoToken = "Promo" + name + rnd.nextInt(10000);
+
+        // Prepare intent for the next activity, using the exact keys you've provided
+        NewEventActivity.imageString = imageString;
+        Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
+        intent.putExtra("name", name) ;
+        intent.putExtra("description", description);
+        intent.putExtra("Time", eventTime); // Changed from "eventTime" to "Time"
+        intent.putExtra("Location", eventLocation); // Changed from "eventLocation" to "Location"
+        intent.putExtra("CheckinToken", checkinToken); // Changed to match "CheckinToken"
+        intent.putExtra("PromoToken", promoToken); // Changed to match "PromoToken"
+        // Start the next activity with the prepared intent
+        startActivity(intent);
     }
+
 
     /**
      * Converts the image located at the provided Uri to a Base64 encoded string.
@@ -123,14 +144,15 @@ public class EventActivity extends AppCompatActivity {
      */
     private void initializeUIComponents() {
         poster = findViewById(R.id.imageView_CreateEventPage);
-        editEventName = findViewById(R.id.editTextEventName);
-        editEventDescription = findViewById(R.id.editTextEventDescription);
+        editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
+        editEventTime = findViewById(R.id.editTextEventTime_CreateEventPage);
+        editlocation = findViewById(R.id.editTextEventLocation_CreateEventPage);
+        editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
-        uploadPosterButton = findViewById(R.id.editPosterButton);
-        deletePosterButton = findViewById(R.id.deletePosterButton);
+        uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);
+        deletePosterButton = findViewById(R.id.deletePosterButton_CreateEventPage);
         FrameLayout backToOrganiser = findViewById(R.id.buttonBack_CreateEventPage);
 
-        db = FirebaseFirestore.getInstance();
 
         // Navigate back to OrganisorActivity
         backToOrganiser.setOnClickListener(v -> finish());

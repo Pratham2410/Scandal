@@ -1,8 +1,12 @@
 package com.example.scandal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,11 +24,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -49,6 +59,10 @@ public class Profile extends AppCompatActivity {
      * A string representing the homepage
      */
     private String homePage;
+    /**
+     * An integer representing the GeoTracking Status(Set to 0 representing no as default)
+     */
+    private Integer GeoTracking;
     /**
      * A URL link leading to the profile image
      */
@@ -85,6 +99,7 @@ public class Profile extends AppCompatActivity {
      * Contains reference to database
      */
     private FirebaseFirestore db;
+    private boolean customedImage;
 
     /**
      * Returns the name of the user.
@@ -101,7 +116,20 @@ public class Profile extends AppCompatActivity {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * Returns the GeoTracking status of the user.
+     * @return An Integer representing whether the user allows geotracking(1 for yes 0 for no).
+     */
+    public Integer getGeoTracking() {
+        return GeoTracking;
+    }
+    /**
+     * Sets the GeoTracking status of the user.
+     * @param GeoTracking The new GeoTracking status to be set.
+     */
+    public void setGeoTracking(Integer GeoTracking) {
+        this.GeoTracking = GeoTracking;
+    }
     /**
      * Returns the phone number of the user.
      * @return A string representing the user's phone number.
@@ -141,15 +169,92 @@ public class Profile extends AppCompatActivity {
 
         /**
          *  Initialize UI components
-          */
+         */
         initializeUI();
+
+        // Check if the device is already registered
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Device is already registered, fetch and display profile data
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> profileData = documentSnapshot.getData();
+                        if (profileData != null) {
+                            editTextName.setText((String) profileData.get("name"));
+                            editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
+                            editTextHomePage.setText((String) profileData.get("homePage"));
+                            // Check if user has customized image before
+                            Object customImageFlag = profileData.get("customedImage");
+                            customedImage = customImageFlag instanceof Boolean && (Boolean) customImageFlag;
+                            String imageString = (String) profileData.get("imageString");
+                            if (imageString != null) {
+                                // Convert and display the original image
+                                Bitmap bitmap = convertImageStringToBitmap(imageString);
+                                if (bitmap != null) {
+                                    imageView.setImageBitmap(bitmap);
+                                }
+                            }
+                        }
+                    } else {
+                        // Device is not registered, let the user enter new information
+                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
 
         /**
          * Setup interaction listeners
          */
         setupListeners();
     }
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
 
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+        if(drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0) {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        } else {
+            // If intrinsic size is not available, define a default size or use the view's size
+            bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888); // Example default size
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+    private String convertBitmapToImageString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    // Helper method to extract initials from a name
+    private String getInitials(String name) {
+        StringBuilder initials = new StringBuilder();
+        for (String part : name.split(" ")) {
+            if (!part.trim().isEmpty()) {
+                initials.append(part.charAt(0));
+            }
+        }
+        return initials.toString().toUpperCase();
+    }
     /**
      * Handles the result from the image picker activity, updating the profile picture accordingly.
      * @param requestCode The request code initially supplied to startActivityForResult(), allowing you to identify who this result came from.
@@ -205,30 +310,65 @@ public class Profile extends AppCompatActivity {
     private void saveProfileData() {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        // Use trim() to remove leading and trailing spaces, and check if empty
         String name = editTextName.getText().toString().trim();
-        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
-        String homePage = editTextHomePage.getText().toString().trim();
-
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(phoneNumber)) {
-            final String imageString = convertImageUriToString(imageUri);
-
-            if (imageString != null) {
-                final Map<String, Object> profileData = new HashMap<>();
-                profileData.put("deviceId", deviceId);
-                profileData.put("name", name);
-                profileData.put("phoneNumber", phoneNumber);
-                profileData.put("homePage", homePage);
-                profileData.put("imageString", imageString);
-
-                saveDataToFirestore(profileData, deviceId);
-            } else {
-                Toast.makeText(getApplicationContext(), "Failed to convert image to string", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter name and phone number", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(name)) {
+            name = ""; // Set to blank if empty
         }
+
+        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+        if (TextUtils.isEmpty(phoneNumber)) {
+            phoneNumber = ""; // Set to blank if empty
+        }
+
+        String homePage = editTextHomePage.getText().toString().trim();
+        if (TextUtils.isEmpty(homePage)) {
+            homePage = ""; // Set to blank if empty
+        }
+
+        String imageString = null;
+        if (imageUri != null) {
+            // An image was selected by the user; convert it to a string
+            imageString = convertImageUriToString(imageUri);
+            customedImage = true;
+        } else if (customedImage == false){
+            // No image was selected; generate a TextDrawable based on the user's name
+            // Only do this if you really need a placeholder image for every profile without an image
+            if (!TextUtils.isEmpty(name)) {
+                // This block can be removed if you decide not to use a generated image when no image is selected
+                imageString = generateProfileImageForName(name);
+            }
+        }
+
+        final Map<String, Object> profileData = new HashMap<>();
+        profileData.put("deviceId", deviceId);
+        profileData.put("name", name);
+        profileData.put("phoneNumber", phoneNumber);
+        profileData.put("homePage", homePage);
+        profileData.put("imageString", imageString);
+        profileData.put("customedImage",customedImage);
+
+
+        saveDataToFirestore(profileData, deviceId);
     }
 
+
+    /**
+     * Generates a profile image for the user based on their name and converts it to a Base64 encoded string.
+     * @param name The name of the user to generate an image for.
+     * @return A Base64 encoded string representing the generated image; null if an error occurs.
+     */
+    private String generateProfileImageForName(String name) {
+        String initials = getInitials(name);
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(name);
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(initials, color);
+
+        Bitmap bitmap = drawableToBitmap(drawable);
+        imageView.setImageDrawable(drawable);
+        return convertBitmapToImageString(bitmap);
+    }
     /**
      * Initializes UI components and Firebase Firestore instance.
      */
@@ -254,11 +394,14 @@ public class Profile extends AppCompatActivity {
                 .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080
                 .start());
 
-        deleteButton.setOnClickListener(view -> imageView.setImageResource(R.drawable.img_ellipse1_124x124));
+        deleteButton.setOnClickListener(view -> {
+            customedImage = false;
+            saveProfileData();
+        });
 
         findViewById(R.id.buttonSave).setOnClickListener(view -> saveProfileData());
 
-        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, QRActivity.class)));
+        goBackButton.setOnClickListener(view -> startActivity(new Intent(Profile.this, HomeActivity.class)));
     }
 
     /**
@@ -299,12 +442,23 @@ public class Profile extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> preData = documentSnapshot.getData();
+                        if(preData.get("GeoTracking")!=null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1){
+                            GeoTracking = 1;
+                            profileData.put("GeoTracking",GeoTracking);
+                        }else {
+                            GeoTracking = 0;
+                            profileData.put("GeoTracking",GeoTracking);
+                        }
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
                                 .set(profileData)
                                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
                     } else {
+                        GeoTracking = 0;
+                        profileData.put("GeoTracking",GeoTracking);
                         db.collection("profiles")
                                 .add(profileData)
                                 .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())

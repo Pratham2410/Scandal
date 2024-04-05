@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/editTitle"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
+        android:ellipsize="end"
+        android:hint="Title"
+        android:inputType="text"
+        android:paddingStart="@dimen/_26pxh"
+        android:paddingTop="@dimen/_11pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/black_900_99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/editDescription"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/editDescription"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
+        android:ellipsize="end"
+        android:hint="Description"
+        android:inputType="text"
+        android:paddingStart="@dimen/_26pxh"
+        android:paddingTop="@dimen/_11pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/black_900_99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="Autofill" />
+
+
+    <LinearLayout
+        android:id="@+id/linearRowgearone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearRowarrowleft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.86"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/buttonBack_Send_Notification"
+                style="@style/groupStyleteal_A200cornerRadius"
+                android:layout_width="@dimen/_82pxh"
+                android:layout_height="@dimen/_51pxv"
+                android:layout_marginBottom="@dimen/_108pxv">
+
+                <ImageView
+                    android:id="@+id/imageArrowleft"
+                    android:layout_width="@dimen/_23pxh"
+                    android:layout_height="@dimen/_25pxh"
+                    android:layout_gravity="top|start"
+                    android:layout_marginStart="@dimen/_26pxh"
+                    android:layout_marginTop="@dimen/_9pxv"
+                    android:layout_marginEnd="@dimen/_26pxh"
+                    android:layout_marginBottom="@dimen/_10pxv"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_arrowleft"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_arrowleft" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageGearOne"
+            android:layout_width="@dimen/_41pxh"
+            android:layout_height="@dimen/_41pxh"
+            android:layout_marginStart="@dimen/_70pxh"
+            android:layout_marginTop="@dimen/_10pxv"
+            android:layout_marginBottom="@dimen/_108pxv"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_gear1"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_gear1" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameStackundrawwallpos"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_160pxv"
+        android:gravity="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/buttonBackToHomepage"
+            android:layout_width="@dimen/_89pxh"
+            android:layout_height="@dimen/_90pxv"
+            android:layout_gravity="bottom|start"
+            android:layout_marginTop="@dimen/_10pxv"
+            android:layout_marginEnd="@dimen/_10pxh">
+
+            <ImageView
+                android:id="@+id/imageLogo"
+                android:layout_width="@dimen/_89pxh"
+                android:layout_height="@dimen/_90pxh"
+                android:layout_gravity="start"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/img_result1"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/img_result1" />
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imageUndrawwallpos"
+            android:layout_width="@dimen/_139pxh"
+            android:layout_height="@dimen/_105pxh"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/img_undrawwallpos"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_undrawwallpos" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSend"
+            style="@style/btnSolidRoundedOutline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginStart="@dimen/_85pxh"
+            android:layout_marginTop="@dimen/_33pxv"
+            android:layout_marginEnd="@dimen/_85pxh"
+            android:layout_marginBottom="@dimen/_33pxv"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingStart="@dimen/_30pxh"
+            android:paddingTop="@dimen/_8pxv"
+            android:paddingEnd="@dimen/_30pxh"
+            android:paddingBottom="@dimen/_8pxv"
+            android:singleLine="true"
+            android:text="Send"
+            android:textAllCaps="false"
+            tools:text="Send" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

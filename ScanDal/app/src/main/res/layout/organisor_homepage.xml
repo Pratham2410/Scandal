@@ -5,6 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonViewMyEvents_OrganisorHomepage"
+        style="@style/btnSolidRounded"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_29pxh"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingEnd="@dimen/_28pxh"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:text="View My Events"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/sendnotifs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateNewEvents"
+        tools:text="View My Events" />
+
     <TextView
         android:id="@+id/textPressBelow1"
         style="@style/txtPoppinsbold16"
@@ -29,14 +50,13 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPressBelow1"
-        app:layout_constraintBottom_toTopOf="@+id/textPressBelow2"
-        tools:layout_editor_absoluteY="246dp">
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewMyEvents_OrganisorHomepage"
+        app:layout_constraintTop_toBottomOf="@+id/textPressBelow1">
 
         <TextView
             android:id="@+id/textOrganisorPage"
             style="@style/txtPoppinsbold17"
-            android:layout_width="0dp"
+            android:layout_width="204dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16pxh"
             android:layout_marginTop="@dimen/_11pxv"
@@ -49,26 +69,10 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textPressBelow2"
-        style="@style/txtPoppinsbold16"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:ellipsize="end"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="Press below to make a new event!"
-        app:layout_constraintBottom_toTopOf="@+id/buttonViewMyEvents"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreateNewEvents"
-        tools:text="Press below to make a new event!" />
-
     <FrameLayout
         android:id="@+id/frameStackellipseone"
         android:layout_width="411dp"
-        android:layout_height="290dp"
-        app:layout_constraintBottom_toTopOf="@+id/textPressBelow1"
+        android:layout_height="260dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -169,11 +173,20 @@
         android:layout_gravity="top|start"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_ellipse3"
         tools:ignore="ContentDescription"
         tools:src="@drawable/img_ellipse3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="165dp"
+        android:layout_height="208dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/img_completed_m9ci" />
 
     <FrameLayout
         android:id="@+id/buttonBackToHomepage"
@@ -193,42 +206,43 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
+        <TextView
+            android:id="@+id/txtHomePage"
+            style="@style/txtPoppinsbold15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_18pxh"
+            android:layout_marginTop="@dimen/_16pxv"
+            android:layout_marginEnd="@dimen/_18pxh"
+            android:layout_marginBottom="@dimen/_16pxv"
+            android:gravity="top|center"
+            android:shadowColor="#65FEEB"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="2.5"
+            android:text="Home Page"
+            android:textAllCaps="true"
+            tools:text="HOME PAGE" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="165dp"
-        android:layout_height="208dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/sendnotifs"
+        style="@style/txtPoppinsbold17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#FFC107"
+        android:text="Send Notifications"
+        android:textColor="@color/pink_500"
+        android:textColorHighlight="#FFC107"
+        android:textColorHint="#FFC107"
+        android:textColorLink="#FFC107"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/img_completed_m9ci" />
-
-    <LinearLayout
-        android:id="@+id/buttonViewMyEvents"
-        style="@style/groupStyleteal_1"
-        android:layout_width="228dp"
-        android:layout_height="51dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageEllipseThree"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPressBelow2"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/textViewMyEvents"
-            style="@style/txtPoppinsbold17"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16pxh"
-            android:layout_marginTop="@dimen/_11pxv"
-            android:layout_marginBottom="@dimen/_9pxv"
-            android:layout_weight="0.83"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="View My Events"
-            tools:text="View My Events" />
-
-    </LinearLayout>
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewMyEvents_OrganisorHomepage"
+        app:rippleColor="#FFC107"
+        app:strokeColor="#FFC107" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

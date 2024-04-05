@@ -15,7 +15,7 @@
         android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
         android:ellipsize="end"
         android:hint="@string/msg_your_contact_in"
-        android:inputType="text"
+        android:inputType="phone"
         android:paddingStart="@dimen/_26pxh"
         android:paddingTop="@dimen/_11pxv"
         android:paddingEnd="@dimen/_30pxh"
