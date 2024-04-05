@@ -153,6 +153,7 @@ public class EventActivity extends AppCompatActivity {
         editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
         editEventTime = findViewById(R.id.editTextEventTime_CreateEventPage);
         editlocation = findViewById(R.id.editTextEventLocation_CreateEventPage);
+        editLimit = findViewById(R.id.editTextEventLimit_CreateEventPage);
         editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
         uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);
