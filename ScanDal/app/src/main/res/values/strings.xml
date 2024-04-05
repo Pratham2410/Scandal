@@ -34,4 +34,5 @@ Organisors and Admin page</string>
     <string name="msg_camera_storage_permission">This Application need permission\n1.Camera permission to capture the image.\n2.Storage Access permission to save the captured image.</string>
     <string name="lbl_camera">Camera</string>
     <string name="lbl_gallery">Gallery</string>
+    <string name="my_map_api_key">AIzaSyBPTSNcgsJS3uXAw0l0-TAsa1GqFSFQDLE</string>
 </resources>
