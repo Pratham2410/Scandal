@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -18,6 +19,7 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity {
     FrameLayout backMain;
     ListView userList;
     FirebaseFirestore db;
+    String attendeeNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,11 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity {
         backMain.setOnClickListener(v -> finish());
 
         loadCheckedInUsers(eventName); // Modify to pass eventName
+        userList.setOnItemClickListener((parent, view, position, id) -> {
+            attendeeNames = (String) parent.getItemAtPosition(position);
+            Toast.makeText(OrganizerListCheckedInActivity.this, eventName+" is selected", Toast.LENGTH_SHORT).show();
+        });
+
     }
 
     /**
@@ -69,4 +76,5 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity {
                     // Handle errors
                 });
     }
+
 }

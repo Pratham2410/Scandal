@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -37,16 +39,17 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
      *
      * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
      */
+    String attendeeNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events_page); // Ensure this is the correct layout
+        setContentView(R.layout.events_attendees_page); // Ensure this is the correct layout
         TextView txtMyEvents = findViewById(R.id.txtMyEvents);
         txtMyEvents.setText("SignedUp Attendees");
 
-        backMain = findViewById(R.id.buttonBack_MyEventsPage);
-        userList = findViewById(R.id.listView_MyEventsPage);
+        backMain = findViewById(R.id.buttonBack_EventsAttendeesPage);
+        userList = findViewById(R.id.listView_EventsAttendeesPage);
         db = FirebaseFirestore.getInstance();
 
         backMain.setOnClickListener(v -> finish());
@@ -55,8 +58,11 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
         String eventName = getIntent().getStringExtra("eventName");
 
         loadUsers(eventName); // Pass the eventName to the method
+        userList.setOnItemClickListener((parent, view, position, id) -> {
+            attendeeNames = (String) parent.getItemAtPosition(position);
+            Toast.makeText(OrganizerListSignedUpActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
+        });
     }
-
     /**
      * Retrieves and displays users signed up for the specified event.
      */
