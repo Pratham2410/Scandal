@@ -80,10 +80,12 @@ public class QRCodeScanner extends AppCompatActivity {
                             String description = getIntent().getStringExtra("description");
                             String eventLocation = getIntent().getStringExtra("Location");
                             String eventTime = getIntent().getStringExtra("Time");
+                            String attendeeLimit = getIntent().getStringExtra("attendeeLimit");
                             NewEventActivity.imageString =imageString;
                             Intent intent = new Intent(QRCodeScanner.this, NewEventActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("Time", eventTime);
+                            intent.putExtra("attendeeLimit", attendeeLimit);
                             intent.putExtra("Location", eventLocation);
                             intent.putExtra("description", description);
 
