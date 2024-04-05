@@ -159,12 +159,13 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("name", name);
                 event.put("time", eventTime);
                 event.put("location", eventLocation);
-                event.put("description", description);
+                event.put(" ", description);
                 event.put("checkinToken", token);
                 event.put("promoToken", token2);
                 event.put("posterImage", imageString); // Add the image string to the event map
                 final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 event.put("organizer", deviceId); // Add device ID as organizer
+                //event.put("attendeeCount", 0);
                 // Save event to Firestore
                 Log.e("hpeebles", "before storing in db");
                 db.collection("events")

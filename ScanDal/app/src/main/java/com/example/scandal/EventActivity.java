@@ -9,11 +9,15 @@ import android.util.Base64;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Random;
@@ -59,6 +63,7 @@ public class EventActivity extends AppCompatActivity {
      * Button to upload a poster image
      */
     AppCompatButton deletePosterButton;
+
 
 
     @Override
