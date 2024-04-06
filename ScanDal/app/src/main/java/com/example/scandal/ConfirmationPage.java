@@ -22,7 +22,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -220,43 +222,44 @@ public class ConfirmationPage extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        // First, fetch the user's name using the device ID
-        db.collection("profiles")
-                .whereEqualTo("deviceId", deviceId)
+        db.collection("events")
+                .whereEqualTo("name", name)
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot profileDocument = queryDocumentSnapshots.getDocuments().get(0);
-                        String attendeeName = profileDocument.getString("name");
-
-                        // Now, update the event document
-                        Map<String, Object> checkInData = new HashMap<>();
-                        checkInData.put(deviceId, attendeeName);
-
-                        db.collection("events")
-                                .document(name) // Assuming 'name' is the document ID or you have a way to get the document ID
-                                .get()
-                                .addOnSuccessListener(eventDocumentSnapshot -> {
-                                    DocumentReference eventDocRef = eventDocumentSnapshot.getReference();
-                                    Map<String, Object> eventUpdate = new HashMap<>();
-
-                                    if (eventDocumentSnapshot.contains("checkedIn")) {
-                                        Map<String, Object> existingCheckedIn = (Map<String, Object>) eventDocumentSnapshot.get("checkedIn");
-                                        existingCheckedIn.putAll(checkInData);
-                                        eventUpdate.put("checkedIn", existingCheckedIn);
-                                    } else {
-                                        eventUpdate.put("checkedIn", checkInData);
-                                    }
-
-                                    eventDocRef.update(eventUpdate)
-                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Event not found", Toast.LENGTH_SHORT).show());
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        String documentId = documentSnapshot.getId();
+                        Map<String, Object> eventData = documentSnapshot.getData();
+                        // Check if there is an existing list storing checked in users
+                        if (eventData != null && eventData.containsKey("checkedIn")) {
+                            // Get the existing list of device IDs
+                            List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
+                            // Add the new device ID, if it's not already in the list
+                            if (!existingCheckedIn.contains(deviceId)) {
+                                existingCheckedIn.add(deviceId);
+                                Map<String, Object> update = new HashMap<>();
+                                update.put("checkedIn", existingCheckedIn);
+                                // Perform the update
+                                db.collection("events").document(documentId)
+                                        .update(update)
+                                        .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                            }
+                        } else {
+                            // If "checkedIn" does not exist, meaning no one has checked in yet
+                            List<String> newCheckedInList = new ArrayList<>();
+                            newCheckedInList.add(deviceId);
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("checkedIn", newCheckedInList);
+                            // Perform the update
+                            db.collection("events").document(documentId)
+                                    .update(update)
+                                    .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                        }
                     }
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show());
+                });
     }
 
 }

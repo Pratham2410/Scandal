@@ -161,7 +161,11 @@ public class Profile extends AppCompatActivity {
     public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
-
+    public Profile(String name, String phoneNumber, String homePage) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.homePage = homePage;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
