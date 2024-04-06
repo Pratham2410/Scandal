@@ -38,7 +38,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
     /**
      * A string storing the divice id
      */
-    final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
     /**
      * Called when the activity is starting. This is where most initialization should go:
@@ -74,6 +73,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
      */
 
     private String getCheckedInEventName() {
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final String[] checkedInEventName = new String[1];
         db.collection("events")
                 .get()
@@ -96,6 +96,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
         eventsList.setAdapter(adapter);
 
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final String checkedInEventName = getCheckedInEventName();
         db.collection("events")
                 .get()
