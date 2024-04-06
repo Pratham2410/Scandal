@@ -169,7 +169,7 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("attendeeLimit", attendeeLimit);
                 event.put("time", eventTime);
                 event.put("location", eventLocation);
-                event.put(" ", description);
+                event.put("description", description);
                 event.put("checkinToken", token);
                 event.put("promoToken", token2);
                 event.put("posterImage", imageString); // Add the image string to the event map
