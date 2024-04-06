@@ -33,6 +33,12 @@
 
             </intent-filter>
         </service>
+
+        <service
+            android:name=".NewUserService"
+            android:exported="false">
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

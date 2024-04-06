@@ -1,6 +1,7 @@
 package com.example.scandal;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -161,11 +162,7 @@ public class Profile extends AppCompatActivity {
     public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
-    public Profile(String name, String phoneNumber, String homePage) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.homePage = homePage;
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +185,13 @@ public class Profile extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> profileData = documentSnapshot.getData();
                         if (profileData != null) {
-                            editTextName.setText((String) profileData.get("name"));
+                            String name = (String) profileData.get("name");
+                            if (name.equals("Unkown")) {
+                                editTextName.setText("Your Name");
+                            }
+                            else {
+                                editTextName.setText(name);
+                            }
                             editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
                             editTextHomePage.setText((String) profileData.get("homePage"));
                             // Check if user has customized image before
@@ -205,7 +208,7 @@ public class Profile extends AppCompatActivity {
                         }
                     } else {
                         // Device is not registered, let the user enter new information
-                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
@@ -317,7 +320,7 @@ public class Profile extends AppCompatActivity {
         // Use trim() to remove leading and trailing spaces, and check if empty
         String name = editTextName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            name = ""; // Set to blank if empty
+            name = "Unkown"; // Set to blaActivitnk if empty
         }
 
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();

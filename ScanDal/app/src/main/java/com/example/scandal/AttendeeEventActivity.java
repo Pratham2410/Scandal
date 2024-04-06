@@ -3,6 +3,7 @@ package com.example.scandal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -81,14 +82,19 @@ public class AttendeeEventActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Map<String, Object> eventData = documentSnapshot.getData();
                         if (eventData.containsKey("checkedIn")) {
-                            Map<String, Object> checkedInUsers = (Map<String, Object>) eventData.get("checkedIn");
-                            if (checkedInUsers.containsKey(deviceId)) {
+                            List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
+                            if (checkedInUsers.contains(deviceId)) {
                                 // Assuming each event document has a 'name' field
+                                Log.e("etowsley", "Event found");
                                 checkedInEventName[0] = documentSnapshot.getString("name");
+                                Log.e("etowsley", checkedInEventName[0]);
                             }
                         }
                     }
                 });
+        if (checkedInEventName[0] == null) {
+            Log.e("etowsley", "checkInEventName was null");
+        }
         return checkedInEventName[0];
     }
     private void loadEvents() {
@@ -98,6 +104,13 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final String checkedInEventName = getCheckedInEventName();
+        if (checkedInEventName != null) {
+            Log.e("etowsley", checkedInEventName);
+        }
+        else {
+            Log.e("etowsley", "checkedInEvent was null");
+            Log.e("etowsley", deviceId);
+        }
         db.collection("events")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
