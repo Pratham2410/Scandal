@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 /** An activity for managing the viewing of event details */
@@ -37,6 +39,9 @@ public class EventDetailsActivity extends AppCompatActivity {
     /** ImageView to display the event time. */
     TextView textEventLocation_ViewEventPage;
     /** ImageView to display the event location. */
+
+    TextView attendeeCount;
+
     ImageView imageView;
     /** Button to see QRCode */
     Button button_seeQR;
@@ -61,14 +66,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         textEventName_ViewEventPage = findViewById(R.id.textEventName_ViewEventPage);
         textEventLocation_ViewEventPage = findViewById(R.id.textEventLocation_ViewEventPage);
         textEventTime_ViewEventPage = findViewById(R.id.textEventTime_ViewEventPage);
-
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
         buttonSignUp = findViewById(R.id.buttonSignUp);
         button_seeQR = findViewById(R.id.button_seeQRCode);
         db = FirebaseFirestore.getInstance();
-
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
 
@@ -229,6 +232,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             existingSignedUp.put(deviceId, attendeeName);
                             Map<String, Object> update = new HashMap<>();
                             update.put("signedUp", existingSignedUp);
+                            //update.put("attendeeCount", )
                             // Perform the update
                             db.collection("events").document(documentId)
                                     .update(update)

@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     } else {
                         // Device is not registered, let the user enter new information
-                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Profile does not exist", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
