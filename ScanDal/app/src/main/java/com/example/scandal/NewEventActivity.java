@@ -148,7 +148,7 @@ public class NewEventActivity extends AppCompatActivity {
             attendeeLimit = getIntent().getStringExtra("attendeeLimit");
             token = getIntent().getStringExtra("CheckinToken");
             token2 = getIntent().getStringExtra("PromoToken");
-            Log.e("etowsley", "Intent was null");
+            Log.e("etowsley", "NewEventActivity Source Intent was null");
         }
 
         generateQRs();
