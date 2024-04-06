@@ -117,9 +117,9 @@ EventPage extends AppCompatActivity {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                             Map<String, Object> profileData = documentSnapshot.getData();
                             if (profileData != null) {
-                                attendeeName = (String) profileData.get("name");
-                                saveSignUpToEvent(eventName);
-                                saveSignUpToAttendee(eventName);
+//                                attendeeName = (String) profileData.get("name");
+//                                saveSignUpToEvent(eventName);
+//                                saveSignUpToAttendee(eventName);
                             }
                             else {
                                 // Device is not registered, let the user enter new information
