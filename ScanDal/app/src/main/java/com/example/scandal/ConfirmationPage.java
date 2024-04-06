@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -70,6 +71,10 @@ public class ConfirmationPage extends AppCompatActivity {
      */
     String time;
     /**
+     * stores a flag to indicate whether it was a promo or checkin QR
+     */
+    String checked;
+    /**
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
@@ -121,10 +126,11 @@ public class ConfirmationPage extends AppCompatActivity {
                             noButton.setVisibility(View.VISIBLE);
                             bar.setVisibility(View.INVISIBLE);
                             loading.setVisibility(View.INVISIBLE);
-
+                            checked = "1";
                         } else {
                             // No matching document found with QRCode, try PromoQRCode
                             searchWithPromoQRCode(token);
+                            checked = "0";
                         }
                     } else {
                         // Failed to retrieve documents
@@ -140,9 +146,11 @@ public class ConfirmationPage extends AppCompatActivity {
             EventPage.imageString = posterImage;
             Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
             intent.putExtra("name", name);
+            Log.e("hpeebles", "name= "+name +"time = "+time+"loc = "+location);
             intent.putExtra("description", description);
             intent.putExtra("time", time);
             intent.putExtra("location", location);
+            intent.putExtra("check", checked);
             checkInUserToEvent();
             startActivity(intent);
             finish();
