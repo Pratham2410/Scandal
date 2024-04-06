@@ -66,14 +66,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         textEventName_ViewEventPage = findViewById(R.id.textEventName_ViewEventPage);
         textEventLocation_ViewEventPage = findViewById(R.id.textEventLocation_ViewEventPage);
         textEventTime_ViewEventPage = findViewById(R.id.textEventTime_ViewEventPage);
-
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
         buttonSignUp = findViewById(R.id.buttonSignUp);
         button_seeQR = findViewById(R.id.button_seeQRCode);
         db = FirebaseFirestore.getInstance();
-
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
 
