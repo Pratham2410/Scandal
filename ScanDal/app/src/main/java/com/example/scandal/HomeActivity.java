@@ -147,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
 //        });
         //Log.e("hpeebles", "Inside HomeAct");
         profile.setOnClickListener(view -> {
-            Intent myintent = new Intent(HomeActivity.this, Profile.class);
+            Intent myintent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(myintent);
         });
 
