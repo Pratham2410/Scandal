@@ -161,11 +161,11 @@ public class EventDetailsActivity extends AppCompatActivity {
                             }
                             else {
                                 // Device is not registered, let the user enter new information
-                                Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EventDetailsActivity.this, "Failed to Sign Up, please enter your name", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> Toast.makeText(EventDetailsActivity.this, "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
     private void saveSignUpToAttendee(String eventName) {
@@ -191,10 +191,10 @@ public class EventDetailsActivity extends AppCompatActivity {
                             db.collection("profiles").document(documentId)
                                     .update(update)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
                         }
                         else {
@@ -204,10 +204,10 @@ public class EventDetailsActivity extends AppCompatActivity {
                             db.collection("profiles").document(documentId)
                                     .update(update)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
                         }
                     }

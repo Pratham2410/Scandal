@@ -46,10 +46,11 @@
         android:layout_height="wrap_content"
         android:text="Do you want to checkin to the event Name?"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarConf"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/confNo"
