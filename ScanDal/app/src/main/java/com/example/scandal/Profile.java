@@ -1,6 +1,7 @@
 package com.example.scandal;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

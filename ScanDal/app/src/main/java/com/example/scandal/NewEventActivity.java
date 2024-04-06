@@ -150,7 +150,7 @@ public class NewEventActivity extends AppCompatActivity {
             attendeeLimit = getIntent().getStringExtra("attendeeLimit");
             token = getIntent().getStringExtra("CheckinToken");
             token2 = getIntent().getStringExtra("PromoToken");
-            Log.e("etowsley", "Intent was null");
+            Log.e("etowsley", "NewEventActivity Source Intent was null");
         }
 
         generateQRs();
@@ -175,6 +175,7 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("posterImage", imageString); // Add the image string to the event map
                 final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 event.put("organizer", deviceId); // Add device ID as organizer
+                //event.put("attendeeCount", 0);
                 // Save event to Firestore
                 Log.e("hpeebles", "before storing in db");
                 db.collection("events")
