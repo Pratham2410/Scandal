@@ -128,7 +128,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
                                     // Check if the user is checked in
                                     List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
                                     if (checkedInUsers != null && checkedInUsers.contains(deviceId)) {
-                                        eventNames.add(eventName + "   (Checked In)");
+                                        eventNames.add(eventName + "    (Checked In)");
                                     } else {
                                         eventNames.add(eventName);
                                     }
