@@ -153,7 +153,6 @@ public class ConfirmationPage extends AppCompatActivity {
             EventPage.imageString = posterImage;
             Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
             intent.putExtra("name", name);
-            Log.e("hpeebles", "name= "+name +"time = "+time+"check = "+checked);
             intent.putExtra("description", description);
             intent.putExtra("time", time);
             intent.putExtra("promo", promoToken);
