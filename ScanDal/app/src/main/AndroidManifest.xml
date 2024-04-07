@@ -110,9 +110,11 @@
 
         <activity android:name=".OrganizerListCheckedInActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
+        <activity android:name=".MilestoneActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
         <activity android:name=".OrganizerListSignedUpActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui"/>

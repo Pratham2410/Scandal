@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,8 +16,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.Map;
 
 /** An activity for managing the viewing of the details for the events I signed up */
@@ -60,11 +63,38 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         buttonAnnouncements = findViewById(R.id.buttonAnnouncements);
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
-
-
+        Button buttonSignOut = findViewById(R.id.buttonSignOut);
+        buttonSignOut.setVisibility(View.GONE); // Initially hide the button
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        db.collection("events")
+                .whereEqualTo("name", eventName)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    Map<String, Object> eventData = documentSnapshot.getData();
+                    if (eventData != null) {
+                        List<String> checkedInList = (List<String>) eventData.get("checkedIn");
+                        Map<String, Object> signedUpMap = (Map<String, Object>) eventData.get("signedUp");
+                        if (checkedInList != null && signedUpMap != null && checkedInList.contains(deviceId) && signedUpMap.containsKey(deviceId)) {
+                            buttonSignOut.setVisibility(View.VISIBLE); // Show the Sign Out button only if the device ID is in both lists
+
+                            buttonSignOut.setOnClickListener(v -> {
+                                // Call your method to handle the sign-out process
+                                handleSignOut(eventName, documentSnapshot.getId(), deviceId);
+                            });
+                        }
+                    }
+                });
+
+
+
+
+
         buttonAnnouncements.setOnClickListener(v -> {
             // Create an Intent to start AttendeeAnnouncements
             Intent announcementsIntent = new Intent(SignedUpEventDetailsActivity.this, AttendeeAnnouncements.class);
@@ -75,8 +105,7 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
             // Start AttendeeAnnouncements activity
             startActivity(announcementsIntent);
         });
-        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        db.collection("events")
+         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .limit(1)
                 .get()
@@ -100,6 +129,17 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+    }
+    private void handleSignOut(String eventName, String documentId, String deviceId) {
+        // Use FirebaseFirestore instance 'db' to update the document
+        db.collection("events").document(documentId)
+                .update("checkedIn", FieldValue.arrayRemove(deviceId), "signedUp", FieldValue.delete(), "attendeeCount", FieldValue.increment(-1))
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(SignedUpEventDetailsActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+                    // Optionally, redirect the user or refresh the activity
+                    finish();
+                })
+                .addOnFailureListener(e -> Toast.makeText(SignedUpEventDetailsActivity.this, "Failed to sign out", Toast.LENGTH_SHORT).show());
     }
     /**
      * Helper method to decode Base64 string to Bitmap.
