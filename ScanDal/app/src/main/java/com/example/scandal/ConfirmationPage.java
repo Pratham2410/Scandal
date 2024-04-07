@@ -231,27 +231,27 @@ public class ConfirmationPage extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        // Check if there is an existing list storing checked in users
-                        if (eventData != null && eventData.containsKey("checkedIn")) {
-                            // Get the existing list of device IDs
+                        Map<String, Object> update = new HashMap<>();
+                        if (eventData != null) {
+                            // Handle the checkedIn list
                             List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
-                            // Add the new device ID, if it's not already in the list
+                            if (existingCheckedIn == null) {
+                                existingCheckedIn = new ArrayList<>();
+                            }
                             if (!existingCheckedIn.contains(deviceId)) {
                                 existingCheckedIn.add(deviceId);
-                                Map<String, Object> update = new HashMap<>();
                                 update.put("checkedIn", existingCheckedIn);
-                                // Perform the update
-                                db.collection("events").document(documentId)
-                                        .update(update)
-                                        .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
                             }
-                        } else {
-                            // If "checkedIn" does not exist, meaning no one has checked in yet
-                            List<String> newCheckedInList = new ArrayList<>();
-                            newCheckedInList.add(deviceId);
-                            Map<String, Object> update = new HashMap<>();
-                            update.put("checkedIn", newCheckedInList);
+
+                            // Handle the checkedIn_count map
+                            Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
+                            if (checkedInCount == null) {
+                                checkedInCount = new HashMap<>();
+                            }
+                            Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
+                            checkedInCount.put(deviceId, currentCount + 1);
+                            update.put("checkedIn_count", checkedInCount);
+
                             // Perform the update
                             db.collection("events").document(documentId)
                                     .update(update)
@@ -261,5 +261,6 @@ public class ConfirmationPage extends AppCompatActivity {
                     }
                 });
     }
+
 
 }
