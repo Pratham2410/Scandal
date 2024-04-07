@@ -56,7 +56,7 @@ public class HomeActivityIntentTest {
     @Test
     public void testProfileActivityIntent() {
         onView(withId(R.id.profilePicture)).perform(click());
-        intended(hasComponent(Profile.class.getName()));
+        intended(hasComponent(ProfileActivity.class.getName()));
     }
 
     @Test

@@ -1,11 +1,11 @@
 package com.example.scandal;
 
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -17,20 +17,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
 /** Activity for managing the creation of a new event */
 public class NewEventActivity extends AppCompatActivity {
 
@@ -243,14 +239,14 @@ public class NewEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                shareImage(checkinQR.getQRPic(), "Check in QR shared from Scandal");
+                shareImage(checkinQR.getQRPic(), "CheckinCode");
             }
         });
         sharePromo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                shareImage(promoQR.getQRPic(), "Promotional QR shared from Scandal");
+                shareImage(promoQR.getQRPic(), "PromoCode");
             }
         });
     }
@@ -281,58 +277,31 @@ public class NewEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Shares in image pic with other apps and send the textAccompany with it
+     * Shares in image pic with other apps
+     * Source in large part:
+     * https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
      * @param pic img being shared
-     * @param textAccompany text to be sent with img
+     * @param textAccompany text that is the title
      */
     protected void shareImage(Bitmap pic, String textAccompany){
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/jpeg");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        pic.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        File f = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "temporary_file.jpg");
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, textAccompany);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                values);
+        OutputStream outstream;
         try {
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
+            outstream = getContentResolver().openOutputStream(uri);
+            pic.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+            outstream.close();
+        } catch (Exception e) {
+            System.err.println(e.toString());
         }
-        share.putExtra(Intent.EXTRA_STREAM, Uri.parse('/'+textAccompany+".jpg"));
+        share.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(share, "Share Image"));
-//        Intent share = new Intent(Intent.ACTION_SENDTO);
-//        share.setType("image/*");
-//        Uri picUri;
-//        picUri = saveImage(pic, getApplicationContext());
-//        share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        share.putExtra(Intent.EXTRA_STREAM, picUri);
-//        share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");
-//        share.putExtra(Intent.EXTRA_TEXT, textAccompany);
-//        startActivity(Intent.createChooser(share, "Share Data"));
     }
 
-    /**
-     * This method takes a bit map and the context and converts and returns the uri of the image
-     * @param pic bitmap to be converted to uri format
-     * @param instance the context in which the method is called
-     * @return a uri version of the bitmap passed
-     */
-    private Uri saveImage(Bitmap pic, Context instance){
-        File imageFolder = new File(instance.getCacheDir(), "images");
-        Uri picUri = null;
-        try{
-            imageFolder.mkdir();
-            File file = new File(imageFolder, "share_codes.jpg");
-            FileOutputStream stream = new FileOutputStream(file);
-            pic.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-            stream.flush();
-            stream.close();
-            picUri = FileProvider.getUriForFile(Objects.requireNonNull(instance.getApplicationContext()),
-                    "com.example.scandal"+".provider", file);
-            Log.e("hpeebles", picUri.toString());
-        } catch (IOException error){
-            Log.d("saveImage", "Exception"+error.getMessage());
-        }
-        return picUri;
-    }
+
 }
