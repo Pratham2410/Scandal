@@ -67,6 +67,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
                 Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
                 intent.putExtra("eventName", eventName);
                 startActivity(intent);
+
             }
         });
         loadEvents();
@@ -99,6 +100,12 @@ public class AttendeeEventActivity extends AppCompatActivity {
             Log.e("etowsley", "checkInEventName was null");
         }
         return checkedInEventName[0];
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh your events list every time the activity resumes
+        loadEvents();
     }
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
