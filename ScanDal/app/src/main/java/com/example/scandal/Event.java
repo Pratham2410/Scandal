@@ -38,6 +38,10 @@ public class Event {
      * The event poster
      */
     private MediaStore.Images poster;
+    /**
+     * Integer storing current number of attendees
+     */
+    private Integer attendeeCount;
 
 
     // Constructor
@@ -49,6 +53,7 @@ public class Event {
      */
     public Event(EventList eventList) {
         eventList.addEvent(this);
+        attendeeCount = currentAttendees.getAttendeeCount();
     }
 
     // Methods
@@ -63,6 +68,7 @@ public class Event {
             currentAttendees.addUserFirstTime(user);
         }
         currentAttendees.incrementSignIn(user);
+        attendeeCount = currentAttendees.getAttendeeCount();
     }
 
     // Getters and Setters
@@ -187,6 +193,9 @@ public class Event {
         return poster;
     }
 
+    public Integer getAttendeeCount() {
+        return attendeeCount;
+    }
     //Additional features
     public void displayOnMap(Usermap usermap) {
         // TODO: Implement the display on map when feature is ready

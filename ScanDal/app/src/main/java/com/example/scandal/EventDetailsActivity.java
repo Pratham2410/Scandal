@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 /** An activity for managing the viewing of event details */
@@ -46,9 +48,12 @@ public class EventDetailsActivity extends AppCompatActivity {
      * ImageView to display the event time.
      */
     TextView textEventLocation_ViewEventPage;
-    /**
-     * ImageView to display the event location.
-     */
+
+    /** ImageView to display the event location. */
+
+    TextView attendeeCount;
+
+
     ImageView imageView;
     /**
      * Button to see QRCode
@@ -78,14 +83,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         textEventName_ViewEventPage = findViewById(R.id.textEventName_ViewEventPage);
         textEventLocation_ViewEventPage = findViewById(R.id.textEventLocation_ViewEventPage);
         textEventTime_ViewEventPage = findViewById(R.id.textEventTime_ViewEventPage);
-
         textEventDescription_ViewEventPage = findViewById(R.id.textEventDescription_ViewEventPage);
         imageView = findViewById(R.id.imageView_ViewEventPage);
         buttonBack_ViewEventPage = findViewById(R.id.buttonBack_ViewEventPage);
         buttonSignUp = findViewById(R.id.buttonSignUp);
         button_seeQR = findViewById(R.id.button_seeQRCode);
         db = FirebaseFirestore.getInstance();
-
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
 
@@ -173,11 +176,11 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 saveSignUpToAttendee(eventName);
                             } else {
                                 // Device is not registered, let the user enter new information
-                                Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EventDetailsActivity.this, "Failed to Sign Up, please enter your name", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> Toast.makeText(EventDetailsActivity.this, "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
 
@@ -229,10 +232,10 @@ public class EventDetailsActivity extends AppCompatActivity {
                             db.collection("profiles").document(documentId)
                                     .update(update)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
                         } else {
                             Map<String, Object> update = new HashMap<>();
@@ -241,10 +244,10 @@ public class EventDetailsActivity extends AppCompatActivity {
                             db.collection("profiles").document(documentId)
                                     .update(update)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EventDetailsActivity.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
                         }
                     }
@@ -265,16 +268,27 @@ public class EventDetailsActivity extends AppCompatActivity {
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
 
-                        // Check if the user is already signed up
-                        boolean isAlreadySignedUp = eventData != null && eventData.containsKey("signedUp") &&
-                                ((Map<String, Object>) eventData.get("signedUp")).containsKey(deviceId);
-
-                        if (!isAlreadySignedUp) {
-                            // If the user is not signed up, add them to the signedUp map and increment attendee count
-                            Map<String, Object> update = eventData == null || !eventData.containsKey("signedUp") ?
-                                    new HashMap<>() : (Map<String, Object>) eventData.get("signedUp");
-
-                            update.put(deviceId, attendeeName);
+                        // If there is dictionary storing signed up user
+                        if (eventData != null && eventData.containsKey("signedUp")) {
+                            Map<String, Object> existingSignedUp = (Map<String, Object>) eventData.get("signedUp");
+                            existingSignedUp.put(deviceId, attendeeName);
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("signedUp", existingSignedUp);
+                            //update.put("attendeeCount", )
+                            // Perform the update
+                            db.collection("events").document(documentId)
+                                    .update(update)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                        else {
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("signedUp", signedUp);
+                            // Perform the update
 
                             db.collection("events").document(documentId)
                                     .update("signedUp", update)

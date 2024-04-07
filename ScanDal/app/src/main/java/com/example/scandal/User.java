@@ -45,8 +45,8 @@ public class User extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Remove Toast when Implementation Complete
-        Toast toast = Toast.makeText(this, "Starting Service", Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast toast = Toast.makeText(this, "Starting Service", Toast.LENGTH_SHORT);
+       // toast.show();
 
         // Drhuvil Please store this on firebase
         // Check if id is already on firebase
