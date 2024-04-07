@@ -186,7 +186,7 @@ public class Profile extends AppCompatActivity {
                         Map<String, Object> profileData = documentSnapshot.getData();
                         if (profileData != null) {
                             String name = (String) profileData.get("name");
-                            if (name.equals("Unkown")) {
+                            if (name.equals("Unknown")) {
                                 editTextName.setText("Your Name");
                             }
                             else {
@@ -320,7 +320,7 @@ public class Profile extends AppCompatActivity {
         // Use trim() to remove leading and trailing spaces, and check if empty
         String name = editTextName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            name = "Unkown"; // Set to blaActivitnk if empty
+            name = "Unknown"; // Set to blaActivitnk if empty
         }
 
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();
