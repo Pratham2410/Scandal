@@ -299,9 +299,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
-                        } else {
-                            // If the user is already signed up, don't increment the count
-                            Toast.makeText(getApplicationContext(), "You are already signed up for this event", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
