@@ -262,6 +262,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             Long attendeeLimit = null;
                             Long currentAttendeeCount = 0L;
 
+
                             try {
                                 attendeeLimit = attendeeLimitStr != null ? Long.parseLong(attendeeLimitStr) : null;
                                 Number currentAttendeeCountNumber = (Number) eventData.get("attendeeCount");
