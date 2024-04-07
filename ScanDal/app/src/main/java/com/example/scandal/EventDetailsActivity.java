@@ -37,6 +37,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     /** ImageView to display the event time. */
     TextView textEventLocation_ViewEventPage;
     /** ImageView to display the event location. */
+
     ImageView imageView;
     /** Button to see QRCode */
     Button button_seeQR;
@@ -234,6 +235,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                     .update(update)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                        incrementAttendeeCount(eventName); // Increment the attendee count here
                                     })
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
