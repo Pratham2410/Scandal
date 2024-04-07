@@ -77,6 +77,14 @@ public class ConfirmationPage extends AppCompatActivity {
      */
     String checked;
     /**
+     * the token to checkin
+     */
+    String checkinToken;
+    /**
+     * the token to view the promo page
+     */
+    String promoToken;
+    /**
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
@@ -113,13 +121,14 @@ public class ConfirmationPage extends AppCompatActivity {
                             bar.setProgress(10);
                             description = document.getString("description");
                             bar.setProgress(20);
-                            location = document.getString("Location");
+                            location = document.getString("location");
                             bar.setProgress(30);
-                            time = document.getString("Time");
+                            time = document.getString("time");
                             bar.setProgress(40);
+                            promoToken = document.getString("promoToken");
                             posterImage = document.getString("posterImage");
                             bar.setProgress(100);
-
+                            checkinToken = token;
                             // Convert posterImage to Bitmap
                             // Set the event name, description, and poster image
                             eventDescription.setText(defaultText + "checkin to " + name + "?");
@@ -148,9 +157,11 @@ public class ConfirmationPage extends AppCompatActivity {
             EventPage.imageString = posterImage;
             Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
             intent.putExtra("name", name);
-            Log.e("hpeebles", "name= "+name +"time = "+time+"loc = "+location);
+            Log.e("hpeebles", "name= "+name +"time = "+time+"check = "+checked);
             intent.putExtra("description", description);
             intent.putExtra("time", time);
+            intent.putExtra("promo", promoToken);
+            intent.putExtra("checkin", checkinToken);
             intent.putExtra("location", location);
             intent.putExtra("check", checked);
             checkInUserToEvent();
@@ -189,10 +200,12 @@ public class ConfirmationPage extends AppCompatActivity {
                                 bar.setProgress(10);
                                 description = document.getString("description");
                                 bar.setProgress(20);
-                                location = document.getString("Location");
+                                location = document.getString("location");
                                 bar.setProgress(30);
-                                time = document.getString("Time");
+                                time = document.getString("time");
                                 bar.setProgress(40);
+                                checkinToken = document.getString("checkinToken");
+                                promoToken = token;
                                 posterImage = document.getString("posterImage");
                                 bar.setProgress(100);
 

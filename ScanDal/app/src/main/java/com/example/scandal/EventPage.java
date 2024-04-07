@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
@@ -46,6 +46,12 @@ EventPage extends AppCompatActivity {
      * TextView to display event location
      */
     TextView eventLocation;
+    /** Button to see QRCode */
+    Button button_seeQR;
+    /**
+     * Signup button to sign up for an event
+     */
+    LinearLayout signUp;
     /**
      *  data base instance
      */
@@ -67,22 +73,7 @@ EventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_page);
 
-        LinearLayout signUp = findViewById(R.id.buttonSignUp);
-        back = findViewById(R.id.buttonBack_ViewEventPage);
-        poster = findViewById(R.id.imageView_ViewEventPage);
-        eventTime = findViewById(R.id.textEventTime_ViewEventPage);
-        eventLocation = findViewById(R.id.textEventLocation_ViewEventPage);
-        eventName = findViewById(R.id.textEventName_ViewEventPage);
-        eventDescription = findViewById(R.id.textEventDescription_ViewEventPage);
-        Bitmap posterBitmap = convertImageStringToBitmap(imageString);
-        poster.setImageBitmap(posterBitmap);
-        eventLocation.setText(getIntent().getStringExtra("location")); //gets the location
-        eventTime.setText(getIntent().getStringExtra("time")); // gets the time
-        eventDescription.setText(getIntent().getStringExtra("description")); // gets description
-        eventName.setText(getIntent().getStringExtra("name")); // gets the name
-        if (getIntent().getStringExtra("check") == "1"){
-            signUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
-        }
+       initializeUI();
 
         // Set OnClickListener for back button
         back.setOnClickListener(view -> {
@@ -129,6 +120,24 @@ EventPage extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
+        button_seeQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String checkInQRCode =getIntent().getStringExtra("checkin");
+                String promoQRCode =getIntent().getStringExtra("promo");
+
+                Log.e("etowsley", "SeeQRCode Button pushed");
+                Intent myIntent = new Intent(EventPage.this, NewEventActivity.class);
+                myIntent.putExtra("source", "EventDetails");
+                myIntent.putExtra("CheckInQRCodeEventDetails", checkInQRCode);
+                if (checkInQRCode != null) {
+                    Log.e("etowsley", "checkInQRCode is not null");
+                    myIntent.putExtra("PromoQRCodeEventDetails", promoQRCode);
+                    startActivity(myIntent);
+                    Log.e("etowsley", "Intent was started");
+                }
+            }
+        });
     }
 
 
@@ -148,6 +157,25 @@ EventPage extends AppCompatActivity {
             return null;
         }
     }
+    private void initializeUI(){
+        signUp = findViewById(R.id.buttonSignUp);
+        back = findViewById(R.id.buttonBack_ViewEventPage);
+        poster = findViewById(R.id.imageView_ViewEventPage);
+        eventTime = findViewById(R.id.textEventTime_ViewEventPage);
+        eventLocation = findViewById(R.id.textEventLocation_ViewEventPage);
+        eventName = findViewById(R.id.textEventName_ViewEventPage);
+        eventDescription = findViewById(R.id.textEventDescription_ViewEventPage);
+        button_seeQR = findViewById(R.id.button_seeQRCode);
 
+        Bitmap posterBitmap = convertImageStringToBitmap(imageString);
+        poster.setImageBitmap(posterBitmap);
+        eventLocation.setText(getIntent().getStringExtra("location")); //gets the location
+        eventTime.setText(getIntent().getStringExtra("time")); // gets the time
+        eventDescription.setText(getIntent().getStringExtra("description")); // gets description
+        eventName.setText(getIntent().getStringExtra("name")); // gets the name
+        if (getIntent().getStringExtra("check").equals("1")){
+            signUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
+        }
+    }
 
 }
