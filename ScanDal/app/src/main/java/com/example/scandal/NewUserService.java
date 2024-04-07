@@ -100,7 +100,7 @@ public class NewUserService extends Service {
 
         final Map<String, Object> profileData = new HashMap<>();
         profileData.put("deviceId", deviceId);
-        profileData.put("name", "Unkown");
+        profileData.put("name", "Unknown");
         profileData.put("phoneNumber", "");
         profileData.put("homePage", "");
         profileData.put("imageString", imageString);
