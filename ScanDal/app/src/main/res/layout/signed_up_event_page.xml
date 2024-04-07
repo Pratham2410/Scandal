@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/imageUndrawdoneche"
         android:layout_width="146dp"
@@ -137,23 +138,15 @@
             tools:src="@drawable/img_arrowleft" />
     </FrameLayout>
 
-    <Button
-        android:id="@+id/buttonAnnouncements"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
-        android:text="Announcements"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonBack_ViewEventPage" />
 
     <ImageView
         android:id="@+id/profilePicture"
         android:layout_width="@dimen/_153pxh"
         android:layout_height="@dimen/_112pxh"
         android:layout_gravity="top|end"
+        android:layout_marginBottom="603dp"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_ellipse1"
@@ -165,7 +158,9 @@
         android:layout_width="@dimen/_97pxh"
         android:layout_height="@dimen/_153pxh"
         android:layout_gravity="top|end"
+        android:layout_marginBottom="556dp"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_ellipse2"
@@ -233,6 +228,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textEventDescription_ViewEventPage"
         app:layout_constraintVertical_bias="0.851" />
+
+    <Button
+        android:id="@+id/buttonAnnouncements"
+        android:layout_width="160dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="-50dp"
+        android:text="Announcements"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.398"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBack_ViewEventPage" />
+
+    <Button
+        android:id="@+id/buttonSignOut"
+        android:layout_width="117dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Sign Out"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonAnnouncements"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

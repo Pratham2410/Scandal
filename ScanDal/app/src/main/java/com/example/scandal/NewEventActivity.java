@@ -21,6 +21,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -146,7 +147,7 @@ public class NewEventActivity extends AppCompatActivity {
             attendeeLimit = getIntent().getStringExtra("attendeeLimit");
             token = getIntent().getStringExtra("CheckinToken");
             token2 = getIntent().getStringExtra("PromoToken");
-            Log.e("etowsley", "Intent was null");
+            Log.e("etowsley", "NewEventActivity Source Intent was null");
         }
 
         generateQRs();
@@ -171,6 +172,7 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("posterImage", imageString); // Add the image string to the event map
                 final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 event.put("organizer", deviceId); // Add device ID as organizer
+                //event.put("attendeeCount", 0);
                 // Save event to Firestore
                 Log.e("hpeebles", "before storing in db");
                 db.collection("events")
@@ -178,6 +180,20 @@ public class NewEventActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
+                                String eventTopic = name + "organizer";
+                                if (!eventTopic.isEmpty()) {
+                                    // Remove spaces and special characters if necessary
+                                    // eventTopic = eventTopic.replaceAll("\\s+","_");
+                                    FirebaseMessaging.getInstance().subscribeToTopic(eventTopic)
+                                            .addOnCompleteListener(task -> {
+                                                if (!task.isSuccessful()) {
+                                                    Log.w("Subscription", "Topic subscription failed for topic: " + eventTopic);
+                                                } else {
+                                                    // Optionally notify the user of successful subscription
+                                                    Toast.makeText(NewEventActivity.this, "Subscribed to " + eventTopic + " notifications", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
                                 Log.e("hpeebles", "Added to DB");
                                 Toast.makeText(NewEventActivity.this, "Event saved successfully", Toast.LENGTH_SHORT).show();
                                 Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);

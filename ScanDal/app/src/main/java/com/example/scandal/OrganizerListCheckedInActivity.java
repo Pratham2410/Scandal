@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -49,32 +51,41 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity {
      * Retrieves and displays users checked in for the specified event.
      */
     private void loadCheckedInUsers(String eventName) {
-        List<String> userNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userNames);
+        List<String> checkedInAttendeeNamesWithCount = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, checkedInAttendeeNamesWithCount);
         userList.setAdapter(adapter);
 
-        // Adjust the Firestore query to filter by event name
         db.collection("events")
-                .whereEqualTo("name", eventName) // Use eventName to filter
+                .whereEqualTo("name", eventName)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData.containsKey("checkedIn")) {
-                            Map<String, Object> checkedInUsers = (Map<String, Object>) eventData.get("checkedIn");
-                            for (Object userNameObj : checkedInUsers.values()) {
-                                String userName = (String) userNameObj;
-                                if (userName != null) {
-                                    userNames.add(userName);
-                                    adapter.notifyDataSetChanged();
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot eventDoc = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> eventData = eventDoc.getData();
+                        if (eventData != null) {
+                            List<String> checkedInDeviceIds = (List<String>) eventData.get("checkedIn");
+                            Map<String, String> signedUpUsers = (Map<String, String>) eventData.get("signedUp");
+                            Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
+
+                            if (checkedInDeviceIds != null && signedUpUsers != null && checkedInCount != null) {
+                                for (String deviceId : checkedInDeviceIds) {
+                                    String attendeeName = signedUpUsers.get(deviceId);
+                                    Long count = checkedInCount.get(deviceId);
+                                    if (attendeeName != null && count != null) {
+                                        String displayText = attendeeName + "               (count " + count + ")";
+                                        checkedInAttendeeNamesWithCount.add(displayText);
+                                    }
                                 }
+                                adapter.notifyDataSetChanged();
                             }
                         }
+                    } else {
+                        Toast.makeText(OrganizerListCheckedInActivity.this, "No attendees checked in yet.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(e -> {
-                    // Handle errors
-                });
+                .addOnFailureListener(e -> Toast.makeText(OrganizerListCheckedInActivity.this, "Error loading checked in users.", Toast.LENGTH_SHORT).show());
     }
+
+
 
 }

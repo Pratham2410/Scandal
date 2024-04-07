@@ -38,10 +38,6 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
      */
     FrameLayout buttonBack_SettingsAndOrganisorPage; // Corrected variable name
     /**
-     * Button leading back to homepage
-     */
-    FrameLayout buttonBackToHomepage;
-    /**
      * Provides functionality for buttons on settings page
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
@@ -57,7 +53,6 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
 
         buttonGotoOrganisorPage = findViewById(R.id.buttonGotoOrganisorPage);
         buttonBack_SettingsAndOrganisorPage = findViewById(R.id.buttonBack_SettingsAndOrganisorPage); // Corrected ID reference
-        buttonBackToHomepage = findViewById(R.id.buttonBackToHomepage);
         buttonGeoTracking = findViewById(R.id.buttonGeoTracking_SettingsPage);
 
         FirebaseFirestore db;
@@ -125,15 +120,6 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
-
-        // Navigate back to home page
-        buttonBackToHomepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_home = new Intent(SettingsAndOrganiserActivity.this, HomeActivity.class);
-                startActivity(intent_home);
-            }
-        });
 
         buttonGotoOrganisorPage.setOnClickListener(new View.OnClickListener() {
             @Override
