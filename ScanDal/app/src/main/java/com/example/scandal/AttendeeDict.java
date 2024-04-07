@@ -14,6 +14,7 @@ public class AttendeeDict {
 
     /**
      * Adds user to dictionary on first sign in
+     *
      * @param user A user who is singing into event
      */
     public void addUserFirstTime(User user) {
@@ -22,6 +23,7 @@ public class AttendeeDict {
 
     /**
      * Increments the number of times a suer has signed into event
+     *
      * @param user the user singing in
      */
     public void incrementSignIn(User user) {
@@ -31,10 +33,19 @@ public class AttendeeDict {
 
     /**
      * Gets the number of time a user has signed into an event
+     *
      * @param user User object
      * @return Number of times user signed in
      */
     public int getSignInCount(User user) {
         return attendees.getOrDefault(user, 0);
+    }
+
+    /**
+     * Gets the current number of attendees
+     * @return
+     */
+    public Integer getAttendeeCount() {
+        return attendees.size();
     }
 }

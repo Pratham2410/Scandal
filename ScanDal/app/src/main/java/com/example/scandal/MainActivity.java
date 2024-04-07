@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +21,15 @@ import android.widget.Toast;
 import android.Manifest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Map;
 
 /**
  * The main activity for ScanDal
@@ -50,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         // Gets Emulator Key and Checks if Device is New
-        Intent intent_userLog = new Intent(MainActivity.this, User.class);
-        startService(intent_userLog);
+        //Intent intent_userLog = new Intent(MainActivity.this, User.class);
+        //startService(intent_userLog);
 
         setContentView(R.layout.starting_page);
         toQrScan = findViewById(R.id.buttonGetStarted);
@@ -81,7 +87,32 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+        checkIfNewUser();
 
+    }
 
+    /**
+     * Checks if user is new, and starts service to create profile if they are.
+     */
+    private void checkIfNewUser(){
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("profiles")
+                .whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Device is already registered, fetch and display profile data
+                        Log.e("etowsley", "User already exists");
+                    } else {
+                        // Device is not registered, let the user enter new information
+                        Log.e("etowsley", "User does not exist");
+                        Intent serviceIntent = new Intent(this, NewUserService.class);
+                        startService(serviceIntent);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
     }
 }

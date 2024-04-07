@@ -193,8 +193,8 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="61dp"
-        android:layout_height="17dp"
+        android:layout_width="124dp"
+        android:layout_height="19dp"
         android:text="Event Time"
         app:layout_constraintBottom_toTopOf="@+id/textEventTime_ViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"

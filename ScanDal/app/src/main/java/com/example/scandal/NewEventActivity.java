@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -148,7 +150,7 @@ public class NewEventActivity extends AppCompatActivity {
             attendeeLimit = getIntent().getStringExtra("attendeeLimit");
             token = getIntent().getStringExtra("CheckinToken");
             token2 = getIntent().getStringExtra("PromoToken");
-            Log.e("etowsley", "Intent was null");
+            Log.e("etowsley", "NewEventActivity Source Intent was null");
         }
 
         generateQRs();
@@ -173,6 +175,7 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("posterImage", imageString); // Add the image string to the event map
                 final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 event.put("organizer", deviceId); // Add device ID as organizer
+                //event.put("attendeeCount", 0);
                 // Save event to Firestore
                 Log.e("hpeebles", "before storing in db");
                 db.collection("events")
@@ -268,16 +271,29 @@ public class NewEventActivity extends AppCompatActivity {
      * @param textAccompany text to be sent with img
      */
     protected void shareImage(Bitmap pic, String textAccompany){
-        Intent share = new Intent(Intent.ACTION_SENDTO);
-        share.setType("image/*");
-        Uri picUri;
-        picUri = saveImage(pic, getApplicationContext());
-
-        share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        share.putExtra(Intent.EXTRA_STREAM, picUri);
-        share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");
-        share.putExtra(Intent.EXTRA_TEXT, textAccompany);
-        startActivity(Intent.createChooser(share, "Share Data"));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        pic.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        File f = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "temporary_file.jpg");
+        try {
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse('/'+textAccompany+".jpg"));
+        startActivity(Intent.createChooser(share, "Share Image"));
+//        Intent share = new Intent(Intent.ACTION_SENDTO);
+//        share.setType("image/*");
+//        Uri picUri;
+//        picUri = saveImage(pic, getApplicationContext());
+//        share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        share.putExtra(Intent.EXTRA_STREAM, picUri);
+//        share.putExtra(Intent.EXTRA_SUBJECT, "Share To Apps");
+//        share.putExtra(Intent.EXTRA_TEXT, textAccompany);
+//        startActivity(Intent.createChooser(share, "Share Data"));
     }
 
     /**
@@ -298,7 +314,7 @@ public class NewEventActivity extends AppCompatActivity {
             stream.close();
             picUri = FileProvider.getUriForFile(Objects.requireNonNull(instance.getApplicationContext()),
                     "com.example.scandal"+".provider", file);
-
+            Log.e("hpeebles", picUri.toString());
         } catch (IOException error){
             Log.d("saveImage", "Exception"+error.getMessage());
         }
