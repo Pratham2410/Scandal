@@ -164,7 +164,9 @@ public class ConfirmationPage extends AppCompatActivity {
             intent.putExtra("checkin", checkinToken);
             intent.putExtra("location", location);
             intent.putExtra("check", checked);
-            checkInUserToEvent();
+            if (checked == "1") {
+                checkInUserToEvent();
+            }
             startActivity(intent);
             finish();
         });
