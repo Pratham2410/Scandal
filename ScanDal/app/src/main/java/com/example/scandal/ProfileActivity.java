@@ -48,18 +48,6 @@ import java.util.Map;
  */
 public class ProfileActivity extends AppCompatActivity {
     /**
-     * The name of the user
-     */
-    private String name;
-    /**
-     * The phone number of the user
-     */
-    private String phoneNumber;
-    /**
-     * A string representing the homepage
-     */
-    private String homePage;
-    /**
      * An integer representing the GeoTracking Status(Set to 0 representing no as default)
      */
     private Integer GeoTracking;
@@ -123,7 +111,10 @@ public class ProfileActivity extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> profileData = documentSnapshot.getData();
                         if (profileData != null) {
-                            editTextName.setText((String) profileData.get("name"));
+                            String name = (String) profileData.get("name");
+                            if (!name.equals("Unkown")) {
+                                editTextName.setText(name);
+                            }
                             editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
                             editTextHomePage.setText((String) profileData.get("homePage"));
                             // Check if user has customized image before
@@ -140,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     } else {
                         // Device is not registered, let the user enter new information
-                        Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
@@ -150,22 +141,23 @@ public class ProfileActivity extends AppCompatActivity {
          */
         setupListeners();
     }
+
     private Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
+            if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
         }
 
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
-        if(drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0) {
+        if (drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0) {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         } else {
             // If intrinsic size is not available, define a default size or use the view's size
@@ -177,6 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
         drawable.draw(canvas);
         return bitmap;
     }
+
     private String convertBitmapToImageString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -194,11 +187,13 @@ public class ProfileActivity extends AppCompatActivity {
         }
         return initials.toString().toUpperCase();
     }
+
     /**
      * Handles the result from the image picker activity, updating the profile picture accordingly.
+     *
      * @param requestCode The request code initially supplied to startActivityForResult(), allowing you to identify who this result came from.
-     * @param resultCode The integer result code returned by the child activity through its setResult().
-     * @param data An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
+     * @param resultCode  The integer result code returned by the child activity through its setResult().
+     * @param data        An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -209,6 +204,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     /**
      * Converts a Base64 encoded string back into a Bitmap image, which can then be used to set an ImageView's content.
+     *
      * @param imageString The Base64 encoded string that represents the image.
      * @return A Bitmap image if conversion is successful; otherwise, null.
      */
@@ -225,6 +221,7 @@ public class ProfileActivity extends AppCompatActivity {
     /**
      * Converts the image located at a Uri into a Base64 encoded string.
      * This method is useful for storing images in Firebase Firestore as strings.
+     *
      * @param imageUri The Uri of the image to convert.
      * @return A Base64 encoded string representation of the image; null if an error occurs.
      */
@@ -252,7 +249,7 @@ public class ProfileActivity extends AppCompatActivity {
         // Use trim() to remove leading and trailing spaces, and check if empty
         String name = editTextName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            name = ""; // Set to blank if empty
+            name = "Unkown"; // Set to blaActivitnk if empty
         }
 
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();
@@ -270,7 +267,7 @@ public class ProfileActivity extends AppCompatActivity {
             // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
             customedImage = true;
-        } else if (customedImage == false){
+        } else if (customedImage == false) {
             // No image was selected; generate a TextDrawable based on the user's name
             // Only do this if you really need a placeholder image for every profile without an image
             if (!TextUtils.isEmpty(name)) {
@@ -285,7 +282,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileData.put("phoneNumber", phoneNumber);
         profileData.put("homePage", homePage);
         profileData.put("imageString", imageString);
-        profileData.put("customedImage",customedImage);
+        profileData.put("customedImage", customedImage);
 
 
         saveDataToFirestore(profileData, deviceId);
@@ -294,6 +291,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     /**
      * Generates a profile image for the user based on their name and converts it to a Base64 encoded string.
+     *
      * @param name The name of the user to generate an image for.
      * @return A Base64 encoded string representing the generated image; null if an error occurs.
      */
@@ -308,6 +306,7 @@ public class ProfileActivity extends AppCompatActivity {
         imageView.setImageDrawable(drawable);
         return convertBitmapToImageString(bitmap);
     }
+
     /**
      * Initializes UI components and Firebase Firestore instance.
      */
@@ -345,9 +344,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     /**
      * Processes the result from the image picker activity.
+     *
      * @param requestCode The request code passed to startActivityForResult().
-     * @param resultCode The result code returned by the image picker activity.
-     * @param data The intent data returned by the image picker activity.
+     * @param resultCode  The result code returned by the image picker activity.
+     * @param data        The intent data returned by the image picker activity.
      */
     private void processImagePickerResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE && data != null) {
@@ -372,8 +372,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     /**
      * Saves or updates the user's profile data in Firebase Firestore.
+     *
      * @param profileData A map containing the user's profile data.
-     * @param deviceId The device ID used to uniquely identify the user's document in Firestore.
+     * @param deviceId    The device ID used to uniquely identify the user's document in Firestore.
      */
     private void saveDataToFirestore(Map<String, Object> profileData, String deviceId) {
         db.collection("profiles").whereEqualTo("deviceId", deviceId)
@@ -383,12 +384,12 @@ public class ProfileActivity extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> preData = documentSnapshot.getData();
-                        if(preData.get("GeoTracking")!=null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1){
+                        if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
                             GeoTracking = 1;
-                            profileData.put("GeoTracking",GeoTracking);
-                        }else {
+                            profileData.put("GeoTracking", GeoTracking);
+                        } else {
                             GeoTracking = 0;
-                            profileData.put("GeoTracking",GeoTracking);
+                            profileData.put("GeoTracking", GeoTracking);
                         }
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
@@ -397,7 +398,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
                     } else {
                         GeoTracking = 0;
-                        profileData.put("GeoTracking",GeoTracking);
+                        profileData.put("GeoTracking", GeoTracking);
                         db.collection("profiles")
                                 .add(profileData)
                                 .addOnSuccessListener(documentReference -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())
