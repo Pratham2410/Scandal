@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -183,6 +184,20 @@ public class NewEventActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
+                                String eventTopic = name + "organizer";
+                                if (!eventTopic.isEmpty()) {
+                                    // Remove spaces and special characters if necessary
+                                    // eventTopic = eventTopic.replaceAll("\\s+","_");
+                                    FirebaseMessaging.getInstance().subscribeToTopic(eventTopic)
+                                            .addOnCompleteListener(task -> {
+                                                if (!task.isSuccessful()) {
+                                                    Log.w("Subscription", "Topic subscription failed for topic: " + eventTopic);
+                                                } else {
+                                                    // Optionally notify the user of successful subscription
+                                                    Toast.makeText(NewEventActivity.this, "Subscribed to " + eventTopic + " notifications", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
                                 Log.e("hpeebles", "Added to DB");
                                 Toast.makeText(NewEventActivity.this, "Event saved successfully", Toast.LENGTH_SHORT).show();
                                 Intent homePage = new Intent(NewEventActivity.this, HomeActivity.class);
