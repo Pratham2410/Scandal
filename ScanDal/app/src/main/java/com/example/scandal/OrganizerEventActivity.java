@@ -53,12 +53,14 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String eventName = (String) parent.getItemAtPosition(position);
+                String fullEventName = (String) parent.getItemAtPosition(position);
+                String eventName = fullEventName.split("    \\(")[0];
                 //Intent intent = new Intent(OrganizerEventActivity.this, SignedUpEventDetailsActivity.class); // Use appropriate activity to show event details
                 Intent intent = new Intent(OrganizerEventActivity.this, OrganizerViewEventActivity.class);
                 intent.putExtra("eventName", eventName);
                 startActivity(intent);
             }
+
         });
         loadEvents();
     }
@@ -79,8 +81,10 @@ public class OrganizerEventActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         String eventName = documentSnapshot.getString("name");
+                        String limit = documentSnapshot.getString("attendeeLimit");
+                        String eventName2 = eventName + "    (limit: " + limit +")";
                         if (eventName != null) {
-                            eventNames.add(eventName);
+                            eventNames.add(eventName2);
                             adapter.notifyDataSetChanged();
                         }
                     }

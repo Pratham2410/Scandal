@@ -52,6 +52,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     String attendeeName;
     String promoQRCode;
     String checkInQRCode;
+    String eventName;
 
     /**
      * Called when the activity is starting.
@@ -81,7 +82,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         // Retrieve the event name from the intent
-        String eventName = intent.getStringExtra("eventName");
+        eventName = intent.getStringExtra("eventName");
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         final Map<String, String> checkedInStatus = new HashMap<>();
@@ -288,7 +289,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                             Log.d(TAG, "Signing up the user");
                             signedUp.put(deviceId, attendeeName);
-                            performSignUp(documentId, signedUp);
+                            performSignUp(documentId, signedUp, attendeeLimit, currentAttendeeCount);
                         } else {
                             Toast.makeText(getApplicationContext(), "Event data not found", Toast.LENGTH_SHORT).show();
                         }
@@ -299,18 +300,81 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error fetching event", Toast.LENGTH_SHORT).show());
     }
 
-    private void performSignUp(String documentId, Map<String, Object> signedUp) {
+    private void performSignUp(String documentId, Map<String, Object> signedUp, long attendeeLimit, long currentAttendeeCount) {
         db.collection("events").document(documentId)
                 .update("signedUp", signedUp, "attendeeCount", FieldValue.increment(1))
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Sign up successful");
                     Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+
+                    // Calculate the new attendee count and capacity percentage
+                    long newAttendeeCount = currentAttendeeCount + 1;
+                    double capacityPercentage = ((double) newAttendeeCount / attendeeLimit) * 100;
+
+                    // Check for milestones and send notification if necessary
+                    checkAndSendMilestoneNotification(capacityPercentage, eventName, documentId);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Sign up failed", e);
                     Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    private void checkAndSendMilestoneNotification(double capacityPercentage, String eventName, String documentId) {
+        String milestoneKey;
+
+        if (capacityPercentage >= 100) {
+            milestoneKey = "100";
+        } else if (capacityPercentage >= 80) {
+            milestoneKey = "80";
+        } else if (capacityPercentage >= 50) {
+            milestoneKey = "50";
+        } else if (capacityPercentage >= 30) {
+            milestoneKey = "30";
+        } else {
+            milestoneKey = null;
+        }
+
+        if (milestoneKey != null) {
+            // First, check if this milestone has already been sent
+            db.collection("events").document(documentId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        Map<String, Boolean> sentMilestones = (Map<String, Boolean>) documentSnapshot.get("sentMilestones");
+                        if (sentMilestones == null) {
+                            sentMilestones = new HashMap<>();
+                        }
+                        // If the milestone has not been sent yet, send the notification and update Firestore
+                        if (sentMilestones.getOrDefault(milestoneKey, false) == false) {
+                            String milestoneMessage = milestoneKey + "% capacity reached";
+                            sendMilestoneNotification(eventName + "organizer", "Alert", milestoneMessage);
+
+                            // Update the sent milestone
+                            sentMilestones.put(milestoneKey, true);
+                            db.collection("events").document(documentId)
+                                    .update("sentMilestones", sentMilestones)
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Milestone " + milestoneKey + "% updated successfully"))
+                                    .addOnFailureListener(e -> Log.e(TAG, "Error updating milestone", e));
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error fetching event for milestone check", e));
+        }
+    }
+
+
+    private void sendMilestoneNotification(String topic, String title, String message) {
+        // Implementation of this method should be similar to how you're sending notifications
+        // in OrganiserNotificationActivity using FcmNotificationsSender or an equivalent approach.
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                topic, // Event-specific topic for organizers
+                title,
+                message,
+                getApplicationContext(),
+                EventDetailsActivity.this
+        );
+        notificationsSender.SendNotifications();
+    }
+
 
 
     /**
