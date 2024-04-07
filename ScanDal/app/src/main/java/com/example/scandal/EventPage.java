@@ -87,13 +87,14 @@ EventPage extends AppCompatActivity {
             final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);//gets device ID
             // Retrieve the event name from the TextView
             String event_Name = eventName.getText().toString();
-
                 // Subscribe to the event topic
                 FirebaseMessaging.getInstance().subscribeToTopic(event_Name)
                         .addOnCompleteListener(task -> {
                             if (!task.isSuccessful()) {
                                 Log.w(TAG, "Topic subscription failed");
+
                             } else {
+
                                 // Optionally notify the user of successful subscription
                                 Toast.makeText(EventPage.this, "Subscribed to event notifications", Toast.LENGTH_SHORT).show();
                             }
