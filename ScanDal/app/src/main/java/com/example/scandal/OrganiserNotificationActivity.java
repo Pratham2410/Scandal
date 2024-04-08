@@ -41,11 +41,16 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
 
         // Retrieve the event name from the intent
         Intent intent = getIntent();
-        String event_Name = intent.getStringExtra("event_Name"); // Make sure "eventName" matches the key used when putting the extra
-        if (event_Name == null) event_Name = "all"; // Fallback to "all" if no event name is provided
+        String event_Name = intent.getStringExtra("event_Name");
+        if (event_Name == null) {
+            event_Name = "all"; // Fallback to "all" if no event name is provided
+        } else {
+            event_Name = event_Name.replace(" ", "_"); // Replace spaces with underscores
+        }
 
         // Final topic string
-        String topic = "/topics/" + event_Name; // Construct the topic path
+        String topic = "/topics/" + event_Name;
+
 
         // Set the onClickListener for the back button
         buttonBack.setOnClickListener(v -> finish());

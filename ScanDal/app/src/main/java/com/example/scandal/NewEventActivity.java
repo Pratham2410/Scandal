@@ -181,16 +181,20 @@ public class NewEventActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 String eventTopic = name + "organizer";
+
+                                eventTopic = eventTopic.replace(" ", "_"); // Replace spaces with underscores
+
                                 if (!eventTopic.isEmpty()) {
                                     // Remove spaces and special characters if necessary
                                     // eventTopic = eventTopic.replaceAll("\\s+","_");
+                                    String finalEventTopic = eventTopic;
                                     FirebaseMessaging.getInstance().subscribeToTopic(eventTopic)
                                             .addOnCompleteListener(task -> {
                                                 if (!task.isSuccessful()) {
-                                                    Log.w("Subscription", "Topic subscription failed for topic: " + eventTopic);
+                                                    Log.w("Subscription", "Topic subscription failed for topic: " + finalEventTopic);
                                                 } else {
                                                     // Optionally notify the user of successful subscription
-                                                    Toast.makeText(NewEventActivity.this, "Subscribed to " + eventTopic + " notifications", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(NewEventActivity.this, "Subscribed to " + finalEventTopic + " notifications", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                 }

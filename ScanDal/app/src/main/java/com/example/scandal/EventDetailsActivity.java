@@ -159,8 +159,16 @@ public class EventDetailsActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(v -> {
             // Retrieve the event name from the TextView
             String event_Name = textEventName_ViewEventPage.getText().toString();
+            if (event_Name == null) {
+                event_Name = "all"; // Fallback to "all" if no event name is provided
+            } else {
+                event_Name = event_Name.replace(" ", "_"); // Replace spaces with underscores
+            }
+
+// Final topic string
+            String topic = "/topics/" + event_Name;
             // Check if eventName is not empty
-            if (!eventName.isEmpty()) {
+            if (!event_Name.isEmpty()) {
                 // Subscribe to the event topic
                 FirebaseMessaging.getInstance().subscribeToTopic(event_Name)
                         .addOnCompleteListener(task -> {
@@ -440,7 +448,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                         // If the milestone has not been sent yet, send the notification and update Firestore
                         if (sentMilestones.getOrDefault(milestoneKey, false) == false) {
                             String milestoneMessage = milestoneKey + " attendees present";
-                            sendMilestoneNotification(eventName + "organizer", "Alert", milestoneMessage);
+                            String event_Name = eventName.replace(" ", "_");
+                            String topic = "/topics/" + event_Name;
+                            sendMilestoneNotification(topic + "organizer", "Alert", milestoneMessage);
 
                             // Update the sent milestone
                             sentMilestones.put(milestoneKey, true);
