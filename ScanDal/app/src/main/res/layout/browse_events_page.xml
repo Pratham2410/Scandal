@@ -9,6 +9,7 @@
         android:id="@+id/listView_BrowseEventPage"
         android:layout_width="match_parent"
         android:layout_height="495dp"
+        android:isScrollContainer="true"
         app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintStart_toStartOf="parent" />
     <ImageView
