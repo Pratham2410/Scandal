@@ -1,4 +1,5 @@
 package com.example.scandal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -6,7 +7,7 @@ import java.util.List;
  */
 public class EventList {
     /** A list of events to populate activity */
-    private List<Event> eventDatabase;
+    private List<Event> eventDatabase = new ArrayList<>();
     /**
      *  Method to add an event to the list
      * @param event An event object

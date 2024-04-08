@@ -1,7 +1,6 @@
 package com.example.scandal;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -14,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity to display announcements for a specific event.
+ */
 public class AttendeeAnnouncements extends AppCompatActivity {
     FrameLayout backMain;
     ListView announcementList;
@@ -23,7 +25,7 @@ public class AttendeeAnnouncements extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_events_page); // Assuming this layout fits the purpose
-        TextView txtMyEvents = findViewById(R.id.txtMyEvents);
+        TextView txtMyEvents = findViewById(R.id.list_view_header);
         txtMyEvents.setText("Announcements");
         backMain = findViewById(R.id.buttonBack_MyEventsPage);
         announcementList = findViewById(R.id.listView_MyEventsPage);

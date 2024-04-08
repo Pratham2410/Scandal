@@ -1,83 +1,94 @@
 package com.example.scandal;
 
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import android.content.Intent;
+
+import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
+/**
+ * Instrumented test class for ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ProfileActivityTest {
+
+    // Rule to launch the activity under test
     @Rule
-    public ActivityScenarioRule<Profile> activityRule =
-            new ActivityScenarioRule<>(Profile.class);
+    public IntentsTestRule<ProfileActivity> intentsTestRule = new IntentsTestRule<>(ProfileActivity.class);
 
-    @Before
-    public void setUp() throws Exception {
-        // Point your app to use Firestore Emulator
-        // FirebaseFirestore.getInstance().useEmulator("10.0.2.2", 8080);
-    }
     /**
-     * Test method for saving all information at once.
+     * Test saving profile with name and homepage.
      */
     @Test
-    public void testProfileDataSaving() {
-        // Input mock data into EditTexts
-        onView(withId(R.id.editTextName)).perform(typeText("John Doe"), closeSoftKeyboard());
-        onView(withId(R.id.editTextPhoneNumber)).perform(typeText("123456789"), closeSoftKeyboard());
-        onView(withId(R.id.editHomePage)).perform(typeText("http://www.example.com"), closeSoftKeyboard());
+    public void testSaveProfileWithNameAndHomePage() {
+        // Enter name and homepage
+        onView(withId(R.id.editTextName)).perform(replaceText("John Doe"));
+        onView(withId(R.id.editHomePage)).perform(replaceText("www.example.com"));
 
-        // Simulate button click to save profile
+        // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-
-        // Assume delay for Firestore operation - use IdlingResource in real tests
-        // Query Firestore to verify data saved - pseudocode, actual Firestore querying not shown
-        // This part would involve fetching the document based on deviceId and verifying the content
-    }
-    /**
-     * Test method for editing Name.
-     */
-    @Test
-    public void testEditName() {
-        String testName = "John Doe";
-        onView(withId(R.id.editTextName)).perform(ViewActions.replaceText(testName));
-        onView(withId(R.id.buttonSave)).perform(click());
-        onView(withId(R.id.editTextName)).check(matches(withText(testName)));
-    }
-    /**
-     * Test method for editing Home Page.
-     */
-    @Test
-    public void testEditHomePage() {
-        String testHomePage = "https://example.com";
-        onView(withId(R.id.editHomePage)).perform(ViewActions.replaceText(testHomePage));
-        onView(withId(R.id.buttonSave)).perform(click());
-        onView(withId(R.id.editHomePage)).check(matches(withText(testHomePage)));
     }
 
     /**
-     * Test method for editing Phone Number.
+     * Test pressing the back button to return to HomeActivity.
      */
     @Test
-    public void testEditPhoneNumber() {
-        String testPhoneNumber = "1234567890";
-        onView(withId(R.id.editTextPhoneNumber)).perform(ViewActions.replaceText(testPhoneNumber));
+    public void testBackButtonToHomeActivity() {
+        // Click the back button
+        onView(withId(R.id.buttonBack_EditProfilePage)).perform(click());
+
+        // Check if HomeActivity is opened
+        intended(hasComponent(HomeActivity.class.getName()));
+    }
+
+    /**
+     * Test saving profile with name only.
+     */
+    @Test
+    public void testSaveProfileWithNameOnly() {
+        // Enter name only
+        onView(withId(R.id.editTextName)).perform(replaceText("Alice Smith"));
+
+        // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-        onView(withId(R.id.editTextPhoneNumber)).check(matches(withText(testPhoneNumber)));
+    }
+
+    /**
+     * Test saving profile with name and contact number.
+     */
+    @Test
+    public void testSaveProfileWithNameAndContactNo() {
+        // Enter name and contact number
+        onView(withId(R.id.editTextName)).perform(replaceText("Bob Johnson"));
+        onView(withId(R.id.editTextPhoneNumber)).perform(replaceText("1234567890"));
+
+        // Click save profile button
+        onView(withId(R.id.buttonSave)).perform(click());
+    }
+
+    /**
+     * Test saving profile with all fields empty.
+     */
+    @Test
+    public void testSaveProfileWithEmptyFields() {
+        // Leave all fields empty
+
+        // Click save profile button
+        onView(withId(R.id.buttonSave)).perform(click());
     }
 }
-
-

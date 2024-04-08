@@ -19,6 +19,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles sending Firebase Cloud Messaging (FCM) notifications.
+ */
 public class FcmNotificationsSender extends FirebaseMessagingService {
 
     String userFcmToken;
@@ -30,6 +33,16 @@ public class FcmNotificationsSender extends FirebaseMessagingService {
     private RequestQueue requestQueue;
     private final String postUrl = "https://fcm.googleapis.com/fcm/send";
     private final String fcmServerKey = "AAAA_ohTcSQ:APA91bHal-yK8lnVIXKtvM5jFI33nJiBIskrKmU3wScympLANVMEJ69IBMtKKc32GXudzyUvHtvB1NpphQ4yT4m3CO9JFhtI4xahbpb_q236Pxj2ZF5QeFoAOht4-09OpeCRzZkRXMQb"; // Replace with your actual FCM server key
+
+    /**
+     * Constructor for FcmNotificationsSender.
+     *
+     * @param userFcmToken Firebase Cloud Messaging token of the user
+     * @param title        Title of the notification
+     * @param body         Body text of the notification
+     * @param mContext     Context reference
+     * @param mActivity    Activity reference
+     */
 
     public FcmNotificationsSender(String userFcmToken, String title, String body, Context mContext, Activity mActivity) {
         this.userFcmToken = userFcmToken;

@@ -67,24 +67,6 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
-        <TextView
-            android:id="@+id/txtHomePage"
-            style="@style/txtPoppinsbold15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
-            android:layout_marginStart="@dimen/_18pxh"
-            android:layout_marginTop="@dimen/_16pxv"
-            android:layout_marginEnd="@dimen/_18pxh"
-            android:layout_marginBottom="@dimen/_16pxv"
-            android:gravity="top|center"
-            android:shadowColor="#65FEEB"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2.5"
-            android:text="Home Page"
-            android:textAllCaps="true"
-            tools:text="HOME PAGE" />
     </FrameLayout>
 
     <TextView
@@ -133,16 +115,6 @@
                 tools:src="@drawable/img_arrowleft" />
         </FrameLayout>
 
-        <ImageView
-            android:id="@+id/imageGearOne"
-            android:layout_width="@dimen/_41pxh"
-            android:layout_height="@dimen/_41pxh"
-            android:layout_marginStart="@dimen/_230pxh"
-            android:layout_marginTop="@dimen/_10pxv"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_gear1"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/img_gear1" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

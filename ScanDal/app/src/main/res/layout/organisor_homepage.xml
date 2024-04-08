@@ -44,8 +44,8 @@
     <LinearLayout
         android:id="@+id/buttonCreateNewEvents"
         style="@style/groupStyleteal_1"
-        android:layout_width="259dp"
-        android:layout_height="48dp"
+        android:layout_width="218dp"
+        android:layout_height="@dimen/_47pxv"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +170,7 @@
         android:id="@+id/imageEllipseThree"
         android:layout_width="119dp"
         android:layout_height="163dp"
-        android:layout_gravity="top|start"
+        android:layout_gravity="start|top"
         android:layout_marginStart="4dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -206,43 +206,25 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/img_result1" />
 
-        <TextView
-            android:id="@+id/txtHomePage"
-            style="@style/txtPoppinsbold15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
-            android:layout_marginStart="@dimen/_18pxh"
-            android:layout_marginTop="@dimen/_16pxv"
-            android:layout_marginEnd="@dimen/_18pxh"
-            android:layout_marginBottom="@dimen/_16pxv"
-            android:gravity="top|center"
-            android:shadowColor="#65FEEB"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2.5"
-            android:text="Home Page"
-            android:textAllCaps="true"
-            tools:text="HOME PAGE" />
     </FrameLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendnotifs"
-        style="@style/txtPoppinsbold17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:shadowColor="#FFC107"
+        style="@style/btnSolidRounded"
+        android:layout_width="218dp"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
         android:text="Send Notifications"
-        android:textColor="@color/pink_500"
-        android:textColorHighlight="#FFC107"
-        android:textColorHint="#FFC107"
-        android:textColorLink="#FFC107"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/buttonBackToHomepage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonViewMyEvents_OrganisorHomepage"
-        app:rippleColor="#FFC107"
-        app:strokeColor="#FFC107" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateNewEvents"
+        tools:text="Send Notifications" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

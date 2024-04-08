@@ -4,13 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,7 +30,7 @@ import java.util.Map;
 /**
  * Activity for displaying events attended by an attendee.
  */
-public class AttendeeEventActivity extends AppCompatActivity {
+public class AttendeeEventActivity extends AppCompatActivity implements CustomArrayAdapter.OnItemClickListener {
     /**
      * FrameLayout for navigating back to the main page.
      */
@@ -39,6 +46,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
     /**
      * A string storing the divice id
      */
+    List<Pair<String, String>> eventNames;
+    CustomArrayAdapter adapter;
+    // Flag to track if events have been loaded
+    private boolean eventsLoaded = false;
 
     /**
      * Called when the activity is starting. This is where most initialization should go:
@@ -58,25 +69,21 @@ public class AttendeeEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         backMain.setOnClickListener(v -> finish());
-        eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String fullEventName = (String) parent.getItemAtPosition(position);
-                // Remove the status part from the event name
-                String eventName = fullEventName.split("   \\(")[0];
-                Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
-                intent.putExtra("eventName", eventName);
-                startActivity(intent);
 
-            }
-        });
-        loadEvents();
+        //Initialize Adapter
+        eventNames = new ArrayList<>();
+        adapter = new CustomArrayAdapter(this, R.layout.list_item_layout, eventNames);
+        adapter.setOnItemClickListener(AttendeeEventActivity.this);
+        eventsList.setAdapter(adapter);
+        if (!eventsLoaded) {
+            loadEvents();
+            eventsLoaded = true;
+        }
 
     }
     /**
      * Retrieves and displays event pulled from firebase
      */
-
     private String getCheckedInEventName() {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final String[] checkedInEventName = new String[1];
@@ -101,17 +108,20 @@ public class AttendeeEventActivity extends AppCompatActivity {
         }
         return checkedInEventName[0];
     }
+    //Causes events to load twice
     @Override
     protected void onResume() {
         super.onResume();
         // Refresh your events list every time the activity resumes
-        loadEvents();
+        if (!eventsLoaded) {
+            loadEvents();
+            eventsLoaded = true;
+        }
     }
     private void loadEvents() {
-        List<String> eventNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
-        eventsList.setAdapter(adapter);
-
+        eventNames.clear();
+        eventNames.add(new Pair<>("Event Name", "Status"));
+        Log.d("etowsley", "Added header");
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db.collection("events")
@@ -128,9 +138,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
                                     // Check if the user is checked in
                                     List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
                                     if (checkedInUsers != null && checkedInUsers.contains(deviceId)) {
-                                        eventNames.add(eventName + "    (Checked In)");
+                                        Log.d("etowsley", "Adding event name: " + eventName);
+                                        eventNames.add(new Pair<>(eventName, "Checked in"));
                                     } else {
-                                        eventNames.add(eventName);
+                                        eventNames.add(new Pair<>(eventName, "Signed up"));
                                     }
                                     adapter.notifyDataSetChanged();
                                 }
@@ -142,4 +153,18 @@ public class AttendeeEventActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        //Ensure that items will be refreshed upon return
+        eventsLoaded = false;
+        // Ensure the position is within the bounds of your data source
+        if (position >= 0 && position < eventNames.size()) {
+            Pair<String, String> eventObject = eventNames.get(position);
+            String eventName = eventObject.first;
+            //Toast.makeText(AttendeeEventActivity.this, eventName, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
+            intent.putExtra("eventName", eventName);
+            startActivity(intent);
+        }
+    }
 }

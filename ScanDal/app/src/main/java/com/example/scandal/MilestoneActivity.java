@@ -12,16 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity displays milestones for a specific event.
+ */
 public class MilestoneActivity extends AppCompatActivity {
-    FrameLayout backBtn;
-    ListView milestoneList;
-    FirebaseFirestore db;
+    FrameLayout backBtn; // Back button
+    ListView milestoneList; // ListView to display milestones
+    FirebaseFirestore db; // Firebase Firestore instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_events_page); // You might need to adjust this layout
-        TextView title = findViewById(R.id.txtMyEvents);
+        TextView title = findViewById(R.id.list_view_header);
         title.setText("Milestones");
         backBtn = findViewById(R.id.buttonBack_MyEventsPage);
         milestoneList = findViewById(R.id.listView_MyEventsPage);
@@ -31,14 +34,21 @@ public class MilestoneActivity extends AppCompatActivity {
 
         String eventName = getIntent().getStringExtra("eventName");
 
+        // Load milestones for the specified event
         loadMilestones(eventName);
     }
 
+    /**
+     * Load milestones for the specified event.
+     *
+     * @param eventName The name of the event.
+     */
     private void loadMilestones(String eventName) {
         List<String> milestones = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, milestones);
         milestoneList.setAdapter(adapter);
 
+        // Query Firestore for milestones related to the event
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .get()
@@ -61,5 +71,4 @@ public class MilestoneActivity extends AppCompatActivity {
                     // Handle any errors
                 });
     }
-
 }
