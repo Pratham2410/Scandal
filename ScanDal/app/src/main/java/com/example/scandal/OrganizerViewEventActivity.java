@@ -36,8 +36,8 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
         textEventLocation = findViewById(R.id.textEventLocation_OrganisorViewEventPage);
         imageView = findViewById(R.id.imageView_OrganisorViewEventPage);
         buttonBack = findViewById(R.id.buttonBack_OrganisorViewEventPage);
-        signedUpListBtn = findViewById(R.id.buttoncSignedUpList_OraganisorViewEventsPage);
-        checkedInListBtn = findViewById(R.id.buttoncCheckedInList_OraganisorViewEventsPage);
+        signedUpListBtn = findViewById(R.id.buttonSignedUpList_OraganisorViewEventsPage);
+        checkedInListBtn = findViewById(R.id.buttonCheckedInList_OraganisorViewEventsPage);
         notifyUsersBtn = findViewById(R.id.button2);
         milestonesBtn = findViewById(R.id.buttonMilestones); // Make sure you have this ID in your layout
 
