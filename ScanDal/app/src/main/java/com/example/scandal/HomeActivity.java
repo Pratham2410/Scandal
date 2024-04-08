@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
     //Helper function to prompt user for admin password
     private void showAdminPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter Admin Password");
+        builder.setTitle("Enter Admin Pin");
 
         // Set up the input
         final EditText admin_key_input = new EditText(this);

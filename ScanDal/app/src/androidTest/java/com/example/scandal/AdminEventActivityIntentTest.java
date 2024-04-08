@@ -37,11 +37,16 @@ public class AdminEventActivityIntentTest {
     @Test
     public void clickingEventShowsDeleteConfirmationDialog() {
         // Perform a click on an event in the ListView
-        onView(withId(R.id.eventsList_AdminEventsPage)).perform(click());
+        onView(withId(R.id.profilesList_AdminProfilePage)).perform(click());
+    }
 
-        // Verify that a delete confirmation dialog is shown
-        // Example:
-        // onView(withText("Are you sure you want to delete Event Name?")).check(matches(isDisplayed()));
+    @Test
+    public void pressingBackButtonNavigatesToAdminActivity() {
+        // Perform a click on the back button
+        onView(withId(R.id.buttonBack_AdminEventsPage)).perform(click());
+
+        // Verify that the AdminActivity is launched after pressing the back button
+        intended(hasComponent(AdminActivity.class.getName()));
     }
 
 
