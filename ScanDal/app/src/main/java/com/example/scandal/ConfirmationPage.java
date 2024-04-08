@@ -1,23 +1,19 @@
 package com.example.scandal;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -77,6 +73,18 @@ public class ConfirmationPage extends AppCompatActivity {
      */
     String checked;
     /**
+     * the token to checkin
+     */
+    String checkinToken;
+    /**
+     * the token to view the promo page
+     */
+    String promoToken;
+    /**
+     * a flag to indicate whether the user has signed up before checking in
+     */
+    boolean userSignUpError;
+    /**
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
@@ -109,19 +117,20 @@ public class ConfirmationPage extends AppCompatActivity {
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
+                            // Set the event name, description, poster image, location, time, and tokens
+
                             name = document.getString("name");
                             bar.setProgress(10);
                             description = document.getString("description");
                             bar.setProgress(20);
-                            location = document.getString("Location");
+                            location = document.getString("location");
                             bar.setProgress(30);
-                            time = document.getString("Time");
+                            time = document.getString("time");
                             bar.setProgress(40);
+                            promoToken = document.getString("promoToken");
                             posterImage = document.getString("posterImage");
                             bar.setProgress(100);
-
-                            // Convert posterImage to Bitmap
-                            // Set the event name, description, and poster image
+                            checkinToken = token;
                             eventDescription.setText(defaultText + "checkin to " + name + "?");
                             eventDescription.setVisibility(View.VISIBLE);
                             yesButton.setVisibility(View.VISIBLE);
@@ -144,18 +153,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            // Navigate to Event page when yes button is clicked
-            EventPage.imageString = posterImage;
-            Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
-            intent.putExtra("name", name);
-            Log.e("hpeebles", "name= "+name +"time = "+time+"loc = "+location);
-            intent.putExtra("description", description);
-            intent.putExtra("time", time);
-            intent.putExtra("location", location);
-            intent.putExtra("check", checked);
-            checkInUserToEvent();
-            startActivity(intent);
-            finish();
+                startConditionalIntent();
         });
         // Set OnClickListener for no button
 
@@ -189,10 +187,12 @@ public class ConfirmationPage extends AppCompatActivity {
                                 bar.setProgress(10);
                                 description = document.getString("description");
                                 bar.setProgress(20);
-                                location = document.getString("Location");
+                                location = document.getString("location");
                                 bar.setProgress(30);
-                                time = document.getString("Time");
+                                time = document.getString("time");
                                 bar.setProgress(40);
+                                checkinToken = document.getString("checkinToken");
+                                promoToken = token;
                                 posterImage = document.getString("posterImage");
                                 bar.setProgress(100);
 
@@ -231,36 +231,72 @@ public class ConfirmationPage extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        Map<String, Object> update = new HashMap<>();
-                        if (eventData != null) {
-                            // Handle the checkedIn list
-                            List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
-                            if (existingCheckedIn == null) {
-                                existingCheckedIn = new ArrayList<>();
-                            }
-                            if (!existingCheckedIn.contains(deviceId)) {
-                                existingCheckedIn.add(deviceId);
-                                update.put("checkedIn", existingCheckedIn);
-                            }
+                        //Check if user is signed up
+                        if (eventData.containsKey("signedUp")) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            if (signedUpUsers.containsKey(deviceId)) {
+                                // Assuming each event document has a 'name' field
+                                //String eventName = documentSnapshot.getString("name");
+                                Map<String, Object> update = new HashMap<>();
+                                if (eventData != null) {
+                                    // Handle the checkedIn list
+                                    List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
+                                    if (existingCheckedIn == null) {
+                                        existingCheckedIn = new ArrayList<>();
+                                    }
+                                    if (!existingCheckedIn.contains(deviceId)) {
+                                        existingCheckedIn.add(deviceId);
+                                        update.put("checkedIn", existingCheckedIn);
+                                    }
 
-                            // Handle the checkedIn_count map
-                            Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
-                            if (checkedInCount == null) {
-                                checkedInCount = new HashMap<>();
-                            }
-                            Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
-                            checkedInCount.put(deviceId, currentCount + 1);
-                            update.put("checkedIn_count", checkedInCount);
+                                    // Handle the checkedIn_count map
+                                    Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
+                                    if (checkedInCount == null) {
+                                        checkedInCount = new HashMap<>();
+                                    }
+                                    Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
+                                    checkedInCount.put(deviceId, currentCount + 1);
+                                    update.put("checkedIn_count", checkedInCount);
 
-                            // Perform the update
-                            db.collection("events").document(documentId)
-                                    .update(update)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                    // Perform the update
+                                    db.collection("events").document(documentId)
+                                            .update(update)
+                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                }
+                                userSignUpError = false;
+                            }
+                            // If user has not signed up yet
+                            else {
+                                userSignUpError = true;
+                            }
+                        }
+                        else {
+                            userSignUpError = true;
                         }
                     }
                 });
     }
 
+    private void startConditionalIntent() {
+       // Nav to EventDetailsActivity when yes is clicked
+            EventDetailsActivity.imageString = posterImage;
+            Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("description", description);
+            intent.putExtra("time", time);
+            intent.putExtra("promo", promoToken);
+            intent.putExtra("checkin", checkinToken);
+            intent.putExtra("location", location);
+            intent.putExtra("check", checked);
+            if (checked == "1") {
+                checkInUserToEvent();
+            }
+        if (userSignUpError) {
+            intent.putExtra("singUpError", true);
+        }
+        startActivity(intent);
+        finish();
+    }
 
 }
