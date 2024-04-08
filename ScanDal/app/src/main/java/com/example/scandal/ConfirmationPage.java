@@ -82,10 +82,7 @@ public class ConfirmationPage extends AppCompatActivity {
      * the token to view the promo page
      */
     String promoToken;
-    /**
-     * a flag to indicate whether the user has signed up before checking in
-     */
-    boolean userSignUpError;
+
     /**
      * Called when the activity is starting.
      *
@@ -159,8 +156,11 @@ public class ConfirmationPage extends AppCompatActivity {
         //Log.d("etowsley", checked);
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            startConditionalIntent();
-
+            if (Objects.equals(checked, "1")) {
+                checkInUserToEvent();
+            } else {
+                startConditionalIntent(false);
+            }
         });
         // Set OnClickListener for no button
 
@@ -275,28 +275,32 @@ public class ConfirmationPage extends AppCompatActivity {
                                             .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
                                             .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
                                 }
-                                userSignUpError = false;
+                                startConditionalIntent(false);
                             }
                             // If user has not signed up yet
                             else {
+                                startConditionalIntent(true);
                                 Log.d("etowsley", "User is not in signedUp");
-                                userSignUpError = true;
+
                             }
                         }
                         //If no user had signed up yet
                         else {
                             Log.d("etowsley", "Event has no key signedUp");
-                            userSignUpError = true;
+                            startConditionalIntent(true);
+                            Log.d("etowsley", "Event has no key signedUp2");
+
                         }
                     } else {
                         Log.d("etowsley", "Document retrieval failed");
+                        Toast.makeText(getApplicationContext(), "Checkin failed", Toast.LENGTH_SHORT).show();
+                        startConditionalIntent(true);
                     }
                 });
     }
 
-    private void startConditionalIntent() {
+    private void startConditionalIntent(boolean userSignUpError) {
        // Nav to EventDetailsActivity when yes is clicked
-
         EventDetailsActivity.imageString = posterImage;
         Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
         intent.putExtra("name", name);
@@ -305,11 +309,9 @@ public class ConfirmationPage extends AppCompatActivity {
         intent.putExtra("promo", promoToken);
         intent.putExtra("checkin", checkinToken);
         intent.putExtra("location", location);
+
         intent.putExtra("check", checked);
-        //Causes Error... HARRISON!!
-        if (Objects.equals(checked, "1")) {
-            checkInUserToEvent();
-        }
+
         if (userSignUpError) {
             Log.d("etowsley", "sign up error found");
             intent.putExtra("singUpError", true);
