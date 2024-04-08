@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -38,7 +39,7 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
     ImageView imageView;
     /** Button to navigate back from the event details page. */
     FrameLayout buttonBack_ViewEventPage;
-    Button buttonAnnouncements;
+    AppCompatButton buttonAnnouncements;
     String promoQRCode;
     /**
      * Calle when the activity is starting.
@@ -63,7 +64,7 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         buttonAnnouncements = findViewById(R.id.buttonAnnouncements);
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
-        Button buttonSignOut = findViewById(R.id.buttonSignOut);
+        AppCompatButton buttonSignOut = findViewById(R.id.buttonSignOut);
         buttonSignOut.setVisibility(View.GONE); // Initially hide the button
         Intent intent = getIntent();
         // Retrieve the event name from the intent

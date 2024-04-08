@@ -229,30 +229,50 @@
         app:layout_constraintTop_toBottomOf="@+id/textEventDescription_ViewEventPage"
         app:layout_constraintVertical_bias="0.851" />
 
-    <Button
-        android:id="@+id/buttonAnnouncements"
-        android:layout_width="160dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="-50dp"
-        android:text="Announcements"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.398"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonBack_ViewEventPage" />
 
-    <Button
-        android:id="@+id/buttonSignOut"
-        android:layout_width="117dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:text="Sign Out"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAnnouncements"
+        style="@style/btnSolidRounded"
+        android:layout_width="142dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:text="Announcements"
+        android:textAllCaps="false"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_ViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/buttonAnnouncements"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.386"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Announcements" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSignOut"
+        style="@style/btnSolidRounded"
+        android:layout_width="142dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="20dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
+        android:text="Check Out"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_ViewEventPage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372"
+        tools:text="Check Out" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
