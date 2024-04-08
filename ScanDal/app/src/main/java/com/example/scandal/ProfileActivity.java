@@ -54,6 +54,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.Task;
 
+
 /**
  * Profile Activity for editing and saving a user's profile information, including their name,
  * phone number, home page URL, and profile image. The profile image is handled by converting
@@ -179,6 +180,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
             Toast.makeText(getApplicationContext(), "Please enable gps", Toast.LENGTH_SHORT).show();
         }
     }
+
     private Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
 
@@ -324,6 +326,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
 
         final Map<String, Object> profileData = new HashMap<>();
 
+
         profileData.put("deviceId", deviceId);
         profileData.put("name", name);
         profileData.put("phoneNumber", phoneNumber);
@@ -331,6 +334,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
         profileData.put("imageString", imageString);
         profileData.put("customedImage", customedImage);
         profileData.put("userLocation", userLocation);
+
 
         saveDataToFirestore(profileData, deviceId);
     }
@@ -440,6 +444,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
                             else if(currentLocation != null){
                                 profileData.put("userLocation", currentLocation);
                             }
+
                         } else {
                             GeoTracking = 0;
                             profileData.put("GeoTracking", GeoTracking);
@@ -447,7 +452,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
                                 .set(profileData)
-                                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile saved successfully", Toast.LENGTH_SHORT).show())
+                                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
                     } else {
                         GeoTracking = 0;
