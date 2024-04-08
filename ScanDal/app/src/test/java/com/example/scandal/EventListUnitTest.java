@@ -7,12 +7,17 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Unit tests for the EventList class.
+ */
 public class EventListUnitTest {
     private EventList eventList;
     private Event event1;
     private Event event2;
 
+    /**
+     * Set up the test environment before each test method.
+     */
     @Before
     public void setUp() {
         eventList = new EventList();
@@ -23,6 +28,9 @@ public class EventListUnitTest {
         event2.setPromoQRCode("QRCode2");
     }
 
+    /**
+     * Test adding an event to the event list and searching for it.
+     */
     @Test
     public void addEventAndSearchEvent() {
         eventList.addEvent(event1);
@@ -34,6 +42,9 @@ public class EventListUnitTest {
         assertNull(eventList.searchEvent("nonExistingQRCode"));
     }
 
+    /**
+     * Test deleting an event from the event list.
+     */
     @Test
     public void deleteEvent() {
         eventList.addEvent(event1);
