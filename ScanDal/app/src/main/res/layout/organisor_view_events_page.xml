@@ -11,19 +11,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:gravity="center"
         android:paddingStart="@dimen/_29pxh"
-        android:paddingTop="@dimen/_10pxv"
+        android:paddingTop="@dimen/_7pxv"
         android:paddingEnd="@dimen/_28pxh"
-        android:paddingBottom="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_7pxv"
         android:singleLine="true"
         android:text="Signed Up"
         android:textAllCaps="false"
         android:textSize="@dimen/_16pxh"
         app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMilestones"
+        app:layout_constraintVertical_bias="0.551"
         tools:text="Signed Up" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -32,19 +34,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginStart="4dp"
         android:ellipsize="end"
         android:gravity="center"
         android:paddingStart="@dimen/_29pxh"
-        android:paddingTop="@dimen/_10pxv"
+        android:paddingTop="@dimen/_7pxv"
         android:paddingEnd="@dimen/_28pxh"
-        android:paddingBottom="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_7pxv"
         android:singleLine="true"
         android:text="Checked In"
         android:textAllCaps="false"
         android:textSize="@dimen/_16pxh"
         app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBack_OrganisorViewEventPage"
         tools:text="Checked In" />
 
     <ImageView
@@ -319,5 +322,34 @@
         app:layout_constraintTop_toTopOf="@+id/button2"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Milestones" />
+
+    <TextView
+        android:id="@+id/text_check_in_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:foregroundGravity="center_horizontal"
+        android:text=" "
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
+        app:layout_constraintEnd_toEndOf="@+id/buttonCheckedInList_OraganisorViewEventsPage"
+        app:layout_constraintStart_toStartOf="@+id/buttonCheckedInList_OraganisorViewEventsPage"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCheckedInList_OraganisorViewEventsPage" />
+
+    <TextView
+        android:id="@+id/text_singup_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text=" "
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_OrganisorViewEventPage"
+        app:layout_constraintEnd_toEndOf="@+id/buttonSignedUpList_OraganisorViewEventsPage"
+        app:layout_constraintStart_toStartOf="@+id/buttonSignedUpList_OraganisorViewEventsPage"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignedUpList_OraganisorViewEventsPage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
