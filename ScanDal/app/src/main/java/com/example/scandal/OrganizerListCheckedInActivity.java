@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Activity for displaying the list of user who signed up for an event
+ * Activity for displaying the list of user who checked in for an event
  */
 public class OrganizerListCheckedInActivity extends AppCompatActivity implements CustomArrayAdapter.OnItemClickListener {
     /**

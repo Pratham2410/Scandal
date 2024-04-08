@@ -22,7 +22,7 @@ public class AttendeeDict {
     }
 
     /**
-     * Increments the number of times a suer has signed into event
+     * Increments the number of times a user has signed into event
      *
      * @param user the user singing in
      */
