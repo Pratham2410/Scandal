@@ -12,10 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity displays milestones for a specific event.
+ */
 public class MilestoneActivity extends AppCompatActivity {
-    FrameLayout backBtn;
-    ListView milestoneList;
-    FirebaseFirestore db;
+    FrameLayout backBtn; // Back button
+    ListView milestoneList; // ListView to display milestones
+    FirebaseFirestore db; // Firebase Firestore instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +34,21 @@ public class MilestoneActivity extends AppCompatActivity {
 
         String eventName = getIntent().getStringExtra("eventName");
 
-
+        // Load milestones for the specified event
         loadMilestones(eventName);
     }
 
+    /**
+     * Load milestones for the specified event.
+     *
+     * @param eventName The name of the event.
+     */
     private void loadMilestones(String eventName) {
         List<String> milestones = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, milestones);
         milestoneList.setAdapter(adapter);
 
+        // Query Firestore for milestones related to the event
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .get()
@@ -62,5 +71,4 @@ public class MilestoneActivity extends AppCompatActivity {
                     // Handle any errors
                 });
     }
-
 }

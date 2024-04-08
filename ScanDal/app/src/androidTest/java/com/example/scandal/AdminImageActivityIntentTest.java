@@ -13,12 +13,18 @@ import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+/**
+ * Espresso intent tests for AdminImageActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AdminImageActivityIntentTest {
 
     @Rule
     public IntentsTestRule<AdminImageActivity> intentsTestRule = new IntentsTestRule<>(AdminImageActivity.class);
 
+    /**
+     * Test case to verify that pressing the back button navigates to AdminActivity.
+     */
     @Test
     public void pressingBackButtonNavigatesToAdminActivity() {
         // Perform a click on the back button
@@ -28,13 +34,13 @@ public class AdminImageActivityIntentTest {
         intended(hasComponent(AdminActivity.class.getName()));
     }
 
+    /**
+     * Test case to verify that clicking the delete button shows the confirmation dialog.
+     */
     @Test
     public void clickingDeleteButtonShowsConfirmationDialog() {
         // Assuming there is at least one item in the ListView
         // Perform a click on the first item in the ListView
         onView(withId(R.id.listView_ImageListPage)).perform(click());
-
     }
-
-
 }
