@@ -144,18 +144,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            // Navigate to Event page when yes button is clicked
-            EventPage.imageString = posterImage;
-            Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
-            intent.putExtra("name", name);
-            Log.e("hpeebles", "name= "+name +"time = "+time+"loc = "+location);
-            intent.putExtra("description", description);
-            intent.putExtra("time", time);
-            intent.putExtra("location", location);
-            intent.putExtra("check", checked);
             checkInUserToEvent();
-            startActivity(intent);
-            finish();
         });
         // Set OnClickListener for no button
 
@@ -231,36 +220,67 @@ public class ConfirmationPage extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        Map<String, Object> update = new HashMap<>();
-                        if (eventData != null) {
-                            // Handle the checkedIn list
-                            List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
-                            if (existingCheckedIn == null) {
-                                existingCheckedIn = new ArrayList<>();
-                            }
-                            if (!existingCheckedIn.contains(deviceId)) {
-                                existingCheckedIn.add(deviceId);
-                                update.put("checkedIn", existingCheckedIn);
-                            }
+                        //Check if user is signed up
+                        if (eventData.containsKey("signedUp")) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            if (signedUpUsers.containsKey(deviceId)) {
+                                // Assuming each event document has a 'name' field
+                                //String eventName = documentSnapshot.getString("name");
+                                Map<String, Object> update = new HashMap<>();
+                                if (eventData != null) {
+                                    // Handle the checkedIn list
+                                    List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
+                                    if (existingCheckedIn == null) {
+                                        existingCheckedIn = new ArrayList<>();
+                                    }
+                                    if (!existingCheckedIn.contains(deviceId)) {
+                                        existingCheckedIn.add(deviceId);
+                                        update.put("checkedIn", existingCheckedIn);
+                                    }
 
-                            // Handle the checkedIn_count map
-                            Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
-                            if (checkedInCount == null) {
-                                checkedInCount = new HashMap<>();
-                            }
-                            Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
-                            checkedInCount.put(deviceId, currentCount + 1);
-                            update.put("checkedIn_count", checkedInCount);
+                                    // Handle the checkedIn_count map
+                                    Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
+                                    if (checkedInCount == null) {
+                                        checkedInCount = new HashMap<>();
+                                    }
+                                    Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
+                                    checkedInCount.put(deviceId, currentCount + 1);
+                                    update.put("checkedIn_count", checkedInCount);
 
-                            // Perform the update
-                            db.collection("events").document(documentId)
-                                    .update(update)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                    // Perform the update
+                                    db.collection("events").document(documentId)
+                                            .update(update)
+                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                }
+                                startConditionalIntent(false);
+                            }
+                            // If user has not signed up yet
+                            else {
+                                startConditionalIntent(true);
+                            }
+                        }
+                        else {
+                            startConditionalIntent(true);
                         }
                     }
                 });
     }
 
+    private void startConditionalIntent(boolean userSignUpError) {
+        EventPage.imageString = posterImage;
+        Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
+        intent.putExtra("name", name);
+        Log.e("hpeebles", "name= "+name +"time = "+time+"loc = "+location);
+        intent.putExtra("description", description);
+        intent.putExtra("time", time);
+        intent.putExtra("location", location);
+        intent.putExtra("check", checked);
+        if (userSignUpError) {
+            intent.putExtra("singUpError", true);
+        }
+        startActivity(intent);
+        finish();
+    }
 
 }
