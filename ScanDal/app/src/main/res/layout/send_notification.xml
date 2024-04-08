@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/txtNotification"
+        style="@style/txtPoetsenOneregular26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Notification"
+        app:layout_constraintBottom_toTopOf="@+id/editTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.914"
+        tools:text="Notification" />
 
     <EditText
         android:id="@+id/editTitle"
@@ -90,17 +106,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageGearOne"
-            android:layout_width="@dimen/_41pxh"
-            android:layout_height="@dimen/_41pxh"
-            android:layout_marginStart="@dimen/_70pxh"
-            android:layout_marginTop="@dimen/_10pxv"
-            android:layout_marginBottom="@dimen/_108pxv"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_gear1"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/img_gear1" />
     </LinearLayout>
 
     <FrameLayout
