@@ -31,6 +31,7 @@ public class MilestoneActivity extends AppCompatActivity {
 
         String eventName = getIntent().getStringExtra("eventName");
 
+
         loadMilestones(eventName);
     }
 
