@@ -78,7 +78,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         // Device is already registered, fetch and display profile data
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> profileData = documentSnapshot.getData();
-                        if (profileData.get("userLocation") != null) {
+                        if (profileData.get("userLocation") != null && Integer.parseInt(profileData.get("GeoTracking").toString())==1) {
                             Map<String, Object> longlat = (Map<String, Object>) profileData.get("userLocation");
                             //Toast.makeText(getApplicationContext(), "asd"+longlat.get("longitude")+longlat.get("latitude"), Toast.LENGTH_SHORT).show();
                             LatLng sydney = new LatLng(Double.parseDouble(longlat.get("latitude").toString()), Double.parseDouble(longlat.get("longitude").toString()));

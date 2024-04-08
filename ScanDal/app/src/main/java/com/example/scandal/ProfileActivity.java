@@ -302,7 +302,15 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
         }
 
         String imageString = null;
-        Location userLocation = null;
+        Location userLocation = new Location("gps");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            userLocation.setMslAltitudeAccuracyMeters(0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            userLocation.setMslAltitudeMeters(0);
+        }
+
         if (imageUri != null) {
             // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
@@ -317,6 +325,7 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
         }
 
         final Map<String, Object> profileData = new HashMap<>();
+
         profileData.put("deviceId", deviceId);
         profileData.put("name", name);
         profileData.put("phoneNumber", phoneNumber);
@@ -476,22 +485,18 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
                     if (!queryDocumentSnapshots.isEmpty()) {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> preData = documentSnapshot.getData();
-                        final Map<String, Object> profileData = new HashMap<>();
-                        profileData.put("deviceId", preData.get("deviceId"));
-                        profileData.put("name", preData.get("name"));
-                        profileData.put("phoneNumber", preData.get("phoneNumber"));
-                        profileData.put("homePage", preData.get("homePage"));
-                        profileData.put("imageString", preData.get("imageString"));
-                        profileData.put("customedImage", preData.get("customedImage"));
-                        profileData.put("GeoTracking", preData.get("GeoTracking"));
-                        //profileData.put("userLocation", preData.get("userLocation"));
                         if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
-                            //profileData.remove("userLocation");
-                            profileData.put("userLocation", currentLocation);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeAccuracyMeters(0);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeMeters(0);
+                            }
+                            preData.put("userLocation", currentLocation);
                         }
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                         db.collection("profiles").document(documentId)
-                                .set(profileData)
+                                .set(preData)
                                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Location updated successfully", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update location", Toast.LENGTH_SHORT).show());
 

@@ -55,7 +55,7 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity implements I
      */
     private String onMessage = "Geo-Tracking: On";
     private String offMessage = "Geo-Tracking: Off";
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();;
     final int FINE_PERMISSION_CODE = 1;
     private static final int PERMISSION_LOCATION = 1000;
     Location currentLocation;
@@ -70,8 +70,6 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity implements I
         buttonBack_SettingsAndOrganisorPage = findViewById(R.id.buttonBack_SettingsAndOrganisorPage); // Corrected ID reference
         buttonGeoTracking = findViewById(R.id.buttonGeoTracking_SettingsPage);
 
-
-        db = FirebaseFirestore.getInstance();
         // Check if the device is already registered
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db.collection("profiles")
@@ -93,13 +91,11 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity implements I
                                     if(buttonGeoTracking.getText().equals((String)offMessage)){
                                         Integer onInt=1;
                                         profileData.put("GeoTracking", onInt);
-
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
                                         } else {
                                             showLocation();
                                         }
-
                                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
                                         db.collection("profiles").document(documentId)
                                                 .set(profileData)
@@ -184,6 +180,35 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity implements I
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
                 showLocation();
             }
+            else{
+                final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                db.collection("profiles")
+                        .whereEqualTo("deviceId", deviceId)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Device is already registered
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                Map<String, Object> profileData = documentSnapshot.getData();
+                                if (profileData != null) {
+                                    Integer offInt = 0;
+                                    profileData.put("GeoTracking", offInt);
+                                    String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                    db.collection("profiles").document(documentId)
+                                            .set(profileData)
+                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Geolocation tracking enabled", Toast.LENGTH_SHORT).show())
+                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update GeoTracking", Toast.LENGTH_SHORT).show());
+                                } else {
+                                    // Device is not registered, let the user enter new information
+                                    Toast.makeText(getApplicationContext(), "Please enter your information first", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                buttonGeoTracking = findViewById(R.id.buttonGeoTracking_SettingsPage);
+                buttonGeoTracking.setText(offMessage);
+                Toast.makeText(getApplicationContext(), "Location permission not allowed", Toast.LENGTH_SHORT).show();
+            }
         }else{
             Toast.makeText(getApplicationContext(), "permission not allowed", Toast.LENGTH_SHORT).show();
             finish();
@@ -201,8 +226,13 @@ public class SettingsAndOrganiserActivity extends AppCompatActivity implements I
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         Map<String, Object> preData = documentSnapshot.getData();
                         if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
-
-                            preData.put("userLocation", location);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeAccuracyMeters(0);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeMeters(0);
+                            }
+                            preData.put("userLocation", currentLocation);
                         }
 
                         String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
