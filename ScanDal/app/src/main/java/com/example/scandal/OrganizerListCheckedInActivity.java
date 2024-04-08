@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -144,10 +144,7 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(int position) {
         Pair<String, String> eventObject = adapter.getItem(position);
-        String eventName = eventObject.first;
-        //Intent intent = new Intent(OrganizerEventActivity.this, SignedUpEventDetailsActivity.class); // Use appropriate activity to show event details
-        Intent intent = new Intent(OrganizerListCheckedInActivity.this, OrganizerViewEventActivity.class);
-        intent.putExtra("eventName", eventName);
-        startActivity(intent);
+        attendeeNames = eventObject.first;
+        Toast.makeText(OrganizerListCheckedInActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
     }
 }
