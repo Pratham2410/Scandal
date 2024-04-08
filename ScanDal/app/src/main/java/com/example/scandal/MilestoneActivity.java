@@ -21,7 +21,7 @@ public class MilestoneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_events_page); // You might need to adjust this layout
-        TextView title = findViewById(R.id.txtMyEvents);
+        TextView title = findViewById(R.id.list_view_header);
         title.setText("Milestones");
         backBtn = findViewById(R.id.buttonBack_MyEventsPage);
         milestoneList = findViewById(R.id.listView_MyEventsPage);

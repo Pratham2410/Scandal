@@ -134,6 +134,7 @@ public class ConfirmationPage extends AppCompatActivity {
                             bar.setVisibility(View.INVISIBLE);
                             loading.setVisibility(View.INVISIBLE);
                             checked = "1";
+                            //checkInUserToEvent();
                         } else {
                             // No matching document found with QRCode, try PromoQRCode
                             searchWithPromoQRCode(token);
@@ -277,18 +278,20 @@ public class ConfirmationPage extends AppCompatActivity {
 
     private void startConditionalIntent(boolean userSignUpError) {
        // Nav to EventDetailsActivity when yes is clicked
-            EventDetailsActivity.imageString = posterImage;
-            Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
-            intent.putExtra("name", name);
-            intent.putExtra("description", description);
-            intent.putExtra("time", time);
-            intent.putExtra("promo", promoToken);
-            intent.putExtra("checkin", checkinToken);
-            intent.putExtra("location", location);
-            intent.putExtra("check", checked);
-            if (checked == "1") {
-                checkInUserToEvent();
-            }
+        Log.e("etowsley", "Span is in Confirmation Page");
+        EventDetailsActivity.imageString = posterImage;
+        Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("description", description);
+        intent.putExtra("time", time);
+        intent.putExtra("promo", promoToken);
+        intent.putExtra("checkin", checkinToken);
+        intent.putExtra("location", location);
+        intent.putExtra("check", checked);
+        //Causes Error... HARRISON!!
+//        if (checked == "1") {
+//            CheckInToEvent();
+//        }
         if (userSignUpError) {
             intent.putExtra("singUpError", true);
         }
