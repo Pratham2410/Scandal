@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,8 +88,10 @@ public class EventDetailsActivity extends AppCompatActivity {
         final Map<String, String> checkedInStatus = new HashMap<>();
         checkedInStatus.put(deviceId, "No");
         if (intent.getExtras().containsKey("check")){
-            Bitmap posterBitmap = convertImageStringToBitmap(imageString);
-            imageView.setImageBitmap(posterBitmap);
+            if (imageString!="") {
+                Bitmap posterBitmap = convertImageStringToBitmap(imageString);
+                imageView.setImageBitmap(posterBitmap);
+            }
             textEventLocation_ViewEventPage.setText(getIntent().getStringExtra("location")); //gets the location
             textEventTime_ViewEventPage.setText(getIntent().getStringExtra("time")); // gets the time
             textEventDescription_ViewEventPage.setText(getIntent().getStringExtra("description")); // gets description
