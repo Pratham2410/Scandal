@@ -9,6 +9,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import android.content.Intent;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -25,6 +26,9 @@ import org.junit.runner.RunWith;
 
 import java.util.Map;
 
+/**
+ * Tests the promotional page
+ */
     @RunWith(AndroidJUnit4.class)
     @LargeTest
     public class PromoTest {
@@ -74,15 +78,23 @@ import java.util.Map;
 
 
         }
+
+        /**
+         * checks whether navigating to qrs works from the promo page
+         * @throws InterruptedException for interrupt exceptions
+         */
         @Test
-        public void TestPromoDirectory() throws InterruptedException {
+        public void TestPromoToQRs() throws InterruptedException {
             Thread.sleep(2000);
-            onView(withId(R.id.confYes)).perform(click());
+            onView(withId(R.id.confYes)).perform(click()); // navigates to the promo page
             Thread.sleep(1000); //testing whether promo is displayed properly
-            onView(withId(R.id.button_seeQRCode)).perform(click());
-
+            onView(withId(R.id.button_seeQRCode)).perform(click()); // goes to QR code viewing page
+            Thread.sleep(1000); //testing whether promo is displayed properly
+            onView(withText("Share Checkin QR")).check(matches(isDisplayed())); // checks if the page transitioned successfully
+            onView(withText("Share Promo QR")).check(matches(isDisplayed()));
         }
 
-        }
+ 
+    }
 
 
