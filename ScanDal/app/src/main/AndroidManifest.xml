@@ -75,7 +75,7 @@
             <!--            </intent-filter>-->
         </activity>
 
-       
+
         <activity
             android:name=".QRCodeScanner">
             <!--        android:exported="true">-->
