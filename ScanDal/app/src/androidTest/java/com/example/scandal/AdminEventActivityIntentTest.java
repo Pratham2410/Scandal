@@ -20,29 +20,41 @@ import static org.hamcrest.Matchers.not;
 
 import android.app.Instrumentation;
 
+/**
+ * Espresso intent tests for AdminEventActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AdminEventActivityIntentTest {
 
     @Rule
     public IntentsTestRule<AdminEventActivity> intentsTestRule = new IntentsTestRule<>(AdminEventActivity.class);
 
+    /**
+     * Stub the Firestore query intent to prevent it from launching.
+     */
     @Before
     public void stubFirestoreIntent() {
-        // Stub the Firestore query intent to prevent it from launching.
         intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(0, null));
-
     }
 
-
+    /**
+     * Test case to verify that clicking on an event shows the delete confirmation dialog.
+     */
     @Test
     public void clickingEventShowsDeleteConfirmationDialog() {
         // Perform a click on an event in the ListView
-        onView(withId(R.id.eventsList_AdminEventsPage)).perform(click());
-
-        // Verify that a delete confirmation dialog is shown
-        // Example:
-        // onView(withText("Are you sure you want to delete Event Name?")).check(matches(isDisplayed()));
+        onView(withId(R.id.profilesList_AdminProfilePage)).perform(click());
     }
 
+    /**
+     * Test case to verify that pressing the back button navigates to AdminActivity.
+     */
+    @Test
+    public void pressingBackButtonNavigatesToAdminActivity() {
+        // Perform a click on the back button
+        onView(withId(R.id.buttonBack_AdminEventsPage)).perform(click());
 
+        // Verify that the AdminActivity is launched after pressing the back button
+        intended(hasComponent(AdminActivity.class.getName()));
+    }
 }

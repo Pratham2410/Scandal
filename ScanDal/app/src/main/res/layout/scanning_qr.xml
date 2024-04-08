@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
@@ -13,13 +13,36 @@
         app:autoFocusButtonVisible="true"
         app:flashButtonColor="@android:color/white"
         app:flashButtonVisible="true"
-        app:frameColor="@android:color/white"
-        app:frameCornersSize="50dp"
-        app:frameCornersRadius="0dp"
-        app:frameAspectRatioWidth="1"
         app:frameAspectRatioHeight="1"
+        app:frameAspectRatioWidth="1"
+        app:frameColor="@android:color/white"
+        app:frameCornersRadius="0dp"
+        app:frameCornersSize="50dp"
         app:frameSize="0.75"
         app:frameThickness="2dp"
         app:frameVerticalBias="0.5"
-        app:maskColor="#77000000"/>
+        app:maskColor="#77000000">
+
+    </com.budiyev.android.codescanner.CodeScannerView>
+    <FrameLayout
+        android:id="@+id/scanner_back"
+        style="@style/groupStyleteal_A200cornerRadius"
+        android:layout_width="@dimen/_82pxh"
+        android:layout_height="@dimen/_51pxv"
+        android:layout_marginEnd="@dimen/_10pxh">
+
+        <ImageView
+            android:id="@+id/imageArrowleft"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25pxh"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_26pxh"
+            android:layout_marginTop="@dimen/_9pxv"
+            android:layout_marginEnd="@dimen/_26pxh"
+            android:layout_marginBottom="@dimen/_10pxv"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_arrowleft"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_arrowleft" />
+    </FrameLayout>
 </FrameLayout>

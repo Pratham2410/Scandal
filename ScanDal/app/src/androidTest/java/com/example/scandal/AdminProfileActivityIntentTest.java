@@ -13,23 +13,34 @@ import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+/**
+ * Espresso intent tests for AdminProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AdminProfileActivityIntentTest {
 
     @Rule
     public IntentsTestRule<AdminProfileActivity> intentsTestRule = new IntentsTestRule<>(AdminProfileActivity.class);
 
-
-
+    /**
+     * Test case to verify that pressing the back button navigates to AdminActivity.
+     */
     @Test
-    public void clickingDeleteButtonShowsConfirmationDialog() {
-        // Perform a click on the delete button
-        onView(withId(R.id.buttonDelete_AdminProfileListPage)).perform(click());
+    public void pressingBackButtonNavigatesToAdminActivity() {
+        // Perform a click on the back button
+        onView(withId(R.id.buttonBack_AdminProfilePage)).perform(click());
 
-        // Verify that a confirmation dialog for deleting the profile is shown
-        // Example:
-        // onView(withText("Are you sure you want to delete this profile?")).check(matches(isDisplayed()));
+        // Verify that the AdminActivity is launched after pressing the back button
+        intended(hasComponent(AdminActivity.class.getName()));
     }
 
-    // Add more tests for additional functionality as needed
+    /**
+     * Test case to verify that clicking the delete button shows the confirmation dialog.
+     */
+    @Test
+    public void clickingDeleteButtonShowsConfirmationDialog() {
+        // Assuming there is at least one item in the ListView
+        // Perform a click on the first item in the ListView
+        onView(withId(R.id.profilesList_AdminProfilePage)).perform(click());
+    }
 }

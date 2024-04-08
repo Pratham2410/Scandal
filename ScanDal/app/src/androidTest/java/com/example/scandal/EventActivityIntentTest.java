@@ -1,47 +1,81 @@
 package com.example.scandal;
 
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.Intents.times;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.core.IsNot.not;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import com.example.scandal.EventActivity;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class EventActivityIntentTest {
 
+    // Define a rule to launch the activity under test
     @Rule
-    public IntentsTestRule<EventActivity> intentsTestRule = new IntentsTestRule<>(EventActivity.class);
+    public ActivityTestRule<EventActivity> activityTestRule =
+            new ActivityTestRule<>(EventActivity.class);
 
-    @Test
-    public void backButton_finishesActivity() {
-        // Assuming the back button has the ID buttonBack_CreateEventPage
-        onView(withId(R.id.buttonBack_CreateEventPage)).perform(click());
-
-        // Espresso Intents does not have a direct way to check if an activity is finished.
-        // This test assumes that clicking the back button finishes EventActivity,
-        // which would typically be expected behavior, but Espresso can't directly verify activity finishing.
+    // Initialize Espresso-Intents before each test
+    @Before
+    public void setUp() {
+        Intents.init();
     }
 
+    // Release Espresso-Intents after each test
+    @After
+    public void tearDown() {
+        Intents.release();
+    }
+
+    /**
+     * Test for verifying EditText inputs.
+     */
     @Test
-    public void saveButtonWithNoInput_staysOnSamePage() {
-        // Click the save button without entering any details
+    public void testEditTextInputs() {
+        String eventName = "Test Event";
+        String eventDescription = "Test Description";
+        String location = "Test Location";
+        String limit = "100";
+
+        onView(withId(R.id.editTextEventName_CreateEventPage)).perform(typeText(eventName), closeSoftKeyboard());
+        onView(withId(R.id.editTextEventDescription_CreateEventPage)).perform(typeText(eventDescription), closeSoftKeyboard());
+        onView(withId(R.id.editTextEventLocation_CreateEventPage)).perform(typeText(location), closeSoftKeyboard());
+        onView(withId(R.id.editTextEventLimit_CreateEventPage)).perform(typeText(limit), closeSoftKeyboard());
+
+        // Verify inputs
+        onView(withId(R.id.editTextEventName_CreateEventPage)).check(matches(withText(eventName)));
+        onView(withId(R.id.editTextEventDescription_CreateEventPage)).check(matches(withText(eventDescription)));
+        onView(withId(R.id.editTextEventLocation_CreateEventPage)).check(matches(withText(location)));
+        onView(withId(R.id.editTextEventLimit_CreateEventPage)).check(matches(withText(limit)));
+        testGenerateEventButtonIntent();
+    }
+
+    /**
+     * Test for verifying the intent when clicking the generate event button.
+     */
+    @Test
+    public void testGenerateEventButtonIntent() {
+        // Assume inputs are filled correctly.
         onView(withId(R.id.buttonSave_CreateEventPage)).perform(click());
 
-        // Verify that no intents were started, assuming staying on the same page means no new activity is launched
-        intended(not(hasComponent(NewEventActivity.class.getName())), times(0));
-
-        // Additionally, could check for a Toast message or error validation message visibility,
-        // but note that Espresso has limited support for interacting with Toasts directly.
+        // Verify NewEventActivity was started.
+        intended(hasComponent(NewEventActivity.class.getName()));
     }
 }

@@ -92,7 +92,10 @@ public class AdminProfileActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, profileNames);
         profilesList.setAdapter(adapter);
 
-        backToAdmin.setOnClickListener(v -> finish());
+        backToAdmin.setOnClickListener(v->{
+            Intent intent = new Intent(AdminProfileActivity.this, AdminActivity.class);
+            startActivity(intent);
+        });
         loadProfiles();
 
         // Set an item click listener to delete the profile on click

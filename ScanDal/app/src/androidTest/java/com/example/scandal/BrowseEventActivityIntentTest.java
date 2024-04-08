@@ -13,24 +13,32 @@ import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+/**
+ * Espresso intent tests for BrowseEventActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class BrowseEventActivityIntentTest {
 
     @Rule
     public IntentsTestRule<BrowseEventActivity> intentsTestRule = new IntentsTestRule<>(BrowseEventActivity.class);
 
-
-
+    /**
+     * Test case to verify that pressing the back button finishes the activity and navigates to HomeActivity.
+     */
     @Test
     public void pressingBackButtonFinishesActivity() {
         // Perform a click on the back button
         onView(withId(R.id.buttonBack_BrowseEventsPage)).perform(click());
-
-        // Verify that the BrowseEventActivity is finished after pressing the back button
-        // This ensures that the activity is navigated back to the previous activity
-        // Example:
-        // assertTrue(intentsTestRule.getActivity().isFinishing());
+        intended(hasComponent(HomeActivity.class.getName()));
     }
 
-    // Add more tests for additional functionality as needed
+    /**
+     * Test case to verify that the ListView is displayed and clickable.
+     */
+    @Test
+    public void listViewDisplayed() {
+        // Assuming there is at least one item in the ListView
+        // Perform a click on the first item in the ListView
+        onView(withId(R.id.listView_BrowseEventPage)).perform(click());
+    }
 }

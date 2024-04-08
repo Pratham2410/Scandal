@@ -43,7 +43,10 @@ public class BrowseEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsList = findViewById(R.id.listView_BrowseEventPage);
 
-        buttonBack_BrowseEventsPage.setOnClickListener(v -> finish());
+        buttonBack_BrowseEventsPage.setOnClickListener(v->{
+            Intent intent = new Intent(BrowseEventActivity.this, HomeActivity.class);
+            startActivity(intent);
+        });
         eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

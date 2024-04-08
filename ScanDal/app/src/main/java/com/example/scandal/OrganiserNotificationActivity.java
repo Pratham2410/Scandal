@@ -20,12 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This activity allows organizers to send notifications to attendees of an event.
+ */
 public class OrganiserNotificationActivity extends AppCompatActivity {
 
-    private EditText editTitle, editDescription;
-    private FirebaseFirestore db;
-    private Button buttonSend;
-    private FrameLayout buttonBack;
+    private EditText editTitle, editDescription; // Input fields for title and description
+    private FirebaseFirestore db; // Firestore instance
+    private Button buttonSend; // Button to send notification
+    private FrameLayout buttonBack; // Back button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +44,16 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
 
         // Retrieve the event name from the intent
         Intent intent = getIntent();
-        String event_Name = intent.getStringExtra("event_Name"); // Make sure "eventName" matches the key used when putting the extra
-        if (event_Name == null) event_Name = "all"; // Fallback to "all" if no event name is provided
+        String event_Name = intent.getStringExtra("event_Name");
+        String event_Name1 = intent.getStringExtra("event_Name");
+        if (event_Name == null) {
+            event_Name = "all"; // Fallback to "all" if no event name is provided
+        } else {
+            event_Name = event_Name.replace(" ", "_"); // Replace spaces with underscores
+        }
 
         // Final topic string
-        String topic = "/topics/" + event_Name; // Construct the topic path
+        String topic = "/topics/" + event_Name;
 
         // Set the onClickListener for the back button
         buttonBack.setOnClickListener(v -> finish());
@@ -63,7 +71,7 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
             }
 
             // Find the event document by name
-            db.collection("events").whereEqualTo("name", finalEvent_Name).get().addOnCompleteListener(task -> {
+            db.collection("events").whereEqualTo("name", event_Name1).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         // Assuming event names are unique, get the first document found
@@ -105,7 +113,6 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
                     Log.e("FirestoreError", "Failed to search for event", task.getException());
                 }
             });
-
 
             // Initialize your FcmNotificationsSender with the title and message
             FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
