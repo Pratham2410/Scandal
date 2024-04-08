@@ -118,8 +118,8 @@
     <FrameLayout
         android:id="@+id/buttonBack_ViewEventPage"
         style="@style/groupStyleteal_A200cornerRadius"
-        android:layout_width="@dimen/_82pxh"
-        android:layout_height="@dimen/_51pxv"
+        android:layout_width="@dimen/_70pxh"
+        android:layout_height="@dimen/_45pxv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -229,50 +229,31 @@
         app:layout_constraintTop_toBottomOf="@+id/textEventDescription_ViewEventPage"
         app:layout_constraintVertical_bias="0.851" />
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonAnnouncements"
         style="@style/btnSolidRounded"
-        android:layout_width="142dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingTop="@dimen/_10pxv"
-        android:paddingBottom="@dimen/_10pxv"
-        android:singleLine="true"
+        android:layout_width="160dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="8dp"
         android:text="Announcements"
         android:textAllCaps="false"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView_ViewEventPage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.386"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Announcements" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonSignOut"
+        app:layout_constraintStart_toEndOf="@+id/buttonBack_ViewEventPage"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSignOut"
         style="@style/btnSolidRounded"
-        android:layout_width="142dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="20dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingTop="@dimen/_10pxv"
-        android:paddingBottom="@dimen/_10pxv"
-        android:singleLine="true"
-        android:text="Check Out"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginTop="8dp"
+        android:text="Sign Out"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView_ViewEventPage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372"
-        tools:text="Check Out" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
