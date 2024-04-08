@@ -263,16 +263,21 @@ public class EventDetailsActivity extends AppCompatActivity {
                             Long attendeeLimit = null;
                             Long currentAttendeeCount = 0L;
 
-
+                            //Changed to check if string is null before checking if string == ""
                             try {
-                                attendeeLimit = attendeeLimitStr != null ? Long.parseLong(attendeeLimitStr) : null;
-                                Number currentAttendeeCountNumber = (Number) eventData.get("attendeeCount");
-                                currentAttendeeCount = currentAttendeeCountNumber != null ? currentAttendeeCountNumber.longValue() : 0L;
+                                if (attendeeLimitStr != null) {
+                                    if (!attendeeLimitStr.isEmpty()) {
+                                        attendeeLimit = Long.parseLong(attendeeLimitStr);
+                                    }
+                                    Number currentAttendeeCountNumber = (Number) eventData.get("attendeeCount");
+                                    currentAttendeeCount = currentAttendeeCountNumber != null ? currentAttendeeCountNumber.longValue() : 0L;
+                                }
                             } catch (NumberFormatException e) {
                                 Log.e(TAG, "Failed to parse attendee limit or count", e);
                             }
 
                             Map<String, Object> signedUp = (Map<String, Object>) eventData.getOrDefault("signedUp", new HashMap<>());
+                            assert signedUp != null;
                             boolean isAlreadySignedUp = signedUp.containsKey(deviceId);
 
                             if (isAlreadySignedUp) {
@@ -287,9 +292,17 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 return; // Stop execution if event is full
                             }
 
-                            Log.d(TAG, "Signing up the user");
-                            signedUp.put(deviceId, attendeeName);
-                            performSignUp(documentId, signedUp, attendeeLimit, currentAttendeeCount);
+                            if (attendeeLimit != null) {
+                                Log.d(TAG, "Signing up the user with attendee limit");
+                                signedUp.put(deviceId, attendeeName);
+                                performSignUp(documentId, signedUp, attendeeLimit, currentAttendeeCount);
+                            }
+                            else {
+                                Log.d(TAG, "Signing up the user without attendee limit");
+                                signedUp.put(deviceId, attendeeName);
+                                performSignUp(documentId, signedUp, currentAttendeeCount);
+                            }
+
                         } else {
                             Toast.makeText(getApplicationContext(), "Event data not found", Toast.LENGTH_SHORT).show();
                         }
@@ -313,6 +326,27 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                     // Check for milestones and send notification if necessary
                     checkAndSendMilestoneNotification(capacityPercentage, eventName, documentId);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Sign up failed", e);
+                    Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void performSignUp(String documentId, Map<String, Object> signedUp, long currentAttendeeCount) {
+        db.collection("events").document(documentId)
+                .update("signedUp", signedUp, "attendeeCount", FieldValue.increment(1))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Sign up successful");
+                    Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                    //Must fix code to check for milestones without an attendee limit
+
+//                    // Calculate the new attendee count and capacity percentage
+//                    long newAttendeeCount = currentAttendeeCount + 1;
+//                    double capacityPercentage = ((double) newAttendeeCount / attendeeLimit) * 100;
+//
+//                    // Check for milestones and send notification if necessary
+//                    checkAndSendMilestoneNotification(capacityPercentage, eventName, documentId);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Sign up failed", e);

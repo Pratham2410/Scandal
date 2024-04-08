@@ -83,6 +83,10 @@ EventPage extends AppCompatActivity {
         if (getIntent().getStringExtra("check") == "1"){
             signUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
         }
+        if (getIntent().getBooleanExtra("singUpError", false)) {
+            Toast.makeText(EventPage.this, "Please sign up before checking in", Toast.LENGTH_LONG).show();
+            Log.e("etowsley", "This code is being accessed");
+        }
 
         // Set OnClickListener for back button
         back.setOnClickListener(view -> {
