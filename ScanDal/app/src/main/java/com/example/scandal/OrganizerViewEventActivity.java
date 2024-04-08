@@ -4,80 +4,105 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
+import android.provider.Settings;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.Map;
 
-/**
- * Activity for organizers to view details about an event, including the event poster,
- * name, description, time, location, and functionalities for viewing attendee lists and notifying users.
- */
+/** An activity for organizers to view details of events */
 public class OrganizerViewEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
-    private TextView eventName, eventTime, eventDescription, eventLocation;
-    private ImageView eventPoster;
-    private FrameLayout backBtn;
+    TextView textEventName, textEventDescription, textEventTime, textEventLocation;
+    ImageView imageView;
+    FrameLayout buttonBack;
+    String promoQRCode;
     private Button signedUpListBtn, checkedInListBtn, notifyUsersBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organisor_view_events_page);
+        setContentView(R.layout.organisor_view_events_page); // Change layout name accordingly
 
-        eventName = findViewById(R.id.textEventName_OrganisorViewEventPage);
-        eventTime = findViewById(R.id.textEventTime_OrganisorViewEventPage);
-        eventDescription = findViewById(R.id.textEventDescription_OrganisorViewEventPage);
-        eventLocation = findViewById(R.id.textEventLocation_OrganisorViewEventPage);
-        eventPoster = findViewById(R.id.imageView_OrganisorViewEventPage);
-        backBtn = findViewById(R.id.buttonBack_OrganisorViewEventPage);
+        textEventName = findViewById(R.id.textEventName_OrganisorViewEventPage);
+        textEventDescription = findViewById(R.id.textEventDescription_OrganisorViewEventPage);
+        textEventTime = findViewById(R.id.textEventTime_OrganisorViewEventPage);
+        textEventLocation = findViewById(R.id.textEventLocation_OrganisorViewEventPage);
+        imageView = findViewById(R.id.imageView_OrganisorViewEventPage);
+        buttonBack = findViewById(R.id.buttonBack_OrganisorViewEventPage);
         signedUpListBtn = findViewById(R.id.buttoncSignedUpList_OraganisorViewEventsPage);
         checkedInListBtn = findViewById(R.id.buttoncCheckedInList_OraganisorViewEventsPage);
-        //notifyUsersBtn = findViewById(R.id.button2);
+        notifyUsersBtn = findViewById(R.id.button2);
+
 
         db = FirebaseFirestore.getInstance();
 
-        // Back button functionality
-        backBtn.setOnClickListener(v -> finish());
+        buttonBack.setOnClickListener(v -> finish());
 
-        Intent intent = getIntent();
-        String eventId = intent.getStringExtra("eventId");
+        notifyUsersBtn.setOnClickListener(v -> {
+            // Get the event name from the textEventName TextView
+            String event_Name = textEventName.getText().toString();
 
-        loadEventData(eventId);
-    }
+            // Create an intent to start OrganiserNotificationActivity
+            Intent notifyIntent = new Intent(OrganizerViewEventActivity.this, OrganiserNotificationActivity.class);
 
-    private void loadEventData(String eventId) {
-        db.collection("events").document(eventId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    eventName.setText(document.getString("name"));
-                    eventTime.setText(document.getString("time"));
-                    eventDescription.setText(document.getString("description"));
-                    eventLocation.setText(document.getString("location"));
-                    String imageString = document.getString("posterImage");
-                    if (imageString != null && !imageString.isEmpty()) {
-                        Bitmap bitmap = convertImageStringToBitmap(imageString);
-                        if (bitmap != null) {
-                            eventPoster.setImageBitmap(bitmap);
-                        }
-                    }
-                } else {
-                    Toast.makeText(OrganizerViewEventActivity.this, "No such event found", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(OrganizerViewEventActivity.this, "Failed to load event data", Toast.LENGTH_SHORT).show();
-            }
+            // Put the event name into the intent to pass to the OrganiserNotificationActivity
+            notifyIntent.putExtra("event_Name", event_Name);
+
+            // Start the OrganiserNotificationActivity
+            startActivity(notifyIntent);
         });
 
-        // Implement the functionalities for the signedUpListBtn, checkedInListBtn, and notifyUsersBtn here.
+
+        Intent intent = getIntent();
+        String eventName = intent.getStringExtra("eventName");
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        // Button to view the list of users who signed up
+        signedUpListBtn.setOnClickListener(v -> {
+            Intent signedUpIntent = new Intent(OrganizerViewEventActivity.this, OrganizerListSignedUpActivity.class);
+            signedUpIntent.putExtra("eventName", eventName); // Pass the event ID to the next activity if needed
+            startActivity(signedUpIntent);
+        });
+
+        // Button to view the list of users who checked in
+        checkedInListBtn.setOnClickListener(v -> {
+            Intent checkedInIntent = new Intent(OrganizerViewEventActivity.this, OrganizerListCheckedInActivity.class);
+            checkedInIntent.putExtra("eventName", eventName); // Pass the event ID to the next activity if needed
+            startActivity(checkedInIntent);
+        });
+
+        db.collection("events")
+                .whereEqualTo("name", eventName)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> eventData = documentSnapshot.getData();
+                        if (eventData != null) {
+                            textEventName.setText((String) eventData.get("name"));
+                            textEventTime.setText((String) eventData.get("time"));
+                            textEventLocation.setText((String) eventData.get("location"));
+                            textEventDescription.setText((String) eventData.get("description"));
+                            promoQRCode = (String) eventData.get("PromoQRCode");
+                            String imageString = (String) eventData.get("posterImage");
+                            if (imageString != null) {
+                                Bitmap bitmap = convertImageStringToBitmap(imageString);
+                                if (bitmap != null) {
+                                    imageView.setImageBitmap(bitmap);
+                                }
+                            }
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Event not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch event data", Toast.LENGTH_SHORT).show());
     }
 
     private Bitmap convertImageStringToBitmap(String imageString) {

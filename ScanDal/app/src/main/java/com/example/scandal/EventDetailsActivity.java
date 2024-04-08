@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 /** An activity for managing the viewing of event details */
@@ -38,6 +40,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView textEventLocation_ViewEventPage;
     /** ImageView to display the event location. */
 
+    TextView attendeeCount;
+
     ImageView imageView;
     /** Button to see QRCode */
     Button button_seeQR;
@@ -47,6 +51,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     String attendeeName;
     String promoQRCode;
     String checkInQRCode;
+
     /**
      * Called when the activity is starting.
      *
@@ -73,7 +78,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         buttonBack_ViewEventPage.setOnClickListener(v -> finish());
 
 
-
         Intent intent = getIntent();
         // Retrieve the event name from the intent
         String eventName = intent.getStringExtra("eventName");
@@ -84,26 +88,26 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .limit(1)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                        //Log here
-                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        Map<String, Object> eventData = documentSnapshot.getData();
-                        if (eventData != null) {
-                            textEventName_ViewEventPage.setText((String) eventData.get("name"));
-                            textEventTime_ViewEventPage.setText((String) eventData.get("time"));
-                            textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
-                            textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
-                            promoQRCode = (String) eventData.get("promoToken");
-                            checkInQRCode = (String) eventData.get("checkinToken");
+                    //Log here
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    Map<String, Object> eventData = documentSnapshot.getData();
+                    if (eventData != null) {
+                        textEventName_ViewEventPage.setText((String) eventData.get("name"));
+                        textEventTime_ViewEventPage.setText((String) eventData.get("time"));
+                        textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
+                        textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
+                        promoQRCode = (String) eventData.get("promoToken");
+                        checkInQRCode = (String) eventData.get("checkinToken");
 
 
-                            String imageString = (String) eventData.get("posterImage");
-                            if (imageString != null) {
-                                Bitmap bitmap = convertImageStringToBitmap(imageString);
-                                if (bitmap != null) {
-                                    imageView.setImageBitmap(bitmap);
-                                }
+                        String imageString = (String) eventData.get("posterImage");
+                        if (imageString != null) {
+                            Bitmap bitmap = convertImageStringToBitmap(imageString);
+                            if (bitmap != null) {
+                                imageView.setImageBitmap(bitmap);
                             }
                         }
+                    }
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
@@ -166,6 +170,32 @@ public class EventDetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
         });
     }
+
+    private void incrementAttendeeCount(String eventName) {
+        // Reference to the event document based on the event name
+        db.collection("events")
+                .whereEqualTo("name", eventName)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot eventDocSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        String eventDocId = eventDocSnapshot.getId();
+
+                        // Retrieve the current attendee count and increment it
+                        Number currentAttendeeCount = (Number) eventDocSnapshot.get("attendeeCount");
+                        int newAttendeeCount = currentAttendeeCount != null ? currentAttendeeCount.intValue() + 1 : 1;
+
+                        // Update the attendee count in the document
+                        db.collection("events").document(eventDocId)
+                                .update("attendeeCount", newAttendeeCount)
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Attendee count incremented successfully"))
+                                .addOnFailureListener(e -> Log.e(TAG, "Error incrementing attendee count", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching event to increment attendee count", e));
+    }
+
     private void saveSignUpToAttendee(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final Map<String, Object> signedUp = new HashMap<>();
@@ -194,8 +224,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(getApplicationContext(), "Failed to sign up", Toast.LENGTH_SHORT).show();
                                     });
-                        }
-                        else {
+                        } else {
                             Map<String, Object> update = new HashMap<>();
                             update.put("signedUp", signedUp);
                             // Perform the update
@@ -211,6 +240,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void saveSignUpToEvent(String eventName) {
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         final Map<String, Object> signedUp = new HashMap<>();
@@ -230,6 +260,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                             existingSignedUp.put(deviceId, attendeeName);
                             Map<String, Object> update = new HashMap<>();
                             update.put("signedUp", existingSignedUp);
+                            //update.put("attendeeCount", )
                             // Perform the update
                             db.collection("events").document(documentId)
                                     .update(update)
@@ -257,13 +288,15 @@ public class EventDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
     /**
      * Helper method to decode Base64 string to Bitmap.
      *
      * @param imageString The Base64-encoded image string.
      * @return The decoded Bitmap, or null if decoding fails.
      */
-    private Bitmap convertImageStringToBitmap(String imageString) {
+    private Bitmap convertImageStringToBitmap (String imageString){
         try {
             byte[] decodedByteArray = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
