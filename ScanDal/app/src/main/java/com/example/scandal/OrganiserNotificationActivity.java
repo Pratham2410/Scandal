@@ -42,6 +42,7 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
         // Retrieve the event name from the intent
         Intent intent = getIntent();
         String event_Name = intent.getStringExtra("event_Name");
+        String event_Name1 = intent.getStringExtra("event_Name");
         if (event_Name == null) {
             event_Name = "all"; // Fallback to "all" if no event name is provided
         } else {
@@ -68,7 +69,7 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
             }
 
             // Find the event document by name
-            db.collection("events").whereEqualTo("name", finalEvent_Name).get().addOnCompleteListener(task -> {
+            db.collection("events").whereEqualTo("name", event_Name1).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         // Assuming event names are unique, get the first document found
