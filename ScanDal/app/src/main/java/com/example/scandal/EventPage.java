@@ -75,8 +75,14 @@ EventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_page);
 
-       initializeUI();
+         initializeUI();
+       
+        if (getIntent().getBooleanExtra("singUpError", false)) {
+            Toast.makeText(EventPage.this, "Please sign up before checking in", Toast.LENGTH_LONG).show();
+            Log.e("etowsley", "This code is being accessed");
+        }
 
+      
         // Set OnClickListener for back button
         back.setOnClickListener(view -> {
             // Navigate to HomeActivity when back button is clicked
