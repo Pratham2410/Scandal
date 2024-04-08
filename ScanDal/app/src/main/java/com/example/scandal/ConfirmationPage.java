@@ -159,13 +159,8 @@ public class ConfirmationPage extends AppCompatActivity {
         //Log.d("etowsley", checked);
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            assert(!checked.equals(null));
-            if (checked.equals("1")) {
-                checkInUserToEvent();
-            }
-            else {
-                startConditionalIntent();
-            }
+            startConditionalIntent();
+
         });
         // Set OnClickListener for no button
 
@@ -281,20 +276,17 @@ public class ConfirmationPage extends AppCompatActivity {
                                             .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
                                 }
                                 userSignUpError = false;
-                                startConditionalIntent();
                             }
                             // If user has not signed up yet
                             else {
                                 Log.d("etowsley", "User is not in signedUp");
                                 userSignUpError = true;
-                                startConditionalIntent();
                             }
                         }
                         //If no user had signed up yet
                         else {
                             Log.d("etowsley", "Event has no key signedUp");
                             userSignUpError = true;
-                            startConditionalIntent();
                         }
                     } else {
                         Log.d("etowsley", "Document retrieval failed");
@@ -304,10 +296,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
     private void startConditionalIntent() {
        // Nav to EventDetailsActivity when yes is clicked
-        Log.e("etowsley", "in contitional intent" + checked);
-//        if (Objects.equals(checked, "1")) {
-//            checkInUserToEvent();
-//        }
+
         EventDetailsActivity.imageString = posterImage;
         Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
         intent.putExtra("name", name);
@@ -318,7 +307,9 @@ public class ConfirmationPage extends AppCompatActivity {
         intent.putExtra("location", location);
         intent.putExtra("check", checked);
         //Causes Error... HARRISON!!
-
+        if (Objects.equals(checked, "1")) {
+            checkInUserToEvent();
+        }
         if (userSignUpError) {
             Log.d("etowsley", "sign up error found");
             intent.putExtra("singUpError", true);
