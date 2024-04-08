@@ -44,6 +44,9 @@ public class EventActivityIntentTest {
         Intents.release();
     }
 
+    /**
+     * Test for verifying EditText inputs.
+     */
     @Test
     public void testEditTextInputs() {
         String eventName = "Test Event";
@@ -64,6 +67,9 @@ public class EventActivityIntentTest {
         testGenerateEventButtonIntent();
     }
 
+    /**
+     * Test for verifying the intent when clicking the generate event button.
+     */
     @Test
     public void testGenerateEventButtonIntent() {
         // Assume inputs are filled correctly.

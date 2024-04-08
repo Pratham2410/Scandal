@@ -15,12 +15,20 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+/**
+ * Instrumented test class for SettingsAndOrganiserActivityIntentTest.
+ */
 @RunWith(AndroidJUnit4.class)
 public class SettingsAndOrganiserActivityIntentTest {
 
+    // Rule to launch the activity under test
     @Rule
     public IntentsTestRule<SettingsAndOrganiserActivity> intentsTestRule = new IntentsTestRule<>(SettingsAndOrganiserActivity.class);
 
+    /**
+     * Test clicking the geolocation verification button.
+     * Checks if the button and other elements are still visible after clicking.
+     */
     @Test
     public void testButtonClick_GeoLocationVerification() {
         // Click the button for geolocation verification
@@ -34,6 +42,10 @@ public class SettingsAndOrganiserActivityIntentTest {
         onView(withId(R.id.buttonGeoTracking_SettingsPage)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Test clicking the "Go to Organiser Page" button.
+     * Verifies if the OrganiserActivity is launched after clicking the button.
+     */
     @Test
     public void clickingGotoOrganisorPageButtonNavigatesToOrganisorActivity() {
         // Perform a click on the "Go to Organiser Page" button
@@ -43,6 +55,10 @@ public class SettingsAndOrganiserActivityIntentTest {
         intended(hasComponent(OrganisorActivity.class.getName()));
     }
 
+    /**
+     * Test clicking the "Back to Settings and Organiser Page" button.
+     * Verifies if the HomeActivity is launched after clicking the button.
+     */
     @Test
     public void clickingBackSettingsAndOrganisorPageButtonNavigatesToHomeActivity() {
         // Perform a click on the "Back to Settings and Organiser Page" button

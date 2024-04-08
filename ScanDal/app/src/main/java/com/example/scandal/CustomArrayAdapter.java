@@ -16,24 +16,58 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
+/**
+ * CustomArrayAdapter is a custom ArrayAdapter implementation to display pairs of strings in a ListView.
+ */
 public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
     private Context context;
     private List<Pair<String, String>> objects;
     private int resource;
     private OnItemClickListener listener;
 
+    /**
+     * Interface definition for a callback to be invoked when an item in this ArrayAdapter has been clicked.
+     */
+    public interface OnItemClickListener {
+        /**
+         * Callback method to be invoked when an item in this ArrayAdapter has been clicked.
+         *
+         * @param position The position of the item that was clicked.
+         */
+        void onItemClick(int position);
+    }
+
+    /**
+     * Constructor for the CustomArrayAdapter.
+     *
+     * @param context  The current context.
+     * @param resource The resource ID for a layout file containing a TextView to use when instantiating views.
+     * @param objects  The objects to represent in the ListView.
+     */
     public CustomArrayAdapter(@NonNull Context context, int resource, @NonNull List<Pair<String, String>> objects) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
         this.resource = resource;
     }
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
+
+    /**
+     * Sets the listener for item clicks.
+     *
+     * @param listener The listener to set.
+     */
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
+    /**
+     * Get a View that displays the data at the specified position in the data set.
+     *
+     * @param position    The position of the item within the adapter's data set of the item whose view we want.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent      The parent that this view will eventually be attached to.
+     * @return A View corresponding to the data at the specified position.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -41,6 +75,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
         if (itemView == null) {
             itemView = LayoutInflater.from(context).inflate(resource, parent, false);
         }
+
         // Get the data for the current position
         Pair<String, String> currentItem = objects.get(position);
 
@@ -48,23 +83,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
         TextView text1 = itemView.findViewById(R.id.list_view_item1);
         TextView text2 = itemView.findViewById(R.id.list_view_item2);
 
-        // Set text and background color for the TextViews
-        Log.d("etowsley", currentItem.first);
-        Log.d("etowsley", currentItem.second);
-        String text1_item = currentItem.first;
-        String text2_item = currentItem.second;
-//        if (text1_item != null) {
-//            text1.setText(text1_item);
-//        }
-//        else {
-//            text1.setText("");
-//        }
-//        if (text2_item != null) {
-//            text2.setText(text2_item);
-//        }
-//        else {
-//            text2.setText("");
-//        }
+        // Set text for the TextViews
         text1.setText(currentItem.first);
         text2.setText(currentItem.second);
 
@@ -75,12 +94,11 @@ public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
                 text1.setTextSize(20);
                 text2.setTextColor(ContextCompat.getColor(context, R.color.teal_A400));
                 text2.setTextSize(20);
-            }
-            catch (NullPointerException e) {
-                // Code to handle the exception
-                System.out.println("Header is null!: " + e.getMessage());
+            } catch (NullPointerException e) {
+                Log.e("CustomArrayAdapter", "Header is null!", e);
             }
         } else {
+            // Set click listener for non-header items
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,10 +108,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
                 }
             });
         }
-        Log.d("etowsley", "item was added");
-
 
         return itemView;
     }
 }
-

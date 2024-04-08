@@ -20,12 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This activity allows organizers to send notifications to attendees of an event.
+ */
 public class OrganiserNotificationActivity extends AppCompatActivity {
 
-    private EditText editTitle, editDescription;
-    private FirebaseFirestore db;
-    private Button buttonSend;
-    private FrameLayout buttonBack;
+    private EditText editTitle, editDescription; // Input fields for title and description
+    private FirebaseFirestore db; // Firestore instance
+    private Button buttonSend; // Button to send notification
+    private FrameLayout buttonBack; // Back button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,6 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
 
         // Final topic string
         String topic = "/topics/" + event_Name;
-
 
         // Set the onClickListener for the back button
         buttonBack.setOnClickListener(v -> finish());
@@ -111,7 +113,6 @@ public class OrganiserNotificationActivity extends AppCompatActivity {
                     Log.e("FirestoreError", "Failed to search for event", task.getException());
                 }
             });
-
 
             // Initialize your FcmNotificationsSender with the title and message
             FcmNotificationsSender notificationsSender = new FcmNotificationsSender(

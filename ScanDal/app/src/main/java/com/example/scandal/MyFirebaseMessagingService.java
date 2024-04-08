@@ -17,14 +17,19 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+/**
+ * This service handles Firebase Cloud Messaging (FCM) messages.
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    /**
+     * Called when a message is received from Firebase Cloud Messaging (FCM).
+     *
+     * @param remoteMessage The remote message received from FCM.
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        System.out.println("From: " + remoteMessage.getFrom());
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
@@ -37,16 +42,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         sendNotification(remoteMessage.getNotification().getBody());
     }
 
+    /**
+     * Sends a notification with the specified title and body.
+     *
+     * @param from The sender of the message.
+     * @param body The body of the message.
+     */
     private void sendNotification(String from, String body) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
-
             @Override
             public void run() {
-                Toast.makeText(MyFirebaseMessagingService.this.getApplicationContext(),body,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyFirebaseMessagingService.this.getApplicationContext(), body, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Sends a notification with the specified message body.
+     *
+     * @param messageBody The body of the message.
+     */
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

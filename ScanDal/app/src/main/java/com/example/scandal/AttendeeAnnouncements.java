@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity to display announcements for a specific event.
+ */
 public class AttendeeAnnouncements extends AppCompatActivity {
     FrameLayout backMain;
     ListView announcementList;
