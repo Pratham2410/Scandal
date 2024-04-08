@@ -53,6 +53,8 @@ public class Event {
      */
     public Event(EventList eventList) {
         eventList.addEvent(this);
+        this.currentAttendees = new AttendeeDict();
+        this.registrants = new AttendeeDict();
         attendeeCount = currentAttendees.getAttendeeCount();
     }
 

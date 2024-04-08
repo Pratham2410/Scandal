@@ -12,29 +12,26 @@ import org.robolectric.annotation.Config;
 @Config(manifest= Config.NONE)
 public class EventUnitTest {
 
+    private EventList eventList;
     private Event event;
+    private User user;
 
     @Before
-    void setUp() {
-        //event = new Event();
-        event.setSignInQRCode("signInQRCodeExample");
-        event.setPromoQRCode("promoQRCodeExample");
-        event.setDesc("descriptionExample");
+    public void setUp() {
+        eventList = new EventList();
+        event = new Event(eventList);
+        user = new User();
     }
 
     @Test
-    void testGetSignInQRCode() {
-        assertEquals("signInQRCodeExample", event.getSignInQRCode(), "The signInQRCode did not match the expected value.");
-    }
+    public void propertiesSetAndGet() {
+        String promoQRCode = "PromoQR";
+        event.setPromoQRCode(promoQRCode);
+        assertEquals(promoQRCode, event.getPromoQRCode());
 
-    @Test
-    void testGetPromoQRCode() {
-        assertEquals("promoQRCodeExample", event.getPromoQRCode(), "The promoQRCode did not match the expected value.");
-    }
-
-    @Test
-    void testGetDesc() {
-        assertEquals("descriptionExample", event.getDesc(), "The description did not match the expected value.");
+        String description = "Description of the event";
+        event.setDesc(description);
+        assertEquals(description, event.getDesc());
     }
 }
 
