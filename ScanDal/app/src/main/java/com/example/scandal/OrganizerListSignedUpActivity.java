@@ -49,6 +49,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
     CustomArrayAdapter adapter;
     List<Pair<String, String>> userNames;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +137,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
     @Override
     public void onItemClick(int position) {
         Pair<String, String> eventObject = adapter.getItem(position);
-        String attendeeNames = eventObject.first;
+        attendeeNames = eventObject.first;
         Toast.makeText(OrganizerListSignedUpActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
     }
 }
