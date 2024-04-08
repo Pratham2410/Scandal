@@ -108,23 +108,17 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
                             List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
                             if (checkedInUsers != null) {
                                 textCheckInCount.setText("Current Attendee #: " + String.valueOf(checkedInUsers.size()));
-                                Log.d("etowsley", "got checkedInUsers");
                             }
                             else {
                                 textCheckInCount.setText("Current Attendee #: 0");
-                                Log.d("etowsley", "checkedInUsers was null");
                             }
                             //Get signed up count
-                            Log.e("etowsley", "before getting singUp count");
                             String signUpCount = String.valueOf(eventData.get("attendeeCount"));
-                            Log.e("etowsley", "got singUp count");
                             if (signUpCount != null) {
                                 textSignUpCount.setText("Current Sing-Up #: " + signUpCount);
-                                Log.d("etowsley", "set singUp count");
                             }
                             else {
                                 textSignUpCount.setText("Current Sing-Up #: 0");
-                                Log.d("etowsley", "signUp count was null");
                             }
                             promoQRCode = (String) eventData.get("PromoQRCode");
                             String imageString = (String) eventData.get("posterImage");
