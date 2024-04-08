@@ -81,6 +81,10 @@ public class ConfirmationPage extends AppCompatActivity {
      */
     String promoToken;
     /**
+     * a flag to indicate whether the user has signed up before checking in
+     */
+    boolean userSignUpError;
+    /**
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
@@ -113,6 +117,8 @@ public class ConfirmationPage extends AppCompatActivity {
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
+                            // Set the event name, description, poster image, location, time, and tokens
+
                             name = document.getString("name");
                             bar.setProgress(10);
                             description = document.getString("description");
@@ -125,8 +131,6 @@ public class ConfirmationPage extends AppCompatActivity {
                             posterImage = document.getString("posterImage");
                             bar.setProgress(100);
                             checkinToken = token;
-                            // Convert posterImage to Bitmap
-                            // Set the event name, description, and poster image
                             eventDescription.setText(defaultText + "checkin to " + name + "?");
                             eventDescription.setVisibility(View.VISIBLE);
                             yesButton.setVisibility(View.VISIBLE);
@@ -150,8 +154,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            checkInUserToEvent();
-
+                startConditionalIntent();
         });
         // Set OnClickListener for no button
 
@@ -262,21 +265,21 @@ public class ConfirmationPage extends AppCompatActivity {
                                             .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
                                             .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
                                 }
-                                startConditionalIntent(false);
+                                userSignUpError = false;
                             }
                             // If user has not signed up yet
                             else {
-                                startConditionalIntent(true);
+                                userSignUpError = true;
                             }
                         }
                         else {
-                            startConditionalIntent(true);
+                            userSignUpError = true;
                         }
                     }
                 });
     }
 
-    private void startConditionalIntent(boolean userSignUpError) {
+    private void startConditionalIntent() {
        // Nav to EventDetailsActivity when yes is clicked
         Log.e("etowsley", "Span is in Confirmation Page");
         EventDetailsActivity.imageString = posterImage;

@@ -6,6 +6,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,23 +24,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity for displaying the list of user who signed up for an event
+ */
 public class OrganizerListCheckedInActivity extends AppCompatActivity implements CustomArrayAdapter.OnItemClickListener {
+    /**
+     * FrameLayout for navigating back to the main page.
+     */
     FrameLayout backMain;
+    /**
+     * ListView for displaying signed up users.
+     */
     ListView userList;
+    /**
+     * Firebase Firestore instance for database operations.
+     */
     FirebaseFirestore db;
     CustomArrayAdapter adapter;
     List<Pair<String, String>> checkedInAttendeeNamesWithCount;
-
+    String attendeeNames;
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
+     */
+    private Button viewLocationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events_page); // Assume this is the correct layout
+        setContentView(R.layout.events_attendees_page); // Assume this is the correct layout
         TextView txtMyEvents = findViewById(R.id.list_view_header);
         txtMyEvents.setText("Checked-In Attendees");
 
-        backMain = findViewById(R.id.buttonBack_MyEventsPage);
-        userList = findViewById(R.id.listView_MyEventsPage);
+        backMain = findViewById(R.id.buttonBack_EventsAttendeesPage);
+        userList = findViewById(R.id.listView_EventsAttendeesPage);
+        viewLocationBtn = findViewById(R.id.buttonViewLocation_EventsAttendeesPage);
         db = FirebaseFirestore.getInstance();
 
         // Retrieve the event name from the intent
@@ -53,15 +73,45 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity implements
         adapter.setOnItemClickListener(OrganizerListCheckedInActivity.this);
         userList.setAdapter(adapter);
         loadCheckedInUsers(eventName);
-    }
 
+        viewLocationBtn.setOnClickListener(v -> {
+            if(attendeeNames !=null){
+                db.collection("profiles")
+                        .whereEqualTo("name", attendeeNames)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Device is already registered, fetch and display profile data
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                Map<String, Object> profileData = documentSnapshot.getData();
+                                if (Integer.parseInt(profileData.get("GeoTracking").toString()) == 1 && profileData.get("userLocation") != null) {
+                                    Intent mapIntent = new Intent(OrganizerListCheckedInActivity.this, MapActivity.class);
+                                    mapIntent.putExtra("attendeeName", attendeeNames);
+                                    startActivity(mapIntent);
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "user disabled geo-tracking", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+            }
+            else{
+                Toast.makeText(OrganizerListCheckedInActivity.this, "Please select an attendee first", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+    }
     /**
      * Retrieves and displays users checked in for the specified event.
      */
     private void loadCheckedInUsers(String eventName) {
-        //Make Header
-        checkedInAttendeeNamesWithCount.add(new Pair<>("Name", "Number of Check-ins"));
-        //Load rest of data
+        List<String> checkedInAttendeeNamesWithCount = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, checkedInAttendeeNamesWithCount);
+        userList.setAdapter(adapter);
+
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .get()

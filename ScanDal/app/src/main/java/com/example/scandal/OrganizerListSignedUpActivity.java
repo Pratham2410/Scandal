@@ -1,14 +1,22 @@
 package com.example.scandal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -36,6 +44,8 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
      *
      * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
      */
+    String attendeeNames;
+    private Button viewLocationBtn;
     CustomArrayAdapter adapter;
     List<Pair<String, String>> userNames;
 
@@ -61,6 +71,36 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
         adapter.setOnItemClickListener(OrganizerListSignedUpActivity.this);
         userList.setAdapter(adapter);
         loadUsers(eventName); // Pass the eventName to the method
+
+        viewLocationBtn.setOnClickListener(v -> {
+            if(attendeeNames !=null){
+                db.collection("profiles")
+                        .whereEqualTo("name", attendeeNames)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Device is already registered, fetch and display profile data
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                Map<String, Object> profileData = documentSnapshot.getData();
+                                if (Integer.parseInt(profileData.get("GeoTracking").toString()) == 1 && profileData.get("userLocation") != null) {
+                                    Intent mapIntent = new Intent(OrganizerListSignedUpActivity.this, MapActivity.class);
+                                    mapIntent.putExtra("attendeeName", attendeeNames);
+                                    startActivity(mapIntent);
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "user disabled geo-tracking", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+            }
+            else {
+                Toast.makeText(OrganizerListSignedUpActivity.this, "Please select an attendee first", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
     }
     /**
      * Retrieves and displays users signed up for the specified event.
@@ -80,7 +120,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
                             for (Object userNameObj : signedUpUsers.values()) {
                                 String userName = (String) userNameObj;
                                 if (userName != null) {
-                                    userNames.add(new Pair<>("userName", ""));
+                                    userNames.add(userName);
                                     adapter.notifyDataSetChanged();
                                 }
                             }
