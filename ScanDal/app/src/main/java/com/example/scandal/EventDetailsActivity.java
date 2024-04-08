@@ -360,14 +360,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Sign up successful");
                     Toast.makeText(getApplicationContext(), "Signed up successfully", Toast.LENGTH_SHORT).show();
-                    //Must fix code to check for milestones without an attendee limit
 
-//                    // Calculate the new attendee count and capacity percentage
-//                    long newAttendeeCount = currentAttendeeCount + 1;
-//                    double capacityPercentage = ((double) newAttendeeCount / attendeeLimit) * 100;
-//
-//                    // Check for milestones and send notification if necessary
-//                    checkAndSendMilestoneNotification(capacityPercentage, eventName, documentId);
+                    // Check for milestones and send notification if necessary
+                    checkAndSendMilestoneNotification(currentAttendeeCount + 1, eventName, documentId);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Sign up failed", e);
@@ -415,7 +410,48 @@ public class EventDetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Log.e(TAG, "Error fetching event for milestone check", e));
         }
     }
+    //Function for when no attendee limit has been set
+    private void checkAndSendMilestoneNotification(long attendeeCount, String eventName, String documentId) {
+        String milestoneKey;
 
+        //Adjusted for milestones to function if no attendeeLimit has been set.
+        if (attendeeCount >= 20) {
+            milestoneKey = "20";
+        } else if (attendeeCount >= 15) {
+            milestoneKey = "15";
+        } else if (attendeeCount >= 10) {
+            milestoneKey = "10";
+        } else if (attendeeCount >= 5) {
+            milestoneKey = "5";
+        } else {
+            milestoneKey = null;
+        }
+
+        if (milestoneKey != null) {
+            // First, check if this milestone has already been sent
+            db.collection("events").document(documentId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        Map<String, Boolean> sentMilestones = (Map<String, Boolean>) documentSnapshot.get("sentMilestones");
+                        if (sentMilestones == null) {
+                            sentMilestones = new HashMap<>();
+                        }
+                        // If the milestone has not been sent yet, send the notification and update Firestore
+                        if (sentMilestones.getOrDefault(milestoneKey, false) == false) {
+                            String milestoneMessage = milestoneKey + " attendees present";
+                            sendMilestoneNotification(eventName + "organizer", "Alert", milestoneMessage);
+
+                            // Update the sent milestone
+                            sentMilestones.put(milestoneKey, true);
+                            db.collection("events").document(documentId)
+                                    .update("sentMilestones", sentMilestones)
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Milestone " + milestoneKey + " updated successfully"))
+                                    .addOnFailureListener(e -> Log.e(TAG, "Error updating milestone", e));
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error fetching event for milestone check", e));
+        }
+    }
 
     private void sendMilestoneNotification(String topic, String title, String message) {
         // Implementation of this method should be similar to how you're sending notifications
