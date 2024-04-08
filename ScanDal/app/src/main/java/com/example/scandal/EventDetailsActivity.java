@@ -44,6 +44,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView attendeeCount;
 
     ImageView imageView;
+    static String imageString;
     /** Button to see QRCode */
     Button button_seeQR;
     /** Button to navigate back from the event details page. */
@@ -87,35 +88,49 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         final Map<String, String> checkedInStatus = new HashMap<>();
         checkedInStatus.put(deviceId, "No");
-        db.collection("events")
-                .whereEqualTo("name", eventName)
-                .limit(1)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    //Log here
-                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                    Map<String, Object> eventData = documentSnapshot.getData();
-                    if (eventData != null) {
-                        textEventName_ViewEventPage.setText((String) eventData.get("name"));
-                        textEventTime_ViewEventPage.setText((String) eventData.get("time"));
-                        textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
-                        textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
-                        promoQRCode = (String) eventData.get("promoToken");
-                        checkInQRCode = (String) eventData.get("checkinToken");
+        if (intent.getExtras().containsKey("check")){
+            Bitmap posterBitmap = convertImageStringToBitmap(imageString);
+            imageView.setImageBitmap(posterBitmap);
+            textEventLocation_ViewEventPage.setText(getIntent().getStringExtra("location")); //gets the location
+            textEventTime_ViewEventPage.setText(getIntent().getStringExtra("time")); // gets the time
+            textEventDescription_ViewEventPage.setText(getIntent().getStringExtra("description")); // gets description
+            textEventName_ViewEventPage.setText(getIntent().getStringExtra("name")); // gets the name
+            checkInQRCode = intent.getStringExtra("checkin");
+            promoQRCode = intent.getStringExtra("promo");
+            eventName = intent.getStringExtra("name");
+            if (getIntent().getStringExtra("check").equals("1")){
+                buttonSignUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
+            }
+        }else {
+            db.collection("events")
+                    .whereEqualTo("name", eventName)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        //Log here
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> eventData = documentSnapshot.getData();
+                        if (eventData != null) {
+                            textEventName_ViewEventPage.setText((String) eventData.get("name"));
+                            textEventTime_ViewEventPage.setText((String) eventData.get("time"));
+                            textEventLocation_ViewEventPage.setText((String) eventData.get("location"));
+                            textEventDescription_ViewEventPage.setText((String) eventData.get("description"));
+                            promoQRCode = (String) eventData.get("promoToken");
+                            checkInQRCode = (String) eventData.get("checkinToken");
 
 
-                        String imageString = (String) eventData.get("posterImage");
-                        if (imageString != null) {
-                            Bitmap bitmap = convertImageStringToBitmap(imageString);
-                            if (bitmap != null) {
-                                imageView.setImageBitmap(bitmap);
+                            String imageString = (String) eventData.get("posterImage");
+                            if (imageString != null) {
+                                Bitmap bitmap = convertImageStringToBitmap(imageString);
+                                if (bitmap != null) {
+                                    imageView.setImageBitmap(bitmap);
+                                }
                             }
                         }
-                    }
 
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
-
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+        }
         button_seeQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,13 +152,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(v -> {
             // Retrieve the event name from the TextView
             String event_Name = textEventName_ViewEventPage.getText().toString();
-
             // Check if eventName is not empty
             if (!eventName.isEmpty()) {
                 // Subscribe to the event topic
                 FirebaseMessaging.getInstance().subscribeToTopic(event_Name)
                         .addOnCompleteListener(task -> {
                             if (!task.isSuccessful()) {
+                                Toast.makeText(EventDetailsActivity.this, "Subscribed to event failed", Toast.LENGTH_SHORT).show();
                                 Log.w(TAG, "Topic subscription failed");
                             } else {
                                 // Optionally notify the user of successful subscription

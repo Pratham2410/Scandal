@@ -150,8 +150,8 @@ public class ConfirmationPage extends AppCompatActivity {
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
             // Navigate to Event page when yes button is clicked
-            EventPage.imageString = posterImage;
-            Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
+            EventDetailsActivity.imageString = posterImage;
+            Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("description", description);
             intent.putExtra("time", time);
