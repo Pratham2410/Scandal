@@ -41,12 +41,26 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.CountDownTimer;
+import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.Task;
+
+
 /**
  * Profile Activity for editing and saving a user's profile information, including their name,
  * phone number, home page URL, and profile image. The profile image is handled by converting
  * the image to a Base64 encoded string for storage in Firebase Firestore.
  */
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements IBaseGpsListener {
     /**
      * An integer representing the GeoTracking Status(Set to 0 representing no as default)
      */
@@ -88,6 +102,11 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private FirebaseFirestore db;
     private boolean customedImage;
+    final int FINE_PERMISSION_CODE = 1;
+    private static final int PERMISSION_LOCATION = 1000;
+    Location currentLocation;
+    CountDownTimer timer;
+    Integer verifyLocation = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +134,13 @@ public class ProfileActivity extends AppCompatActivity {
                             if (!name.equals("Unkown")) {
                                 editTextName.setText(name);
                             }
+                            if(Integer.parseInt(profileData.get("GeoTracking").toString()) == 1){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+                                } else {
+                                    showLocation();
+                                }
+                            }
                             editTextPhoneNumber.setText((String) profileData.get("phoneNumber"));
                             editTextHomePage.setText((String) profileData.get("homePage"));
                             // Check if user has customized image before
@@ -140,6 +166,19 @@ public class ProfileActivity extends AppCompatActivity {
          * Setup interaction listeners
          */
         setupListeners();
+    }
+    private void showLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        }else {
+            Toast.makeText(getApplicationContext(), "Please enable gps", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Bitmap drawableToBitmap(Drawable drawable) {
@@ -263,6 +302,15 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         String imageString = null;
+        Location userLocation = new Location("gps");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            userLocation.setMslAltitudeAccuracyMeters(0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            userLocation.setMslAltitudeMeters(0);
+        }
+
         if (imageUri != null) {
             // An image was selected by the user; convert it to a string
             imageString = convertImageUriToString(imageUri);
@@ -277,12 +325,15 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         final Map<String, Object> profileData = new HashMap<>();
+
+
         profileData.put("deviceId", deviceId);
         profileData.put("name", name);
         profileData.put("phoneNumber", phoneNumber);
         profileData.put("homePage", homePage);
         profileData.put("imageString", imageString);
         profileData.put("customedImage", customedImage);
+        profileData.put("userLocation", userLocation);
 
 
         saveDataToFirestore(profileData, deviceId);
@@ -387,6 +438,13 @@ public class ProfileActivity extends AppCompatActivity {
                         if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
                             GeoTracking = 1;
                             profileData.put("GeoTracking", GeoTracking);
+                            if(preData.get("userLocation")!=null){
+                                profileData.put("userLocation", preData.get("userLocation"));
+                            }
+                            else if(currentLocation != null){
+                                profileData.put("userLocation", currentLocation);
+                            }
+
                         } else {
                             GeoTracking = 0;
                             profileData.put("GeoTracking", GeoTracking);
@@ -407,4 +465,100 @@ public class ProfileActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check existing profile", Toast.LENGTH_SHORT).show());
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == PERMISSION_LOCATION){
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                showLocation();
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "permission not allowed", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+    private void hereLocation(Location location) {
+        final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        currentLocation = location;
+        //Toast.makeText(getApplicationContext(), "Long: "+location.getLongitude()+" Lat:"+location.getLatitude(), Toast.LENGTH_SHORT).show();
+        db.collection("profiles").whereEqualTo("deviceId", deviceId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Map<String, Object> preData = documentSnapshot.getData();
+                        if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeAccuracyMeters(0);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                currentLocation.setMslAltitudeMeters(0);
+                            }
+                            preData.put("userLocation", currentLocation);
+                        }
+                        String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        db.collection("profiles").document(documentId)
+                                .set(preData)
+                                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Location updated successfully", Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update location", Toast.LENGTH_SHORT).show());
+
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check existing profile", Toast.LENGTH_SHORT).show());
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(verifyLocation == 1){
+            verifyLocation = 0;
+            final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            db.collection("profiles").whereEqualTo("deviceId", deviceId)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            Map<String, Object> preData = documentSnapshot.getData();
+                            if (preData.get("GeoTracking") != null && Integer.parseInt(preData.get("GeoTracking").toString()) == 1) {
+                                timer = new CountDownTimer(100000,100000) {
+                                    @Override
+                                    public void onTick(long millisUntilFinished) {
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        verifyLocation = 1;
+                                    }
+                                }.start();
+                                hereLocation(location);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check existing profile", Toast.LENGTH_SHORT).show());
+        }
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        //n
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        //n
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        //n
+    }
+
+    @Override
+    public void onGpsStatusChanged(int event) {
+        //n
+    }
+
 }
