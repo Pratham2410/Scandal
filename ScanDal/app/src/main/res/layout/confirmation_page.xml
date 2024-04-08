@@ -28,17 +28,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBarConf" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confYes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        style="@style/btnSolidRounded"
+        android:layout_width="110dp"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
         android:text="Yes"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/progressBarConf"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.176"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/conf_descrip"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="Yes"
+        tools:visibility="invisible" />
 
     <TextView
         android:id="@+id/conf_descrip"
@@ -52,16 +62,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="87dp"
-        android:layout_marginEnd="68dp"
+        style="@style/btnSolidRounded"
+        android:layout_width="110dp"
+        android:layout_height="@dimen/_47pxv"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10pxv"
+        android:paddingBottom="@dimen/_10pxv"
+        android:singleLine="true"
         android:text="No"
-        android:visibility="invisible"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/progressBarConf"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.669"
         app:layout_constraintStart_toEndOf="@+id/confYes"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/conf_descrip"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="No"
+        tools:visibility="invisible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

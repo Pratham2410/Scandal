@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
@@ -22,8 +24,8 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
     ImageView imageView;
     FrameLayout buttonBack;
     String promoQRCode;
-    private Button signedUpListBtn, checkedInListBtn, notifyUsersBtn;
-    private Button milestonesBtn;
+    private AppCompatButton signedUpListBtn, checkedInListBtn;
+    private Button milestonesBtn, notifyUsersBtn;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

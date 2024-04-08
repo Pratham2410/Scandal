@@ -34,10 +34,7 @@ public class AdminImageActivityIntentTest {
         // Perform a click on the first item in the ListView
         onView(withId(R.id.listView_ImageListPage)).perform(click());
 
-        // Verify that a confirmation dialog for deleting the image is shown
-        // Example:
-        // onView(withText("Are you sure you want to delete this image?")).check(matches(isDisplayed()));
     }
 
-    // Add more tests for additional functionality as needed
+
 }

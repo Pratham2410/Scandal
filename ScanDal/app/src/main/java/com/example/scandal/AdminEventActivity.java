@@ -1,5 +1,6 @@
 package com.example.scandal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -82,7 +83,10 @@ public class AdminEventActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
         eventsList.setAdapter(adapter);
 
-        backToAdmin.setOnClickListener(v -> finish());
+        backToAdmin.setOnClickListener(v->{
+            Intent intent = new Intent(AdminEventActivity.this, AdminActivity.class);
+            startActivity(intent);
+        });
         loadEvents();
 
         // Set an item click listener to delete the event on click
@@ -147,5 +151,10 @@ public class AdminEventActivity extends AppCompatActivity {
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public void injectFirestore(FirebaseFirestore mockFirestore) {
+        FirebaseFirestore mockDb = null;
+        this.db = mockDb;
     }
 }

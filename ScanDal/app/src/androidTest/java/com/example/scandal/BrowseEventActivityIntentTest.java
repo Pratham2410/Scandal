@@ -25,12 +25,14 @@ public class BrowseEventActivityIntentTest {
     public void pressingBackButtonFinishesActivity() {
         // Perform a click on the back button
         onView(withId(R.id.buttonBack_BrowseEventsPage)).perform(click());
-
-        // Verify that the BrowseEventActivity is finished after pressing the back button
-        // This ensures that the activity is navigated back to the previous activity
-        // Example:
-        // assertTrue(intentsTestRule.getActivity().isFinishing());
+        intended(hasComponent(HomeActivity.class.getName()));
     }
 
-    // Add more tests for additional functionality as needed
+    @Test
+    public void listViewDisplayed() {
+        // Assuming there is at least one item in the ListView
+        // Perform a click on the first item in the ListView
+        onView(withId(R.id.listView_BrowseEventPage)).perform(click());
+
+    }
 }

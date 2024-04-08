@@ -2,9 +2,7 @@ package com.example.scandal;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Pair;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -28,7 +26,7 @@ import java.util.Map;
 /**
  * Activity for displaying the list of user who signed up for an event
  */
-public class OrganizerListSignedUpActivity extends AppCompatActivity {
+public class OrganizerListSignedUpActivity extends AppCompatActivity implements CustomArrayAdapter.OnItemClickListener {
     /**
      * FrameLayout for navigating back to the main page.
      */
@@ -48,29 +46,32 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
      */
     String attendeeNames;
     private Button viewLocationBtn;
+    CustomArrayAdapter adapter;
+    List<Pair<String, String>> userNames;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.events_attendees_page); // Ensure this is the correct layout
-        TextView txtMyEvents = findViewById(R.id.txtMyEvents);
+        TextView txtMyEvents = findViewById(R.id.list_view_header);
         txtMyEvents.setText("SignedUp Attendees");
 
         backMain = findViewById(R.id.buttonBack_EventsAttendeesPage);
         userList = findViewById(R.id.listView_EventsAttendeesPage);
         viewLocationBtn = findViewById(R.id.buttonViewLocation_EventsAttendeesPage);
         db = FirebaseFirestore.getInstance();
-
         backMain.setOnClickListener(v -> finish());
 
         // Retrieve the event name from the intent
         String eventName = getIntent().getStringExtra("eventName");
 
+        //Initialize ArrayAdapter
+        userNames = new ArrayList<>();
+        adapter = new CustomArrayAdapter(this, R.layout.list_item_layout, userNames);
+        adapter.setOnItemClickListener(OrganizerListSignedUpActivity.this);
+        userList.setAdapter(adapter);
         loadUsers(eventName); // Pass the eventName to the method
-        userList.setOnItemClickListener((parent, view, position, id) -> {
-            attendeeNames = (String) parent.getItemAtPosition(position);
-            Toast.makeText(OrganizerListSignedUpActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
-        });
 
         viewLocationBtn.setOnClickListener(v -> {
             if(attendeeNames !=null){
@@ -95,7 +96,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
                         })
                         .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
             }
-            else{
+            else {
                 Toast.makeText(OrganizerListSignedUpActivity.this, "Please select an attendee first", Toast.LENGTH_SHORT).show();
             }
 
@@ -106,10 +107,10 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
      * Retrieves and displays users signed up for the specified event.
      */
     private void loadUsers(String eventName) {
-        List<String> userNames = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userNames);
-        userList.setAdapter(adapter);
-
+        userNames.clear();
+        //Make Header
+        userNames.add(new Pair<>("Name", ""));
+        //Load rest of data
         db.collection("events")
                 .whereEqualTo("name", eventName) // Filter by the event name
                 .get()
@@ -121,7 +122,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
                             for (Object userNameObj : signedUpUsers.values()) {
                                 String userName = (String) userNameObj;
                                 if (userName != null) {
-                                    userNames.add(userName);
+                                    userNames.add(new Pair<>(userName, ""));
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -131,5 +132,12 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     // Handle errors
                 });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Pair<String, String> eventObject = adapter.getItem(position);
+        attendeeNames = eventObject.first;
+        Toast.makeText(OrganizerListSignedUpActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
     }
 }
