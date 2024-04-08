@@ -101,6 +101,12 @@ public class EventDetailsActivity extends AppCompatActivity {
             if (getIntent().getStringExtra("check").equals("1")){
                 buttonSignUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
             }
+            if (getIntent().getBooleanExtra("singUpError", false)) {
+                Toast.makeText(EventDetailsActivity.this, "Please sign up before checking in", Toast.LENGTH_LONG).show();
+                buttonSignUp.setVisibility(View.VISIBLE); // if checked in no sign up button is provided
+
+                Log.e("etowsley", "This code is being accessed");
+            }
         }else {
             db.collection("events")
                     .whereEqualTo("name", eventName)
