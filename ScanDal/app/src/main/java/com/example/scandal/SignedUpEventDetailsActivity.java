@@ -135,11 +135,11 @@ public class SignedUpEventDetailsActivity extends AppCompatActivity {
         db.collection("events").document(documentId)
                 .update("checkedIn", FieldValue.arrayRemove(deviceId), "signedUp", FieldValue.delete(), "attendeeCount", FieldValue.increment(-1))
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(SignedUpEventDetailsActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignedUpEventDetailsActivity.this, "Checked out", Toast.LENGTH_SHORT).show();
                     // Optionally, redirect the user or refresh the activity
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(SignedUpEventDetailsActivity.this, "Failed to sign out", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(SignedUpEventDetailsActivity.this, "Failed to check out", Toast.LENGTH_SHORT).show());
     }
     /**
      * Helper method to decode Base64 string to Bitmap.
