@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+/**
+ * Unit tests for the Event class.
+ */
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest= Config.NONE)
 public class EventUnitTest {
@@ -16,6 +19,9 @@ public class EventUnitTest {
     private Event event;
     private User user;
 
+    /**
+     * Sets up the test environment before each test case.
+     */
     @Before
     public void setUp() {
         eventList = new EventList();
@@ -23,6 +29,9 @@ public class EventUnitTest {
         user = new User();
     }
 
+    /**
+     * Tests the getSignInQRCode method of the Event class.
+     */
     @Test
     public void propertiesSetAndGet() {
         String promoQRCode = "PromoQR";
@@ -34,4 +43,3 @@ public class EventUnitTest {
         assertEquals(description, event.getDesc());
     }
 }
-

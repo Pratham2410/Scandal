@@ -29,6 +29,9 @@ import org.junit.runner.RunWith;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Instrumented test for checking in to an event.
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class CheckinTest {
@@ -42,20 +45,18 @@ public class CheckinTest {
     @Rule
     public ActivityScenarioRule<ConfirmationPage> activityScenarioRule = new ActivityScenarioRule<>(intent);
 
-
-
     /**
-     * Tests checking in to make sure it works
+     * Tests checking in to make sure it works.
      * @throws InterruptedException for interrupt exceptions
      */
     @Test
     public void TestCheckingIn() throws InterruptedException {
         Thread.sleep(2000);
         onView(withId(R.id.confYes)).perform(click());
-        Thread.sleep(1000); //testing whether promo is displayed properly
+        Thread.sleep(1000); // testing whether promo is displayed properly
         onView(withText("Outside")).check(matches(isDisplayed())); // checks whether the location shows up
-        onView(withText("Page Tester for testing")).check(matches(isDisplayed())); //checks description
-        onView(withText("Recreational Sporting")).check(matches(isDisplayed())); //checks name
+        onView(withText("Page Tester for testing")).check(matches(isDisplayed())); // checks description
+        onView(withText("Recreational Sporting")).check(matches(isDisplayed())); // checks name
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String deviceId = Settings.Secure.getString(InstrumentationRegistry.getInstrumentation().getTargetContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         db.collection("events")
@@ -67,7 +68,7 @@ public class CheckinTest {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        //Check if user is signed up
+                        // Check if user is signed up
                         if (eventData.containsKey("checkedIn")) {
                             List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
                             assert (existingCheckedIn.contains(deviceId));
@@ -76,6 +77,5 @@ public class CheckinTest {
                         }
                     }
                 });
-
     }
 }

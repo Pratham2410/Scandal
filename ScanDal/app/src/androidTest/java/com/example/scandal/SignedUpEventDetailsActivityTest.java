@@ -18,17 +18,22 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
 
+/**
+ * Instrumented test class for SignedUpEventDetailsActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class SignedUpEventDetailsActivityTest {
 
+    // Rule to launch the activity under test
     @Rule
     public IntentsTestRule<SignedUpEventDetailsActivity> intentsTestRule =
             new IntentsTestRule<>(SignedUpEventDetailsActivity.class);
 
+    /**
+     * Test to verify if the correct intent extras are received by the activity.
+     */
     @Test
     public void testIntentExtras() {
         // Check if the correct intent extras are received by the activity
@@ -37,6 +42,10 @@ public class SignedUpEventDetailsActivityTest {
         ));
     }
 
+    /**
+     * Test clicking the Announcements button.
+     * Verifies if the correct intent is sent to AttendeeAnnouncements.
+     */
     @Test
     public void testAnnouncementsButtonIntent() {
         // Click the Announcements button
@@ -49,6 +58,10 @@ public class SignedUpEventDetailsActivityTest {
         ));
     }
 
+    /**
+     * Test clicking the Sign Out button.
+     * You may want to verify additional behavior here, such as a toast message or UI changes.
+     */
     @Test
     public void testSignOutButtonIntent() {
         // Click the Sign Out button

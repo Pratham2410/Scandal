@@ -94,7 +94,7 @@ import java.util.Map;
             onView(withText("Share Promo QR")).check(matches(isDisplayed()));
         }
 
- 
+
     }
 
 

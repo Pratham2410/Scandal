@@ -20,13 +20,20 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * Instrumented test class for ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ProfileActivityTest {
 
+    // Rule to launch the activity under test
     @Rule
     public IntentsTestRule<ProfileActivity> intentsTestRule = new IntentsTestRule<>(ProfileActivity.class);
 
+    /**
+     * Test saving profile with name and homepage.
+     */
     @Test
     public void testSaveProfileWithNameAndHomePage() {
         // Enter name and homepage
@@ -35,9 +42,11 @@ public class ProfileActivityTest {
 
         // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-
-
     }
+
+    /**
+     * Test pressing the back button to return to HomeActivity.
+     */
     @Test
     public void testBackButtonToHomeActivity() {
         // Click the back button
@@ -47,6 +56,9 @@ public class ProfileActivityTest {
         intended(hasComponent(HomeActivity.class.getName()));
     }
 
+    /**
+     * Test saving profile with name only.
+     */
     @Test
     public void testSaveProfileWithNameOnly() {
         // Enter name only
@@ -54,10 +66,11 @@ public class ProfileActivityTest {
 
         // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-
-
     }
 
+    /**
+     * Test saving profile with name and contact number.
+     */
     @Test
     public void testSaveProfileWithNameAndContactNo() {
         // Enter name and contact number
@@ -66,17 +79,16 @@ public class ProfileActivityTest {
 
         // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-
-
     }
 
+    /**
+     * Test saving profile with all fields empty.
+     */
     @Test
     public void testSaveProfileWithEmptyFields() {
         // Leave all fields empty
 
         // Click save profile button
         onView(withId(R.id.buttonSave)).perform(click());
-
-
     }
 }

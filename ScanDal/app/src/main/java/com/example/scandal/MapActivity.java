@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity displays a map with the location of an attendee.
+ */
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap myMap;
     private FirebaseFirestore db;
@@ -64,6 +67,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    /**
+     * Called when the map is ready to be used.
+     *
+     * @param googleMap The GoogleMap object representing the map.
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;

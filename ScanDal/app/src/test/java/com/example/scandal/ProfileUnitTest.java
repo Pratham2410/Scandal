@@ -10,16 +10,20 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 /**
- * Unit Test for Profile.
+ * Unit Test for the Profile class.
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest= Config.NONE)
 public class ProfileUnitTest {
 
+    /**
+     * Helper method to create a mock profile with default values.
+     * @return A Profile object with default values.
+     */
     private Profile mockProfile() {
-        Profile profile = new Profile("John Doe","123-456-7890","http://www.example.com");
-        return profile;
+        return new Profile("John Doe","123-456-7890","http://www.example.com");
     }
+
     /**
      * Tests the setName and getName methods.
      */
@@ -30,6 +34,7 @@ public class ProfileUnitTest {
         profile.setName(testName);
         assertEquals(testName, profile.getName());
     }
+
     /**
      * Tests the setGeoTracking and getGeoTracking methods.
      */
@@ -40,6 +45,7 @@ public class ProfileUnitTest {
         profile.setGeoTracking(testGeoTracking);
         assertEquals(testGeoTracking, profile.getGeoTracking());
     }
+
     /**
      * Tests the setPhoneNumber and getPhoneNumber methods.
      */
@@ -50,6 +56,7 @@ public class ProfileUnitTest {
         profile.setPhoneNumber(testPhoneNumber);
         assertEquals(testPhoneNumber, profile.getPhoneNumber());
     }
+
     /**
      * Tests the setHomePage and getHomePage methods.
      */
@@ -61,4 +68,3 @@ public class ProfileUnitTest {
         assertEquals(testHomePage, profile.getHomePage());
     }
 }
-

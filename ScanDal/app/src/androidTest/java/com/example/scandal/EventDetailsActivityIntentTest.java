@@ -2,7 +2,6 @@ package com.example.scandal;
 
 import android.content.Intent;
 import android.provider.Settings;
-import android.widget.TextView;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -21,14 +20,24 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
+/**
+ * Instrumented test class for EventDetailsActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class EventDetailsActivityIntentTest {
 
+    // Rule to launch the activity under test
     @Rule
     public IntentsTestRule<EventDetailsActivity> activityTestRule =
             new IntentsTestRule<>(EventDetailsActivity.class, true, false);
 
-    //Test should fail as the event does'nt exist
+    /**
+     * Tests signing up for an event.
+     * <p>
+     * This test simulates the scenario where the event details are displayed and
+     * verifies that the displayed information matches the expected values.
+     * </p>
+     */
     @Test
     public void testSignUpForEvent() {
         // Mock the intent with necessary extras
@@ -39,7 +48,6 @@ public class EventDetailsActivityIntentTest {
         intent.putExtra("description", "Test Description");
         intent.putExtra("check", "0"); // This simulates not being checked in yet
         activityTestRule.launchActivity(intent);
-
 
         // Verify that the displayed information matches the expected values
         Espresso.onView(withId(R.id.textEventName_ViewEventPage))
