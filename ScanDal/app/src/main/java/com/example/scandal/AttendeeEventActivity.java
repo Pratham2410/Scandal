@@ -150,7 +150,7 @@ public class AttendeeEventActivity extends AppCompatActivity implements CustomAr
         if (position >= 0 && position < eventNames.size()) {
             Pair<String, String> eventObject = eventNames.get(position);
             String eventName = eventObject.first;
-            Toast.makeText(AttendeeEventActivity.this, eventName, Toast.LENGTH_LONG).show();
+            //Toast.makeText(AttendeeEventActivity.this, eventName, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
             intent.putExtra("eventName", eventName);
             startActivity(intent);

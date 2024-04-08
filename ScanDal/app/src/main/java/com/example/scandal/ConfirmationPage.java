@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 
 /**
  * Activity for displaying a confirmation page to ensure the user
@@ -105,15 +107,17 @@ public class ConfirmationPage extends AppCompatActivity {
 
         // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+        Log.d("etowsley", "Beggining data access");
         // Query Firestore for events with matching QRCode or PromoQRCode
         db.collection("events")
                 .whereEqualTo("checkinToken", token)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Log.d("etowsley", "Successful data retrieval");
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            Log.d("etowsley", "Inside inner if statement");
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
@@ -138,11 +142,12 @@ public class ConfirmationPage extends AppCompatActivity {
                             bar.setVisibility(View.INVISIBLE);
                             loading.setVisibility(View.INVISIBLE);
                             checked = "1";
-                            //checkInUserToEvent();
+                            Log.d("etowsley", checked);
                         } else {
                             // No matching document found with QRCode, try PromoQRCode
                             searchWithPromoQRCode(token);
                             checked = "0";
+                            Log.d("etowsley", "No matching doc");
                         }
                     } else {
                         // Failed to retrieve documents
@@ -151,10 +156,16 @@ public class ConfirmationPage extends AppCompatActivity {
                         startActivity(home);
                     }
                 });
-
+        //Log.d("etowsley", checked);
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
+            assert(!checked.equals(null));
+            if (checked.equals("1")) {
+                checkInUserToEvent();
+            }
+            else {
                 startConditionalIntent();
+            }
         });
         // Set OnClickListener for no button
 
@@ -220,6 +231,7 @@ public class ConfirmationPage extends AppCompatActivity {
                     });
         }
     private void checkInUserToEvent() {
+        Log.d("etowsley", "checkInUserTOEvent is called");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -234,12 +246,15 @@ public class ConfirmationPage extends AppCompatActivity {
                         Map<String, Object> eventData = documentSnapshot.getData();
                         //Check if user is signed up
                         if (eventData.containsKey("signedUp")) {
+                            Log.d("etowsley", "Event has key signedUp");
                             Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
                             if (signedUpUsers.containsKey(deviceId)) {
+                                Log.d("etowsley", "User has key deviceId in signedUp list");
                                 // Assuming each event document has a 'name' field
                                 //String eventName = documentSnapshot.getString("name");
                                 Map<String, Object> update = new HashMap<>();
                                 if (eventData != null) {
+                                    Log.d("etowsley", "Doing Check In");
                                     // Handle the checkedIn list
                                     List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
                                     if (existingCheckedIn == null) {
@@ -266,22 +281,33 @@ public class ConfirmationPage extends AppCompatActivity {
                                             .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
                                 }
                                 userSignUpError = false;
+                                startConditionalIntent();
                             }
                             // If user has not signed up yet
                             else {
+                                Log.d("etowsley", "User is not in signedUp");
                                 userSignUpError = true;
+                                startConditionalIntent();
                             }
                         }
+                        //If no user had signed up yet
                         else {
+                            Log.d("etowsley", "Event has no key signedUp");
                             userSignUpError = true;
+                            startConditionalIntent();
                         }
+                    } else {
+                        Log.d("etowsley", "Document retrieval failed");
                     }
                 });
     }
 
     private void startConditionalIntent() {
        // Nav to EventDetailsActivity when yes is clicked
-        Log.e("etowsley", "Span is in Confirmation Page");
+        Log.e("etowsley", "in contitional intent" + checked);
+//        if (Objects.equals(checked, "1")) {
+//            checkInUserToEvent();
+//        }
         EventDetailsActivity.imageString = posterImage;
         Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
         intent.putExtra("name", name);
@@ -292,11 +318,13 @@ public class ConfirmationPage extends AppCompatActivity {
         intent.putExtra("location", location);
         intent.putExtra("check", checked);
         //Causes Error... HARRISON!!
-//        if (checked == "1") {
-//            CheckInToEvent();
-//        }
+
         if (userSignUpError) {
+            Log.d("etowsley", "sign up error found");
             intent.putExtra("singUpError", true);
+        }
+        else {
+            Log.e("etowsley", String.valueOf(userSignUpError));
         }
         startActivity(intent);
         finish();

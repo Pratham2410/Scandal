@@ -108,10 +108,8 @@ public class OrganizerListCheckedInActivity extends AppCompatActivity implements
      * Retrieves and displays users checked in for the specified event.
      */
     private void loadCheckedInUsers(String eventName) {
-        List<String> checkedInAttendeeNamesWithCount = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, checkedInAttendeeNamesWithCount);
-        userList.setAdapter(adapter);
-
+        checkedInAttendeeNamesWithCount.clear();
+        checkedInAttendeeNamesWithCount.add(new Pair<>("Event Name", "Number of Check-Ins"));
         db.collection("events")
                 .whereEqualTo("name", eventName)
                 .get()

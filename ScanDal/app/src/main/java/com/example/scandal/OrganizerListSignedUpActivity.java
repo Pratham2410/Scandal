@@ -106,6 +106,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
      * Retrieves and displays users signed up for the specified event.
      */
     private void loadUsers(String eventName) {
+        userNames.clear();
         //Make Header
         userNames.add(new Pair<>("Name", ""));
         //Load rest of data
@@ -120,7 +121,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
                             for (Object userNameObj : signedUpUsers.values()) {
                                 String userName = (String) userNameObj;
                                 if (userName != null) {
-                                    userNames.add(userName);
+                                    userNames.add(new Pair<>(userName, ""));
                                     adapter.notifyDataSetChanged();
                                 }
                             }
