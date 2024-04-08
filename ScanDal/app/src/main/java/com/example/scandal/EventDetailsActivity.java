@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
