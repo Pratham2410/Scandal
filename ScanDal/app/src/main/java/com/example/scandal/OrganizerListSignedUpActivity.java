@@ -58,8 +58,8 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity implements 
 
         backMain = findViewById(R.id.buttonBack_EventsAttendeesPage);
         userList = findViewById(R.id.listView_EventsAttendeesPage);
+        viewLocationBtn = findViewById(R.id.buttonViewLocation_EventsAttendeesPage);
         db = FirebaseFirestore.getInstance();
-
         backMain.setOnClickListener(v -> finish());
 
         // Retrieve the event name from the intent

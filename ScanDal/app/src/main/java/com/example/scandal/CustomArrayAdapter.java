@@ -81,18 +81,18 @@ public class CustomArrayAdapter extends ArrayAdapter<Pair<String, String>> {
                 System.out.println("Header is null!: " + e.getMessage());
             }
         } else {
-            ContextCompat.getColor(context, R.color.black);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
         }
         Log.d("etowsley", "item was added");
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemClick(position);
-                }
-            }
-        });
+
         return itemView;
     }
 }

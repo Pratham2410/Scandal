@@ -48,6 +48,8 @@ public class AttendeeEventActivity extends AppCompatActivity implements CustomAr
      */
     List<Pair<String, String>> eventNames;
     CustomArrayAdapter adapter;
+    // Flag to track if events have been loaded
+    private boolean eventsLoaded = false;
 
     /**
      * Called when the activity is starting. This is where most initialization should go:
@@ -73,7 +75,11 @@ public class AttendeeEventActivity extends AppCompatActivity implements CustomAr
         adapter = new CustomArrayAdapter(this, R.layout.list_item_layout, eventNames);
         adapter.setOnItemClickListener(AttendeeEventActivity.this);
         eventsList.setAdapter(adapter);
-        loadEvents();
+        if (!eventsLoaded) {
+            loadEvents();
+            eventsLoaded = true;
+        }
+
     }
     /**
      * Retrieves and displays event pulled from firebase
@@ -103,12 +109,15 @@ public class AttendeeEventActivity extends AppCompatActivity implements CustomAr
         return checkedInEventName[0];
     }
     //Causes events to load twice
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // Refresh your events list every time the activity resumes
-//        loadEvents();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh your events list every time the activity resumes
+        if (!eventsLoaded) {
+            loadEvents();
+            eventsLoaded = true;
+        }
+    }
     private void loadEvents() {
         eventNames.clear();
         eventNames.add(new Pair<>("Event Name", "Status"));
@@ -146,6 +155,8 @@ public class AttendeeEventActivity extends AppCompatActivity implements CustomAr
 
     @Override
     public void onItemClick(int position) {
+        //Ensure that items will be refreshed upon return
+        eventsLoaded = false;
         // Ensure the position is within the bounds of your data source
         if (position >= 0 && position < eventNames.size()) {
             Pair<String, String> eventObject = eventNames.get(position);
