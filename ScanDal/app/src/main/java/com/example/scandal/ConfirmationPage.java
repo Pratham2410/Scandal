@@ -1,30 +1,19 @@
 package com.example.scandal;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Bundle;
 
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -83,7 +72,18 @@ public class ConfirmationPage extends AppCompatActivity {
      * stores a flag to indicate whether it was a promo or checkin QR
      */
     String checked;
-
+    /**
+     * the token to checkin
+     */
+    String checkinToken;
+    /**
+     * the token to view the promo page
+     */
+    String promoToken;
+    /**
+     * a flag to indicate whether the user has signed up before checking in
+     */
+    boolean userSignUpError;
     /**
      * Called when the activity is starting.
      *
@@ -117,19 +117,20 @@ public class ConfirmationPage extends AppCompatActivity {
                             // Get the first matching document
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             // Retrieve values from the document
+                            // Set the event name, description, poster image, location, time, and tokens
+
                             name = document.getString("name");
                             bar.setProgress(10);
                             description = document.getString("description");
                             bar.setProgress(20);
-                            location = document.getString("Location");
+                            location = document.getString("location");
                             bar.setProgress(30);
-                            time = document.getString("Time");
+                            time = document.getString("time");
                             bar.setProgress(40);
+                            promoToken = document.getString("promoToken");
                             posterImage = document.getString("posterImage");
                             bar.setProgress(100);
-
-                            // Convert posterImage to Bitmap
-                            // Set the event name, description, and poster image
+                            checkinToken = token;
                             eventDescription.setText(defaultText + "checkin to " + name + "?");
                             eventDescription.setVisibility(View.VISIBLE);
                             yesButton.setVisibility(View.VISIBLE);
@@ -152,18 +153,7 @@ public class ConfirmationPage extends AppCompatActivity {
 
         // Set OnClickListener for yes button
         yesButton.setOnClickListener(view -> {
-            // Navigate to Event page when yes button is clicked
-            EventPage.imageString = posterImage;
-            Intent intent = new Intent(ConfirmationPage.this, EventPage.class);
-            intent.putExtra("name", name);
-            Log.e("hpeebles", "name= " + name + "time = " + time + "loc = " + location);
-            intent.putExtra("description", description);
-            intent.putExtra("time", time);
-            intent.putExtra("location", location);
-            intent.putExtra("check", checked);
-            checkInUserToEvent();
-            startActivity(intent);
-            finish();
+                startConditionalIntent();
         });
         // Set OnClickListener for no button
 
@@ -176,57 +166,58 @@ public class ConfirmationPage extends AppCompatActivity {
         );
     }
 
-    /**
-     * Method to search for events based on PromoQRCode.
-     *
-     * @param token The QR token to search for.
-     */
-    private void searchWithPromoQRCode(String token) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("events")
-                .whereEqualTo("promoToken", token)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            // Get the first matching document
-                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                            // Retrieve values from the document
-                            name = document.getString("name");
-                            bar.setProgress(10);
-                            description = document.getString("description");
-                            bar.setProgress(20);
-                            location = document.getString("Location");
-                            bar.setProgress(30);
-                            time = document.getString("Time");
-                            bar.setProgress(40);
-                            posterImage = document.getString("posterImage");
-                            bar.setProgress(100);
+        /**
+         * Method to search for events based on PromoQRCode.
+         *
+         * @param token The QR token to search for.
+         */
+        private void searchWithPromoQRCode(String token){
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("events")
+                    .whereEqualTo("promoToken", token)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                // Get the first matching document
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                // Retrieve values from the document
+                                name = document.getString("name");
+                                bar.setProgress(10);
+                                description = document.getString("description");
+                                bar.setProgress(20);
+                                location = document.getString("location");
+                                bar.setProgress(30);
+                                time = document.getString("time");
+                                bar.setProgress(40);
+                                checkinToken = document.getString("checkinToken");
+                                promoToken = token;
+                                posterImage = document.getString("posterImage");
+                                bar.setProgress(100);
 
-                            eventDescription.setText("Do you want to view " + name + "?");
-                            eventDescription.setVisibility(View.VISIBLE);
-                            yesButton.setVisibility(View.VISIBLE);
-                            noButton.setVisibility(View.VISIBLE);
-                            bar.setVisibility(View.INVISIBLE);
-                            loading.setVisibility(View.INVISIBLE);
+                                eventDescription.setText("Do you want to view " + name + "?");
+                                eventDescription.setVisibility(View.VISIBLE);
+                                yesButton.setVisibility(View.VISIBLE);
+                                noButton.setVisibility(View.VISIBLE);
+                                bar.setVisibility(View.INVISIBLE);
+                                loading.setVisibility(View.INVISIBLE);
 
 
+                            } else {
+                                // No matching document found with PromoQRCode as well
+                                Toast.makeText(ConfirmationPage.this, "Event Not Found", Toast.LENGTH_SHORT).show();
+                                Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
+                                startActivity(home);
+                            }
                         } else {
-                            // No matching document found with PromoQRCode as well
-                            Toast.makeText(ConfirmationPage.this, "Event Not Found", Toast.LENGTH_SHORT).show();
+                            // Failed to retrieve documents
+                            Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
                             Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
                             startActivity(home);
                         }
-                    } else {
-                        // Failed to retrieve documents
-                        Toast.makeText(ConfirmationPage.this, "Failed to fetch event", Toast.LENGTH_SHORT).show();
-                        Intent home = new Intent(ConfirmationPage.this, HomeActivity.class);
-                        startActivity(home);
-                    }
-                });
-    }
-
+                    });
+        }
     private void checkInUserToEvent() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -240,77 +231,72 @@ public class ConfirmationPage extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
                         Map<String, Object> eventData = documentSnapshot.getData();
-                        // Check if there is an existing list storing checked in users
-                        if (eventData != null && eventData.containsKey("checkedIn")) {
-                            // Get the existing list of device IDs
-                            List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
-                            // Add the new device ID, if it's not already in the list
-                            if (!existingCheckedIn.contains(deviceId)) {
-                                existingCheckedIn.add(deviceId);
+                        //Check if user is signed up
+                        if (eventData.containsKey("signedUp")) {
+                            Map<String, Object> signedUpUsers = (Map<String, Object>) eventData.get("signedUp");
+                            if (signedUpUsers.containsKey(deviceId)) {
+                                // Assuming each event document has a 'name' field
+                                //String eventName = documentSnapshot.getString("name");
                                 Map<String, Object> update = new HashMap<>();
-                                update.put("checkedIn", existingCheckedIn);
-                                // Perform the update
-                                db.collection("events").document(documentId)
-                                        .update(update)
-                                        .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                if (eventData != null) {
+                                    // Handle the checkedIn list
+                                    List<String> existingCheckedIn = (List<String>) eventData.get("checkedIn");
+                                    if (existingCheckedIn == null) {
+                                        existingCheckedIn = new ArrayList<>();
+                                    }
+                                    if (!existingCheckedIn.contains(deviceId)) {
+                                        existingCheckedIn.add(deviceId);
+                                        update.put("checkedIn", existingCheckedIn);
+                                    }
+
+                                    // Handle the checkedIn_count map
+                                    Map<String, Long> checkedInCount = (Map<String, Long>) eventData.get("checkedIn_count");
+                                    if (checkedInCount == null) {
+                                        checkedInCount = new HashMap<>();
+                                    }
+                                    Long currentCount = checkedInCount.getOrDefault(deviceId, 0L);
+                                    checkedInCount.put(deviceId, currentCount + 1);
+                                    update.put("checkedIn_count", checkedInCount);
+
+                                    // Perform the update
+                                    db.collection("events").document(documentId)
+                                            .update(update)
+                                            .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
+                                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                                }
+                                userSignUpError = false;
                             }
-                        } else {
-                            // If "checkedIn" does not exist, meaning no one has checked in yet
-                            List<String> newCheckedInList = new ArrayList<>();
-                            newCheckedInList.add(deviceId);
-                            Map<String, Object> update = new HashMap<>();
-                            update.put("checkedIn", newCheckedInList);
-                            // Perform the update
-                            db.collection("events").document(documentId)
-                                    .update(update)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Checked in successfully", Toast.LENGTH_SHORT).show())
-                                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to check in", Toast.LENGTH_SHORT).show());
+                            // If user has not signed up yet
+                            else {
+                                userSignUpError = true;
+                            }
+                        }
+                        else {
+                            userSignUpError = true;
                         }
                     }
                 });
-        db.collection("profiles")
-                .whereEqualTo("deviceId", deviceId)
-                .limit(1)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        // Device is already registered, fetch and display profile data
-                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        Map<String, Object> profileData = documentSnapshot.getData();
-                        if (Integer.parseInt(profileData.get("GeoTracking").toString()) == 1) {
-                            final int FINE_PERMISSION_CODE = 1;
-                            Location currentLocation;
-                            FusedLocationProviderClient fusedLocationProviderClient;
-                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    }
 
-                            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
-                                return;
-                            }
-                            Task<Location> task = fusedLocationProviderClient.getLastLocation();
-                            task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                                @Override
-                                public void onSuccess(Location location) {
-                                    if (location != null){
-                                        profileData.put("userLocation", location);
-                                        String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
-                                        db.collection("profiles").document(documentId)
-                                                .set(profileData)
-                                                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Geolocation tracking disabled", Toast.LENGTH_SHORT).show())
-                                                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update GeoTracking", Toast.LENGTH_SHORT).show());
-
-                                    }
-                                }
-                            });
-                        }
-                    } else {
-                        // Device is not registered, let the user enter new information
-                        Toast.makeText(getApplicationContext(), "Please enter your information before checking in", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
-
+    private void startConditionalIntent() {
+       // Nav to EventDetailsActivity when yes is clicked
+            EventDetailsActivity.imageString = posterImage;
+            Intent intent = new Intent(ConfirmationPage.this, EventDetailsActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("description", description);
+            intent.putExtra("time", time);
+            intent.putExtra("promo", promoToken);
+            intent.putExtra("checkin", checkinToken);
+            intent.putExtra("location", location);
+            intent.putExtra("check", checked);
+            if (checked == "1") {
+                checkInUserToEvent();
+            }
+        if (userSignUpError) {
+            intent.putExtra("singUpError", true);
+        }
+        startActivity(intent);
+        finish();
     }
 
 }

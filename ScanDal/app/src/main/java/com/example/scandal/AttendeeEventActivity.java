@@ -61,13 +61,17 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String eventName = (String) parent.getItemAtPosition(position);
+                String fullEventName = (String) parent.getItemAtPosition(position);
+                // Remove the status part from the event name
+                String eventName = fullEventName.split("   \\(")[0];
                 Intent intent = new Intent(AttendeeEventActivity.this, SignedUpEventDetailsActivity.class);
                 intent.putExtra("eventName", eventName);
                 startActivity(intent);
+
             }
         });
         loadEvents();
+
     }
     /**
      * Retrieves and displays event pulled from firebase
@@ -97,20 +101,19 @@ public class AttendeeEventActivity extends AppCompatActivity {
         }
         return checkedInEventName[0];
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh your events list every time the activity resumes
+        loadEvents();
+    }
     private void loadEvents() {
         List<String> eventNames = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventNames);
         eventsList.setAdapter(adapter);
 
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        final String checkedInEventName = getCheckedInEventName();
-        if (checkedInEventName != null) {
-            Log.e("etowsley", checkedInEventName);
-        }
-        else {
-            Log.e("etowsley", "checkedInEvent was null");
-            Log.e("etowsley", deviceId);
-        }
+
         db.collection("events")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -122,19 +125,21 @@ public class AttendeeEventActivity extends AppCompatActivity {
                                 // Assuming each event document has a 'name' field
                                 String eventName = documentSnapshot.getString("name");
                                 if (eventName != null) {
-                                    if (eventName.equals(checkedInEventName)) {
-                                        eventNames.add(eventName + "   (Checked In)");
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                    else {
+                                    // Check if the user is checked in
+                                    List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
+                                    if (checkedInUsers != null && checkedInUsers.contains(deviceId)) {
+                                        eventNames.add(eventName + "    (Checked In)");
+                                    } else {
                                         eventNames.add(eventName);
-                                        adapter.notifyDataSetChanged();
                                     }
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.e("loadEvents", "Error loading events", e));
     }
+
 
 }

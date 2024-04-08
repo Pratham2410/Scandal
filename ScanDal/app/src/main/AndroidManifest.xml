@@ -5,8 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScanDal"
         tools:targetApi="31">
+
         <provider
             android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"
@@ -69,15 +74,7 @@
             <!--            </intent-filter>-->
         </activity>
 
-        <activity
-            android:name=".EventPage">
-            <!--            android:exported="true">-->
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-        </activity>
+       
         <activity
             android:name=".QRCodeScanner">
             <!--        android:exported="true">-->
@@ -90,10 +87,9 @@
         </activity>
         <activity android:name=".Profile">
         </activity>
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".testActivity"></activity>
 
         <activity android:name=".AdminProfileActivity" />
+        <activity android:name=".MapActivity"></activity>
         <activity android:name=".OrganizerViewEventActivity"></activity>
 
         <activity android:name=".SettingsAndOrganiserActivity"></activity>
@@ -114,6 +110,7 @@
 
         <activity android:name=".OrganizerListCheckedInActivity"></activity>
         <activity android:name=".AttendeeEventActivity"></activity>
+        <activity android:name=".MilestoneActivity"></activity>
         <activity android:name=".EventDetailsActivity"></activity>
         <activity android:name=".SignedUpEventDetailsActivity"></activity>
         <activity android:name=".OrganizerListSignedUpActivity"></activity>

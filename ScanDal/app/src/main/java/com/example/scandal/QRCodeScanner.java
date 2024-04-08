@@ -75,6 +75,7 @@ public class QRCodeScanner extends AppCompatActivity {
                             nextIntent.putExtra("QRToken", decoded); // access the token in the NextActivity using this QRToken key
 
                             startActivity(nextIntent);
+                            finish();
                         } else if (act == 2) {
                             String name = getIntent().getStringExtra("name");
                             String description = getIntent().getStringExtra("description");
@@ -100,6 +101,7 @@ public class QRCodeScanner extends AppCompatActivity {
                                 intent.putExtra("PromoToken", decoded);
                             }
                             startActivity(intent);
+                            finish();
                         } //else{
 //                            Log.e("hpeebles", "QRCodeScanner needs a integer to be passed through an intent to function properly");
 //                        }

@@ -26,12 +26,12 @@ import org.junit.runner.RunWith;
         static Intent intent;
 
         static {
-            intent = new Intent(ApplicationProvider.getApplicationContext(), EventPage.class);
+            intent = new Intent(ApplicationProvider.getApplicationContext(), EventDetailsActivity.class);
             intent.putExtra("QRToken", "PageTesting401"); // token for the QR that will be used as an example
         }
 
         @Rule
-        public ActivityScenarioRule<EventPage> activityScenarioRule = new ActivityScenarioRule<>(intent);
+        public ActivityScenarioRule<EventDetailsActivity> activityScenarioRule = new ActivityScenarioRule<>(intent);
 
         @Test
         public void ViewEventDetails() throws InterruptedException {

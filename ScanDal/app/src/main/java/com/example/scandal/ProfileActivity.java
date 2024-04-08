@@ -1,21 +1,14 @@
 package com.example.scandal;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -30,17 +23,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,6 +40,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.CountDownTimer;
+import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.Task;
 
 /**
  * Profile Activity for editing and saving a user's profile information, including their name,
@@ -106,7 +107,6 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
     CountDownTimer timer;
     Integer verifyLocation = 1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +116,6 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
          *  Initialize UI components
          */
         initializeUI();
-
 
         // Check if the device is already registered
         final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -138,7 +137,6 @@ public class ProfileActivity extends AppCompatActivity implements IBaseGpsListen
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
                                 } else {
-
                                     showLocation();
                                 }
                             }
