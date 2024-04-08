@@ -198,6 +198,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                             else {
                                 // Device is not registered, let the user enter new information
                                 Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                                Intent home = new Intent(EventDetailsActivity.this, HomeActivity.class);
+                                startActivity(home);
                             }
                         }
                     })

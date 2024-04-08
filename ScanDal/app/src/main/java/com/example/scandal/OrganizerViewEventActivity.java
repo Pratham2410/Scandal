@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,12 +16,14 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 import java.util.Map;
 
 /** An activity for organizers to view details of events */
 public class OrganizerViewEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
-    TextView textEventName, textEventDescription, textEventTime, textEventLocation;
+    TextView textEventName, textEventDescription, textEventTime, textEventLocation, textCheckInCount, textSignUpCount;
     ImageView imageView;
     FrameLayout buttonBack;
     String promoQRCode;
@@ -36,6 +39,8 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
         textEventDescription = findViewById(R.id.textEventDescription_OrganisorViewEventPage);
         textEventTime = findViewById(R.id.textEventTime_OrganisorViewEventPage);
         textEventLocation = findViewById(R.id.textEventLocation_OrganisorViewEventPage);
+        textCheckInCount = findViewById(R.id.text_check_in_count);
+        textSignUpCount = findViewById(R.id.text_singup_count);
         imageView = findViewById(R.id.imageView_OrganisorViewEventPage);
         buttonBack = findViewById(R.id.buttonBack_OrganisorViewEventPage);
         signedUpListBtn = findViewById(R.id.buttonSignedUpList_OraganisorViewEventsPage);
@@ -99,6 +104,22 @@ public class OrganizerViewEventActivity extends AppCompatActivity {
                             textEventTime.setText((String) eventData.get("time"));
                             textEventLocation.setText((String) eventData.get("location"));
                             textEventDescription.setText((String) eventData.get("description"));
+                            //Get checked in count
+                            List<String> checkedInUsers = (List<String>) eventData.get("checkedIn");
+                            if (checkedInUsers != null) {
+                                textCheckInCount.setText("Current Attendee #: " + String.valueOf(checkedInUsers.size()));
+                            }
+                            else {
+                                textCheckInCount.setText("Current Attendee #: 0");
+                            }
+                            //Get signed up count
+                            String signUpCount = String.valueOf(eventData.get("attendeeCount"));
+                            if (signUpCount != null) {
+                                textSignUpCount.setText("Current Sing-Up #: " + signUpCount);
+                            }
+                            else {
+                                textSignUpCount.setText("Current Sing-Up #: 0");
+                            }
                             promoQRCode = (String) eventData.get("PromoQRCode");
                             String imageString = (String) eventData.get("posterImage");
                             if (imageString != null) {
