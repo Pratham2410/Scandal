@@ -1,14 +1,21 @@
 package com.example.scandal;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,13 +47,13 @@ public class EventActivity extends AppCompatActivity {
      */
     private EditText editEventDescription;
     /**
-     * Button to trigger event data saving
-     */
-    private EditText editEventTime;
-    /**
-     * Button for Event Time
+     * edit text for Event location
      */
     private EditText editlocation;
+    /**
+     * Edit text for attendee limit
+     */
+    private EditText editLimit;
     /**
      * Button to generate new event
      */
@@ -59,13 +66,28 @@ public class EventActivity extends AppCompatActivity {
      * Button to upload a poster image
      */
     AppCompatButton deletePosterButton;
-
-
+    /**
+     * Button to trigger event date saving
+     */
+    AppCompatButton editEventTime;
+    /**
+     * Calender for getting event date
+     */
+    Calendar calendar;
+    /**
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_event_page);
 
+        // Initialize Calender
+        calendar = Calendar.getInstance();
         // Initialize UI components and Firestore
         initializeUIComponents();
 
@@ -88,14 +110,16 @@ public class EventActivity extends AppCompatActivity {
         // Extract input values, defaulting to empty string if any field is empty
         String name = editEventName.getText().toString().trim();
         String description = editEventDescription.getText().toString().trim();
-        String eventTime = editEventTime.getText().toString().trim();
+        String eventTime = String.valueOf(calendar.getTime());
+        Log.e("etowsley", eventTime);
         String eventLocation = editlocation.getText().toString().trim();
-
+        String attendeeLimit = editLimit.getText().toString().trim();
         // Ensure values are set to an empty string if they are empty
         name = name.isEmpty() ? "" : name;
         description = description.isEmpty() ? "" : description;
         eventTime = eventTime.isEmpty() ? "" : eventTime;
         eventLocation = eventLocation.isEmpty() ? "" : eventLocation;
+        attendeeLimit = attendeeLimit.isEmpty() ? "" : attendeeLimit;
 
         // Convert the selected image to a Base64 string, default to empty string if no image is selected
         String imageString = (imageUri != null) ? convertImageUriToString(imageUri) : "";
@@ -110,6 +134,7 @@ public class EventActivity extends AppCompatActivity {
         NewEventActivity.imageString = imageString;
         Intent intent = new Intent(EventActivity.this, NewEventActivity.class);
         intent.putExtra("name", name) ;
+        intent.putExtra("attendeeLimit", attendeeLimit);
         intent.putExtra("description", description);
         intent.putExtra("Time", eventTime); // Changed from "eventTime" to "Time"
         intent.putExtra("Location", eventLocation); // Changed from "eventLocation" to "Location"
@@ -119,7 +144,47 @@ public class EventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private String getCalendarDate() {
+    return null;
+    }
 
+    private void showDatePickerDialog() {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(EventActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        showTimePickerDialog();
+                    }
+                }, year, month, dayOfMonth);
+        datePickerDialog.show();
+    }
+
+    private void showTimePickerDialog() {
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(EventActivity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+
+                        // Do something with the selected date and time
+                        Toast.makeText(EventActivity.this, "Selected date and time: " + calendar.getTime(), Toast.LENGTH_LONG).show();
+                        editEventTime.setText(String.valueOf(calendar.getTime()));
+                    }
+                }, hourOfDay, minute, false);
+        timePickerDialog.show();
+    }
     /**
      * Converts the image located at the provided Uri to a Base64 encoded string.
      * @param imageUri The Uri of the image to be converted.
@@ -145,8 +210,9 @@ public class EventActivity extends AppCompatActivity {
     private void initializeUIComponents() {
         poster = findViewById(R.id.imageView_CreateEventPage);
         editEventName = findViewById(R.id.editTextEventName_CreateEventPage);
-        editEventTime = findViewById(R.id.editTextEventTime_CreateEventPage);
+        editEventTime = findViewById(R.id.buttonEventTime_CreateEventPage);
         editlocation = findViewById(R.id.editTextEventLocation_CreateEventPage);
+        editLimit = findViewById(R.id.editTextEventLimit_CreateEventPage);
         editEventDescription = findViewById(R.id.editTextEventDescription_CreateEventPage);
         generateEventButton = findViewById(R.id.buttonSave_CreateEventPage);
         uploadPosterButton = findViewById(R.id.editPosterButton_CreateEventPage);
@@ -163,6 +229,13 @@ public class EventActivity extends AppCompatActivity {
      */
     private void setupButtonListeners() {
         generateEventButton.setOnClickListener(v -> saveEventData());
+
+        editEventTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
 
         uploadPosterButton.setOnClickListener(view -> ImagePicker.with(EventActivity.this)
                 .crop() // Optional image cropping

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="Attendee Limit"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEventTime_CreateEventPage"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEventTime_CreateEventPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEventName_CreateEventPage"
         app:layout_constraintVertical_bias="0.0" />
@@ -86,28 +86,30 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="Autofill" />
 
-    <EditText
-        android:id="@+id/editTextEventTime_CreateEventPage"
-        style="@style/etSolidRoundedOutline"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonEventTime_CreateEventPage"
+        style="@style/btnSolidRoundedOutline"
         android:layout_width="250dp"
         android:layout_height="52dp"
         android:layout_marginStart="4dp"
-        android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
+        android:background="@drawable/rectangle_bg_teal_a200_border_pink_500_radius_26"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:hint="Event Time"
-        android:inputType="time"
         android:paddingStart="@dimen/_26pxh"
         android:paddingTop="@dimen/_11pxv"
         android:paddingEnd="@dimen/_30pxh"
         android:paddingBottom="@dimen/_10pxv"
         android:singleLine="true"
-        android:textColorHint="@color/black_900_99"
+        android:text="Select Date"
+        android:textAllCaps="false"
+        android:textColor="@color/pink_500"
+        android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.0"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill"
+        tools:text="Select Date" />
 
     <EditText
         android:id="@+id/editTextEventLocation_CreateEventPage"
@@ -152,7 +154,7 @@
         android:text="Edit Poster"
         android:textAllCaps="false"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/textview5"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.889"
         app:layout_constraintStart_toEndOf="@+id/deletePosterButton_CreateEventPage"
@@ -176,7 +178,7 @@
         android:text="Delete Poster"
         android:textAllCaps="false"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/textview5"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toStartOf="@+id/editPosterButton_CreateEventPage"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -192,6 +194,7 @@
         android:layout_marginEnd="4dp"
         android:background="@drawable/rectangle_bg_white_a700_border_pink_500_radius_23_5"
         android:ellipsize="end"
+        android:maxEms="25"
         android:hint="Event Description"
         android:inputType="text"
         android:paddingStart="@dimen/_26pxh"
@@ -285,7 +288,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Event Time"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEventTime_CreateEventPage"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEventTime_CreateEventPage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEventName_CreateEventPage"
         app:layout_constraintVertical_bias="0.0" />
@@ -299,7 +302,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventTime_CreateEventPage"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEventTime_CreateEventPage"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

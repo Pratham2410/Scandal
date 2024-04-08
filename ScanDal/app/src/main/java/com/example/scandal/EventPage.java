@@ -1,12 +1,18 @@
 package com.example.scandal;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Map;
+
 /**
  * Activity for displaying details of an event based on QR code.
  */
@@ -28,6 +38,19 @@ EventPage extends AppCompatActivity {
     TextView eventName;
     /** TextView to display the description of the event. */
     TextView eventDescription;
+    /**
+     * TextView to display the event time
+     */
+    TextView eventTime;
+    /**
+     * TextView to display event location
+     */
+    TextView eventLocation;
+    /**
+     *  data base instance
+     */
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     /**
      * string of the event poster to make the passed intents smaller
      */
@@ -44,49 +67,22 @@ EventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_page);
 
+        LinearLayout signUp = findViewById(R.id.buttonSignUp);
         back = findViewById(R.id.buttonBack_ViewEventPage);
         poster = findViewById(R.id.imageView_ViewEventPage);
+        eventTime = findViewById(R.id.textEventTime_ViewEventPage);
+        eventLocation = findViewById(R.id.textEventLocation_ViewEventPage);
         eventName = findViewById(R.id.textEventName_ViewEventPage);
         eventDescription = findViewById(R.id.textEventDescription_ViewEventPage);
         Bitmap posterBitmap = convertImageStringToBitmap(imageString);
         poster.setImageBitmap(posterBitmap);
-        eventDescription.setText(getIntent().getStringExtra("description"));
-        eventName.setText(getIntent().getStringExtra("name"));
-
-//        // Initialize Firestore
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//
-//        // Query Firestore for events with matching QRCode or PromoQRCode
-//        db.collection("events")
-//                .whereEqualTo("checkinToken", token)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot querySnapshot = task.getResult();
-//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-//                            // Get the first matching document
-//                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-//                            // Retrieve values from the document
-//                            String name = document.getString("name");
-//                            String description = document.getString("description");
-//                            String posterImage = document.getString("posterImage");
-//                            // Convert posterImage to Bitmap
-//                            Bitmap posterBitmap = convertImageStringToBitmap(posterImage);
-//                            // Set the event name, description, and poster image
-//                            eventName.setText(name);
-//                            eventDescription.setText(description);
-//                            if (posterBitmap != null) {
-//                                poster.setImageBitmap(posterBitmap);
-//                            }
-//                        } else {
-//                            // No matching document found with QRCode, try PromoQRCode
-//                            searchWithPromoQRCode(token);
-//                        }
-//                    } else {
-//                        // Failed to retrieve documents
-//                        Toast.makeText(EventPage.this, "Failed to fetch event data", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+        eventLocation.setText(getIntent().getStringExtra("location")); //gets the location
+        eventTime.setText(getIntent().getStringExtra("time")); // gets the time
+        eventDescription.setText(getIntent().getStringExtra("description")); // gets description
+        eventName.setText(getIntent().getStringExtra("name")); // gets the name
+        if (getIntent().getStringExtra("check") == "1"){
+            signUp.setVisibility(View.INVISIBLE); // if checked in no sign up button is provided
+        }
 
         // Set OnClickListener for back button
         back.setOnClickListener(view -> {
@@ -95,46 +91,47 @@ EventPage extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        // Sign Attendee up for the event
+        signUp.setOnClickListener(v -> {
+            final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);//gets device ID
+            // Retrieve the event name from the TextView
+            String event_Name = eventName.getText().toString();
+
+                // Subscribe to the event topic
+                FirebaseMessaging.getInstance().subscribeToTopic(event_Name)
+                        .addOnCompleteListener(task -> {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Topic subscription failed");
+                            } else {
+                                // Optionally notify the user of successful subscription
+                                Toast.makeText(EventPage.this, "Subscribed to event notifications", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            db.collection("profiles")
+                    .whereEqualTo("deviceId", deviceId)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Device is already registered, fetch and display profile data
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            Map<String, Object> profileData = documentSnapshot.getData();
+                            if (profileData != null) {
+//                                attendeeName = (String) profileData.get("name");
+//                                saveSignUpToEvent(eventName);
+//                                saveSignUpToAttendee(eventName);
+                            }
+                            else {
+                                // Device is not registered, let the user enter new information
+                                Toast.makeText(getApplicationContext(), "Please enter your information", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+        });
     }
 
-//    /**
-//     * Method to search for events based on PromoQRCode.
-//     *
-//     * @param token The QR token to search for.
-//     */
-//    private void searchWithPromoQRCode(String token) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("events")
-//                .whereEqualTo("promoToken", token)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot querySnapshot = task.getResult();
-//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-//                            // Get the first matching document
-//                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-//                            // Retrieve values from the document
-//                            String name = document.getString("name");
-//                            String description = document.getString("description");
-//                            String posterImage = document.getString("posterImage");
-//                            // Convert posterImage to Bitmap
-//                            Bitmap posterBitmap = convertImageStringToBitmap(posterImage);
-//                            // Set the event name, description, and poster image
-//                            eventName.setText(name);
-//                            eventDescription.setText(description);
-//                            if (posterBitmap != null) {
-//                                poster.setImageBitmap(posterBitmap);
-//                            }
-//                        } else {
-//                            // No matching document found with PromoQRCode as well
-//                            Toast.makeText(EventPage.this, "Event not found", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        // Failed to retrieve documents
-//                        Toast.makeText(EventPage.this, "Failed to fetch event data", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
+
     /**
      * Helper method to decode Base64 string to Bitmap.
      *
@@ -151,4 +148,6 @@ EventPage extends AppCompatActivity {
             return null;
         }
     }
+
+
 }
