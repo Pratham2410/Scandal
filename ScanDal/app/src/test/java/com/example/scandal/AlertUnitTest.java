@@ -4,7 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+/**
+ * Unit tests for the Alert class.
+ */
 public class AlertUnitTest {
+
+    /**
+     * Test the constructor of the Alert class.
+     */
     @Test
     public void testConstructor() {
         String testMessage = "Initial message";
@@ -12,6 +19,9 @@ public class AlertUnitTest {
         assertEquals(testMessage, alert.getMessage());
     }
 
+    /**
+     * Test the getMessage method of the Alert class.
+     */
     @Test
     public void testGetMessage() {
         String testMessage = "Test message";
@@ -19,6 +29,9 @@ public class AlertUnitTest {
         assertEquals(testMessage, alert.getMessage());
     }
 
+    /**
+     * Test the setMessage method of the Alert class.
+     */
     @Test
     public void testSetMessage() {
         String initialMessage = "Initial message";
