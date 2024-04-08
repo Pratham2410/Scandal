@@ -6,12 +6,19 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -40,6 +47,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
      * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
      */
     String attendeeNames;
+    private Button viewLocationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
 
         backMain = findViewById(R.id.buttonBack_EventsAttendeesPage);
         userList = findViewById(R.id.listView_EventsAttendeesPage);
+        viewLocationBtn = findViewById(R.id.buttonViewLocation_EventsAttendeesPage);
         db = FirebaseFirestore.getInstance();
 
         backMain.setOnClickListener(v -> finish());
@@ -62,6 +71,36 @@ public class OrganizerListSignedUpActivity extends AppCompatActivity {
             attendeeNames = (String) parent.getItemAtPosition(position);
             Toast.makeText(OrganizerListSignedUpActivity.this, attendeeNames+" is selected", Toast.LENGTH_SHORT).show();
         });
+
+        viewLocationBtn.setOnClickListener(v -> {
+            if(attendeeNames !=null){
+                db.collection("profiles")
+                        .whereEqualTo("name", attendeeNames)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Device is already registered, fetch and display profile data
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                Map<String, Object> profileData = documentSnapshot.getData();
+                                if (Integer.parseInt(profileData.get("GeoTracking").toString()) == 1 && profileData.get("userLocation") != null) {
+                                    Intent mapIntent = new Intent(OrganizerListSignedUpActivity.this, MapActivity.class);
+                                    mapIntent.putExtra("attendeeName", attendeeNames);
+                                    startActivity(mapIntent);
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "user disabled geo-tracking", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to fetch profile data", Toast.LENGTH_SHORT).show());
+            }
+            else{
+                Toast.makeText(OrganizerListSignedUpActivity.this, "Please select an attendee first", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
     }
     /**
      * Retrieves and displays users signed up for the specified event.
