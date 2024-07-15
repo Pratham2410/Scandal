@@ -168,6 +168,7 @@ public class NewEventActivity extends AppCompatActivity {
                 event.put("location", eventLocation);
                 event.put("description", description);
                 event.put("checkinToken", token);
+                //event.put("attendeeLimit", )
                 event.put("promoToken", token2);
                 event.put("posterImage", imageString); // Add the image string to the event map
                 final String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
